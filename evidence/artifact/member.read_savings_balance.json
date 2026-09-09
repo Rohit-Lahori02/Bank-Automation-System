@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "id": "member.read_savings_balance",
   "name": "Read member savings balance",
-  "version": 6,
+  "version": 7,
   "status": "draft",
-  "description": "Look up member 12345 and read their current savings balance",
+  "description": "Look up a member by member number and return the balance of their primary savings share.",
   "target": {
     "app": "corelink-member-servicing",
     "entry_url": "http://127.0.0.1:8000/login",
@@ -22,7 +22,7 @@
   "outputs": {
     "savings_balance": {
       "type": "money",
-      "description": "At member detail page with iframe showing accounts.",
+      "description": "At member details page with iframe showing accounts.",
       "from_step": "s08_extract"
     }
   },
@@ -39,10 +39,10 @@
       "risk": "safe",
       "irreversible": false,
       "expect": {
-        "description": "entry screen shows \"Harbor Federal Credit Union\"",
+        "description": "entry screen shows \"Operator Sign On\"",
         "detect": {
           "kind": "text_visible",
-          "text": "Harbor Federal Credit Union"
+          "text": "Operator Sign On"
         },
         "timeout_ms": 8000
       },
@@ -94,10 +94,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "textbox",
-            "x": 120.4749984741211,
-            "y": 192.40000915527344,
+            "x": 120.671875,
+            "y": 194.0,
             "w": 220.0,
-            "h": 39.20000076293945,
+            "h": 39.0,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -154,10 +154,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "textbox",
-            "x": 120.4749984741211,
-            "y": 241.1999969482422,
+            "x": 120.671875,
+            "y": 243.0,
             "w": 220.0,
-            "h": 39.20000076293945,
+            "h": 39.0,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -207,10 +207,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "button",
-            "x": 120.4749984741211,
-            "y": 290.0,
-            "w": 95.30000305175781,
-            "h": 39.20000076293945,
+            "x": 120.671875,
+            "y": 292.0,
+            "w": 95.703125,
+            "h": 39.0,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -222,7 +222,7 @@
         "description": "navigated",
         "detect": {
           "kind": "url_matches",
-          "pattern": "/console$"
+          "pattern": "/console(?:[?#]|$)"
         },
         "timeout_ms": 8000
       },
@@ -274,10 +274,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "link",
-            "x": 24.80000114440918,
-            "y": 168.8000030517578,
-            "w": 184.40000915527344,
-            "h": 37.60000228881836,
+            "x": 25.0,
+            "y": 170.0,
+            "w": 184.0,
+            "h": 37.0,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -289,7 +289,7 @@
         "description": "navigated",
         "detect": {
           "kind": "url_matches",
-          "pattern": "/members/search$"
+          "pattern": "/members/search(?:[?#]|$)"
         },
         "timeout_ms": 8000
       },
@@ -341,10 +341,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "textbox",
-            "x": 376.2375183105469,
-            "y": 192.40000915527344,
-            "w": 202.40000915527344,
-            "h": 39.20000076293945,
+            "x": 376.4375,
+            "y": 194.0,
+            "w": 203.0,
+            "h": 39.0,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -394,10 +394,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "button",
-            "x": 586.6375122070312,
-            "y": 192.40000915527344,
-            "w": 85.7874984741211,
-            "h": 39.20000076293945,
+            "x": 587.4375,
+            "y": 194.0,
+            "w": 86.1875,
+            "h": 39.0,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -461,10 +461,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "link",
-            "x": 957.2250366210938,
-            "y": 330.8000183105469,
-            "w": 27.42500114440918,
-            "h": 17.600000381469727,
+            "x": 957.09375,
+            "y": 332.0,
+            "w": 27.421875,
+            "h": 17.0,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -476,7 +476,7 @@
         "description": "navigated",
         "detect": {
           "kind": "url_matches",
-          "pattern": "/members/[^/]+$"
+          "pattern": "/members/[^/]+(?:[?#]|$)"
         },
         "timeout_ms": 8000
       },
@@ -486,7 +486,7 @@
     {
       "id": "s08_extract",
       "action": "extract",
-      "description": "At member detail page with iframe showing accounts.",
+      "description": "At member details page with iframe showing accounts.",
       "target": {
         "description": "cell \"$5,432.10\" in frame iframe[name=\"acctframe\"]",
         "role": "cell",
@@ -511,6 +511,15 @@
           {
             "frame": "iframe[name=\"acctframe\"]",
             "nth": 0,
+            "rationale": "the cell to the right of the label 'Primary Share'; independent of this value's content, so an extracted value can be re-read for other inputs",
+            "kind": "anchor_relative",
+            "role": "cell",
+            "anchor_text": "Primary Share",
+            "direction": "right"
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
             "rationale": "visible text content; what the operator reads on screen",
             "kind": "text",
             "text": "$5,432.10",
@@ -529,10 +538,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "cell",
-            "x": 707.7625122070312,
-            "y": 530.4000015258789,
-            "w": 119.32500457763672,
-            "h": 40.79999923706055,
+            "x": 707.53125,
+            "y": 534.5,
+            "w": 119.203125,
+            "h": 40.0,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -602,10 +611,10 @@
                   "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
                   "kind": "bbox",
                   "role": "textbox",
-                  "x": 120.4749984741211,
-                  "y": 192.40000915527344,
+                  "x": 120.671875,
+                  "y": 194.0,
                   "w": 220.0,
-                  "h": 39.20000076293945,
+                  "h": 39.0,
                   "viewport_w": 1280,
                   "viewport_h": 820
                 }
@@ -662,10 +671,10 @@
                   "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
                   "kind": "bbox",
                   "role": "textbox",
-                  "x": 120.4749984741211,
-                  "y": 241.1999969482422,
+                  "x": 120.671875,
+                  "y": 243.0,
                   "w": 220.0,
-                  "h": 39.20000076293945,
+                  "h": 39.0,
                   "viewport_w": 1280,
                   "viewport_h": 820
                 }
@@ -715,10 +724,10 @@
                   "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
                   "kind": "bbox",
                   "role": "button",
-                  "x": 120.4749984741211,
-                  "y": 290.0,
-                  "w": 95.30000305175781,
-                  "h": 39.20000076293945,
+                  "x": 120.671875,
+                  "y": 292.0,
+                  "w": 95.703125,
+                  "h": 39.0,
                   "viewport_w": 1280,
                   "viewport_h": 820
                 }
@@ -730,7 +739,7 @@
               "description": "navigated",
               "detect": {
                 "kind": "url_matches",
-                "pattern": "/console$"
+                "pattern": "/console(?:[?#]|$)"
               },
               "timeout_ms": 8000
             },
@@ -845,13 +854,13 @@
     }
   },
   "checkpoint": {
-    "description": "goal state: \"Member 12345 detail page showing savings balance $5,432.10\"",
+    "description": "goal state: \"Member 12345 · Oyelaran, Marcus\"",
     "detect": {
       "kind": "all_of",
       "detectors": [
         {
           "kind": "url_matches",
-          "pattern": "/members/[^/]+$"
+          "pattern": "/members/[^/]+(?:[?#]|$)"
         },
         {
           "kind": "text_visible",
@@ -861,14 +870,14 @@
     }
   },
   "provenance": {
-    "discovery_run_id": "20260909T011756-c8594e",
-    "recorded_at": 1788934784.3995357,
+    "discovery_run_id": "20260909T024255-f4bb28",
+    "recorded_at": 1788939845.9036179,
     "provider": "openai_compat",
     "model": "nvidia/nemotron-3-super-120b-a12b",
     "surface": "browser-playwright",
     "goal": "Look up member 12345 and read their current savings balance",
     "discovery_steps": 9,
     "redaction_applied": true,
-    "notes": "8 executed actions; 0 condition(s) learned from the run; 9 model calls, 22338 tokens; model's checkpoint text reduced to the visible fragment \"Member Servicing Console\""
+    "notes": "8 executed actions; 0 condition(s) learned from the run; 9 model calls, 23114 tokens; model's checkpoint text reduced to the visible fragment \"Member Servicing Console\""
   }
 }

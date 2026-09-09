@@ -1,6 +1,6 @@
 {
   "discovery": {
-    "run_id": "20260909T011756-c8594e",
+    "run_id": "20260909T024255-f4bb28",
     "goal": "Look up member 12345 and read their current savings balance",
     "entry_url": "http://127.0.0.1:8000/login",
     "status": "success",
@@ -15,17 +15,17 @@
     "outputs": {
       "savings_balance": "$5,432.10"
     },
-    "checkpoint_text": "Member 12345 detail page showing savings balance $5,432.10",
+    "checkpoint_text": "Member 12345 \u00b7 Oyelaran, Marcus",
     "final_url": "http://127.0.0.1:8000/members/12345",
     "provider": "openai_compat",
     "model": "nvidia/nemotron-3-super-120b-a12b",
     "llm_calls": 9,
-    "input_tokens": 20831,
-    "output_tokens": 1507,
+    "input_tokens": 21624,
+    "output_tokens": 1490,
     "cached_tokens": 0,
     "steps_total": 9,
     "steps_executed": 9,
-    "duration_s": 102.8,
+    "duration_s": 68.6,
     "actions": [
       {
         "index": 1,
@@ -35,12 +35,12 @@
         "value": "{{secrets.app.username}}",
         "output": null,
         "executed": true,
-        "result": "ok (expected text \"User ID field populated\" is NOT visible)",
-        "expect": "User ID field populated",
+        "result": "ok (expected text \"User ID field populated with username\" is NOT visible)",
+        "expect": "User ID field populated with username",
         "expect_held": false,
         "url_before": "http://127.0.0.1:8000/login",
         "url_after": "http://127.0.0.1:8000/login",
-        "duration_ms": 113
+        "duration_ms": 85
       },
       {
         "index": 2,
@@ -55,7 +55,7 @@
         "expect_held": false,
         "url_before": "http://127.0.0.1:8000/login",
         "url_after": "http://127.0.0.1:8000/login",
-        "duration_ms": 39
+        "duration_ms": 33
       },
       {
         "index": 3,
@@ -65,12 +65,12 @@
         "value": null,
         "output": null,
         "executed": true,
-        "result": "ok (expected text \"Signed on successfully, likely navigates to main menu\" is NOT visible)",
-        "expect": "Signed on successfully, likely navigates to main menu",
+        "result": "ok (expected text \"Signed on successfully and navigated to main console\" is NOT visible)",
+        "expect": "Signed on successfully and navigated to main console",
         "expect_held": false,
         "url_before": "http://127.0.0.1:8000/login",
         "url_after": "http://127.0.0.1:8000/console",
-        "duration_ms": 647
+        "duration_ms": 611
       },
       {
         "index": 4,
@@ -80,12 +80,12 @@
         "value": null,
         "output": null,
         "executed": true,
-        "result": "ok (expected text \"Member search page appears\" is NOT visible)",
-        "expect": "Member search page appears",
+        "result": "ok (expected text \"Member search screen appears\" is NOT visible)",
+        "expect": "Member search screen appears",
         "expect_held": false,
         "url_before": "http://127.0.0.1:8000/console",
         "url_after": "http://127.0.0.1:8000/members/search",
-        "duration_ms": 801
+        "duration_ms": 602
       },
       {
         "index": 5,
@@ -95,12 +95,12 @@
         "value": "12345",
         "output": null,
         "executed": true,
-        "result": "ok (expected text \"Member number entered\" is NOT visible)",
-        "expect": "Member number entered",
+        "result": "ok (expected text \"Member number field populated with 12345\" is NOT visible)",
+        "expect": "Member number field populated with 12345",
         "expect_held": false,
         "url_before": "http://127.0.0.1:8000/members/search",
         "url_after": "http://127.0.0.1:8000/members/search",
-        "duration_ms": 46
+        "duration_ms": 37
       },
       {
         "index": 6,
@@ -110,12 +110,12 @@
         "value": null,
         "output": null,
         "executed": true,
-        "result": "ok (expected text \"Member profile page appears with accounts and balances\" is NOT visible)",
-        "expect": "Member profile page appears with accounts and balances",
+        "result": "ok (expected text \"Member profile page for member 12345 appears\" is NOT visible)",
+        "expect": "Member profile page for member 12345 appears",
         "expect_held": false,
         "url_before": "http://127.0.0.1:8000/members/search",
         "url_after": "http://127.0.0.1:8000/members/search",
-        "duration_ms": 632
+        "duration_ms": 584
       },
       {
         "index": 7,
@@ -125,12 +125,12 @@
         "value": null,
         "output": null,
         "executed": true,
-        "result": "ok (expected text \"Member detail page showing accounts and balances\" is NOT visible)",
-        "expect": "Member detail page showing accounts and balances",
+        "result": "ok (expected text \"Member details page for member 12345 appears\" is NOT visible)",
+        "expect": "Member details page for member 12345 appears",
         "expect_held": false,
         "url_before": "http://127.0.0.1:8000/members/search",
         "url_after": "http://127.0.0.1:8000/members/12345",
-        "duration_ms": 839
+        "duration_ms": 640
       },
       {
         "index": 8,
@@ -145,7 +145,7 @@
         "expect_held": false,
         "url_before": "http://127.0.0.1:8000/members/12345",
         "url_after": "http://127.0.0.1:8000/members/12345",
-        "duration_ms": 147
+        "duration_ms": 90
       },
       {
         "index": 9,
@@ -167,7 +167,7 @@
   "replay_success": {
     "status": "success",
     "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
+    "capability_version": 7,
     "run_id": "replay_success",
     "inputs": {
       "member_id": "12345"
@@ -186,7 +186,130 @@
         "status": "ok",
         "strategy": null,
         "attempts": 1,
-        "duration_ms": 699,
+        "duration_ms": 733,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 186,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 123,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 733,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 720,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 162,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 681,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 903,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s08_extract",
+        "action": "extract",
+        "status": "ok",
+        "strategy": "table_cell#0",
+        "attempts": 1,
+        "duration_ms": 336,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": true,
+    "evidence_dir": "evidence/replay_success",
+    "duration_ms": 4870
+  },
+  "replay_other_member": {
+    "status": "success",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "replay_other_member",
+    "inputs": {
+      "member_id": "10001"
+    },
+    "outputs": {
+      "savings_balance": "1240.50"
+    },
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 702,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -208,705 +331,13 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 119,
+        "duration_ms": 135,
         "conditions": [],
         "note": "",
         "subflow_of": null
       },
       {
         "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 722,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 731,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 170,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 699,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s07_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 938,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s08_extract",
-        "action": "extract",
-        "status": "ok",
-        "strategy": "table_cell#0",
-        "attempts": 1,
-        "duration_ms": 387,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [],
-    "checkpoint_verified": true,
-    "evidence_dir": "evidence/replay_success",
-    "duration_ms": 4948
-  },
-  "replay_other_member": {
-    "status": "success",
-    "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
-    "run_id": "replay_other_member",
-    "inputs": {
-      "member_id": "10001"
-    },
-    "outputs": {
-      "savings_balance": "1240.50"
-    },
-    "outcome_code": null,
-    "outcome_message": null,
-    "failure": null,
-    "escalation": null,
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 711,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 184,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 184,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 730,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 737,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 188,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 723,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s07_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 893,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s08_extract",
-        "action": "extract",
-        "status": "ok",
-        "strategy": "table_cell#0",
-        "attempts": 1,
-        "duration_ms": 397,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [],
-    "checkpoint_verified": true,
-    "evidence_dir": "evidence/replay_other_member",
-    "duration_ms": 5048
-  },
-  "replay_not_found": {
-    "status": "business_outcome",
-    "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
-    "run_id": "replay_not_found",
-    "inputs": {
-      "member_id": "99999"
-    },
-    "outputs": {},
-    "outcome_code": "MEMBER_NOT_FOUND",
-    "outcome_message": "No member exists with the supplied number. A legitimate answer, not an error.",
-    "failure": null,
-    "escalation": null,
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 693,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 202,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 122,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 727,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 726,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 151,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "outcome",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 0,
-        "conditions": [
-          "member_not_found"
-        ],
-        "note": "No member exists with the supplied number. A legitimate answer, not an error.",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [],
-    "checkpoint_verified": false,
-    "evidence_dir": "evidence/replay_not_found",
-    "duration_ms": 3445
-  },
-  "replay_permission_denied": {
-    "status": "business_outcome",
-    "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
-    "run_id": "replay_permission_denied",
-    "inputs": {
-      "member_id": "40403"
-    },
-    "outputs": {},
-    "outcome_code": "PERMISSION_DENIED",
-    "outcome_message": "The operator role may not view this member.",
-    "failure": null,
-    "escalation": null,
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 720,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 208,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 126,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 729,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 753,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 156,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "outcome",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 0,
-        "conditions": [
-          "permission_denied"
-        ],
-        "note": "The operator role may not view this member.",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [],
-    "checkpoint_verified": false,
-    "evidence_dir": "evidence/replay_permission_denied",
-    "duration_ms": 3524
-  },
-  "replay_invalid_input": {
-    "status": "business_outcome",
-    "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
-    "run_id": "replay_invalid_input",
-    "inputs": {
-      "member_id": "12ab"
-    },
-    "outputs": {},
-    "outcome_code": "INVALID_INPUT",
-    "outcome_message": "The app rejected the member number format.",
-    "failure": null,
-    "escalation": null,
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 719,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 173,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 124,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 717,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 737,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 158,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "outcome",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 0,
-        "conditions": [
-          "invalid_member_number"
-        ],
-        "note": "The app rejected the member number format.",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [],
-    "checkpoint_verified": false,
-    "evidence_dir": "evidence/replay_invalid_input",
-    "duration_ms": 3450
-  },
-  "replay_app_error": {
-    "status": "failed",
-    "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
-    "run_id": "replay_app_error",
-    "inputs": {
-      "member_id": "50500"
-    },
-    "outputs": {},
-    "outcome_code": null,
-    "outcome_message": null,
-    "failure": {
-      "step_id": "s07_click",
-      "code": "APP_ERROR",
-      "message": "The application returned an error page.",
-      "expected": "url matches //members/[^/]+$/",
-      "observed": "url=http://127.0.0.1:8000/members/50500; title=\"Application Error - HFCU Member Servicing\"; texts=\"Harbor Federal Credit Union\" | \"Member Servicing Console\" | \"CoreLink v4.2.1\" | \"Signed on as \u00b7\" | \"teller01\" | \"Menu\" | \"Application Error\" | \"The request could not be completed.\"",
-      "screenshot": "evidence/replay_app_error/failure_s07_click.png",
-      "attempts": []
-    },
-    "escalation": null,
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 728,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 202,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 129,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 717,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 727,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 185,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 698,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s07_click",
-        "action": "click",
-        "status": "failed",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 0,
-        "conditions": [
-          "application_error"
-        ],
-        "note": "The application returned an error page.",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [],
-    "checkpoint_verified": false,
-    "evidence_dir": "evidence/replay_app_error",
-    "duration_ms": 4252
-  },
-  "replay_maintenance_dialog": {
-    "status": "success",
-    "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
-    "run_id": "replay_maintenance_dialog",
-    "inputs": {
-      "member_id": "12345"
-    },
-    "outputs": {
-      "savings_balance": "5432.10"
-    },
-    "outcome_code": null,
-    "outcome_message": null,
-    "failure": null,
-    "escalation": null,
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "recovered",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 851,
-        "conditions": [
-          "maintenance_dialog"
-        ],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 132,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 162,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 718,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 721,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 175,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
         "action": "click",
         "status": "ok",
         "strategy": "role_name#0",
@@ -917,403 +348,12 @@
         "subflow_of": null
       },
       {
-        "step_id": "s07_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 937,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s08_extract",
-        "action": "extract",
-        "status": "ok",
-        "strategy": "table_cell#0",
-        "attempts": 1,
-        "duration_ms": 381,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [],
-    "checkpoint_verified": true,
-    "evidence_dir": "evidence/replay_maintenance_dialog",
-    "duration_ms": 5086
-  },
-  "replay_session_expired": {
-    "status": "success",
-    "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
-    "run_id": "replay_session_expired",
-    "inputs": {
-      "member_id": "12345"
-    },
-    "outputs": {
-      "savings_balance": "5432.10"
-    },
-    "outcome_code": null,
-    "outcome_message": null,
-    "failure": null,
-    "escalation": null,
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 726,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 194,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 119,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 721,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 187,
-        "conditions": [],
-        "note": "",
-        "subflow_of": "session_expired"
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 188,
-        "conditions": [],
-        "note": "",
-        "subflow_of": "session_expired"
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 741,
-        "conditions": [],
-        "note": "",
-        "subflow_of": "session_expired"
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "recovered",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 3311,
-        "conditions": [
-          "session_expired"
-        ],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 216,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 702,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s07_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 939,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s08_extract",
-        "action": "extract",
-        "status": "ok",
-        "strategy": "table_cell#0",
-        "attempts": 1,
-        "duration_ms": 386,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [],
-    "checkpoint_verified": true,
-    "evidence_dir": "evidence/replay_session_expired",
-    "duration_ms": 7624
-  },
-  "replay_handoff_resumed": {
-    "status": "success",
-    "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
-    "run_id": "replay_handoff_resumed",
-    "inputs": {
-      "member_id": "12345"
-    },
-    "outputs": {
-      "savings_balance": "5432.10"
-    },
-    "outcome_code": null,
-    "outcome_message": null,
-    "failure": null,
-    "escalation": null,
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 700,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 180,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 134,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 742,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
         "step_id": "s04_click",
         "action": "click",
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 735,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 158,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 706,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s07_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 956,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s08_extract",
-        "action": "extract",
-        "status": "ok",
-        "strategy": "table_cell#0",
-        "attempts": 1,
-        "duration_ms": 441,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "close_it",
-        "action": "click",
-        "status": "recovered",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 2740,
-        "conditions": [],
-        "note": "human resumed (step performed manually)",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [
-      {
-        "step_id": "close_it",
-        "kind": "risky_action",
-        "reason": "step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)",
-        "decision": "resumed",
-        "intervention_id": "int-1bee2da4",
-        "human_actions": 1,
-        "summary": "resumed: click link \"Close Account\""
-      }
-    ],
-    "checkpoint_verified": true,
-    "evidence_dir": "evidence/replay_handoff_resumed",
-    "duration_ms": 7679
-  },
-  "replay_handoff_aborted": {
-    "status": "escalated",
-    "capability_id": "member.read_savings_balance",
-    "capability_version": 6,
-    "run_id": "replay_handoff_aborted",
-    "inputs": {
-      "member_id": "12345"
-    },
-    "outputs": {},
-    "outcome_code": null,
-    "outcome_message": null,
-    "failure": null,
-    "escalation": {
-      "step_id": "close_it",
-      "reason": "step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)",
-      "kind": "risky_action",
-      "url": "http://127.0.0.1:8000/members/12345",
-      "screenshot": "evidence/replay_handoff_aborted/escalation_close_it.png",
-      "screen": "URL: http://127.0.0.1:8000/members/12345\nTitle: Member 12345 - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as \u00b7\"\n[e5] text \"teller01\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Member Profile\"\n[e14] text \"Member 12345 \u00b7 Oyelaran, Marcus\"\n[e15] cell \"Member Number\"\n[e16] cell \"12345\"\n[e17] cell \"Name\"\n[e18] cell \"Oyelaran, Marcus\"\n[e19] cell \"Status\"\n[e20] text \"Active\"\n[e21] cell \"Member Since\"\n[e22] cell \"2006-01-30\"\n[e23] cell \"Address\"\n[e24] cell \"2201 Ironwood Ct, Hermantown, MN 55811\"\n[e25] cell \"Phone\"\n[e26] cell \"(218) 555-0107\"\n[e27] cell \"E-mail\"\n[e28] cell \"m.oyelaran@example.com\"\n[e29] cell \"Tax ID (last 4)\"\n[e30] cell \"***-**-2088\"\n[e31] text \"Accounts\"\n[e32] link \"Open Sub-Account\" href=/members/12345/subaccount/new\n[e33] link \"New Search\" href=/members/search\n[e34] cell \"CoreLink Servicing Platform \u00a9 1998-2026 Meridian Core Systems, Inc. \u00b7 Unauthorized access is prohibited and monitored.\"\n--- frame: iframe[name=\"acctframe\"] ---\n[e35] cell \"Account No.\"\n[e36] cell \"Type\"\n[e37] cell \"Nickname\"\n[e38] cell \"Balance\"\n[e39] cell \"Status\"\n[e40] cell \"Action\"\n[e41] cell \"12345-S01\"\n[e42] cell \"Savings\"\n[e43] cell \"Primary Share\"\n[e44] cell \"$5,432.10\"\n[e45] text \"Open\"\n[e46] link \"Close Account\" href=/members/12345/accounts/12345-S01/close\n[e47] cell \"12345-D01\"\n[e48] cell \"Checking\"\n[e49] cell \"Household\"\n[e50] cell \"$1,020.00\"\n[e51] text \"Open\"\n[e52] link \"Close Account\" href=/members/12345/accounts/12345-D01/close\n[e53] cell \"12345-S02\"\n[e54] cell \"Savings\"\n[e55] cell \"Vacation Club\"\n[e56] cell \"$250.00\"\n[e57] text \"Open\"\n[e58] link \"Close Account\" href=/members/12345/accounts/12345-S02/close\n[e59] cell \"12345-S03\"\n[e60] cell \"Savings\"\n[e61] cell \"Holiday Fund\"\n[e62] cell \"$125.50\"\n[e63] text \"Open\"\n[e64] link \"Close Account\" href=/members/12345/accounts/12345-S03/close\n[e65] cell \"12345-S04\"\n[e66] cell \"Savings\"\n[e67] cell \"Holiday Fund\"\n[e68] cell \"$125.50\"\n[e69] text \"Open\" (offscreen)\n[e70] link \"Close Account\" href=/members/12345/accounts/12345-S04/close (offscreen)\n[e71] cell \"12345-S05\" (offscreen)\n[e72] cell \"Savings\" (offscreen)\n[e73] cell \"Holiday Fund\" (offscreen)\n[e74] cell \"$125.50\" (offscreen)\n[e75] text \"Open\" (offscreen)\n[e76] link \"Close Account\" href=/members/12345/accounts/12345-S05/close (offscreen)\n[e77] cell \"12345-S06\" (offscreen)\n[e78] cell \"Savings\" (offscreen)\n[e79] cell \"Holiday Fund\" (offscreen)\n[e80] cell \"$125.50\" (offscreen)\n... (3 more elements omitted)"
-    },
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 709,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 177,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 130,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 719,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 733,
+        "duration_ms": 751,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1335,7 +375,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 700,
+        "duration_ms": 706,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1346,7 +386,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 935,
+        "duration_ms": 895,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1357,7 +397,985 @@
         "status": "ok",
         "strategy": "table_cell#0",
         "attempts": 1,
-        "duration_ms": 399,
+        "duration_ms": 319,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": true,
+    "evidence_dir": "evidence/replay_other_member",
+    "duration_ms": 4827
+  },
+  "replay_not_found": {
+    "status": "business_outcome",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "replay_not_found",
+    "inputs": {
+      "member_id": "99999"
+    },
+    "outputs": {},
+    "outcome_code": "MEMBER_NOT_FOUND",
+    "outcome_message": "No member exists with the supplied number. A legitimate answer, not an error.",
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 705,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 203,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 153,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 746,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 717,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 152,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "outcome",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 0,
+        "conditions": [
+          "member_not_found"
+        ],
+        "note": "No member exists with the supplied number. A legitimate answer, not an error.",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": false,
+    "evidence_dir": "evidence/replay_not_found",
+    "duration_ms": 3504
+  },
+  "replay_permission_denied": {
+    "status": "business_outcome",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "replay_permission_denied",
+    "inputs": {
+      "member_id": "40403"
+    },
+    "outputs": {},
+    "outcome_code": "PERMISSION_DENIED",
+    "outcome_message": "The operator role may not view this member.",
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 686,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 176,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 134,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 710,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 728,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 165,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "outcome",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 0,
+        "conditions": [
+          "permission_denied"
+        ],
+        "note": "The operator role may not view this member.",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": false,
+    "evidence_dir": "evidence/replay_permission_denied",
+    "duration_ms": 3431
+  },
+  "replay_invalid_input": {
+    "status": "business_outcome",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "replay_invalid_input",
+    "inputs": {
+      "member_id": "12ab"
+    },
+    "outputs": {},
+    "outcome_code": "INVALID_INPUT",
+    "outcome_message": "The app rejected the member number format.",
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 700,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 225,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 123,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 713,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 714,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 160,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "outcome",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 0,
+        "conditions": [
+          "invalid_member_number"
+        ],
+        "note": "The app rejected the member number format.",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": false,
+    "evidence_dir": "evidence/replay_invalid_input",
+    "duration_ms": 3461
+  },
+  "replay_app_error": {
+    "status": "failed",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "replay_app_error",
+    "inputs": {
+      "member_id": "50500"
+    },
+    "outputs": {},
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": {
+      "step_id": "s07_click",
+      "code": "APP_ERROR",
+      "message": "The application returned an error page.",
+      "expected": "url matches //members/[^/]+(?:[?#]|$)/",
+      "observed": "url=http://127.0.0.1:8000/members/50500; title=\"Application Error - HFCU Member Servicing\"; texts=\"Harbor Federal Credit Union\" | \"Member Servicing Console\" | \"CoreLink v4.2.1\" | \"Signed on as \u00b7\" | \"teller01\" | \"Menu\" | \"Application Error\" | \"The request could not be completed.\"",
+      "screenshot": "evidence/replay_app_error/failure_s07_click.png",
+      "attempts": []
+    },
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 705,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 184,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 123,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 721,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 723,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 158,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 704,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "failed",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 0,
+        "conditions": [
+          "application_error"
+        ],
+        "note": "The application returned an error page.",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": false,
+    "evidence_dir": "evidence/replay_app_error",
+    "duration_ms": 4192
+  },
+  "replay_maintenance_dialog": {
+    "status": "success",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "replay_maintenance_dialog",
+    "inputs": {
+      "member_id": "12345"
+    },
+    "outputs": {
+      "savings_balance": "5432.10"
+    },
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "recovered",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 868,
+        "conditions": [
+          "maintenance_dialog"
+        ],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 123,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 116,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 705,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 724,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 169,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 698,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 900,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s08_extract",
+        "action": "extract",
+        "status": "ok",
+        "strategy": "table_cell#0",
+        "attempts": 1,
+        "duration_ms": 397,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": true,
+    "evidence_dir": "evidence/replay_maintenance_dialog",
+    "duration_ms": 4993
+  },
+  "replay_session_expired": {
+    "status": "success",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "replay_session_expired",
+    "inputs": {
+      "member_id": "12345"
+    },
+    "outputs": {
+      "savings_balance": "5432.10"
+    },
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 689,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 183,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 125,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 728,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 163,
+        "conditions": [],
+        "note": "",
+        "subflow_of": "session_expired"
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 151,
+        "conditions": [],
+        "note": "",
+        "subflow_of": "session_expired"
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 731,
+        "conditions": [],
+        "note": "",
+        "subflow_of": "session_expired"
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "recovered",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 3219,
+        "conditions": [
+          "session_expired"
+        ],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 162,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 710,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 947,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s08_extract",
+        "action": "extract",
+        "status": "ok",
+        "strategy": "table_cell#0",
+        "attempts": 1,
+        "duration_ms": 344,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": true,
+    "evidence_dir": "evidence/replay_session_expired",
+    "duration_ms": 7399
+  },
+  "replay_handoff_resumed": {
+    "status": "success",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "replay_handoff_resumed",
+    "inputs": {
+      "member_id": "12345"
+    },
+    "outputs": {
+      "savings_balance": "5432.10"
+    },
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 677,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 201,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 220,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 724,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 730,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 185,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 722,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 915,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s08_extract",
+        "action": "extract",
+        "status": "ok",
+        "strategy": "table_cell#0",
+        "attempts": 1,
+        "duration_ms": 369,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "close_it",
+        "action": "click",
+        "status": "recovered",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 2662,
+        "conditions": [],
+        "note": "human resumed (step performed manually)",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [
+      {
+        "step_id": "close_it",
+        "kind": "risky_action",
+        "reason": "step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)",
+        "decision": "resumed",
+        "intervention_id": "int-42d64f36",
+        "human_actions": 1,
+        "summary": "resumed: click link \"Close Account\""
+      }
+    ],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": true,
+    "evidence_dir": "evidence/replay_handoff_resumed",
+    "duration_ms": 7836
+  },
+  "replay_handoff_aborted": {
+    "status": "escalated",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "replay_handoff_aborted",
+    "inputs": {
+      "member_id": "12345"
+    },
+    "outputs": {},
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": null,
+    "escalation": {
+      "step_id": "close_it",
+      "reason": "step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)",
+      "kind": "risky_action",
+      "url": "http://127.0.0.1:8000/members/12345",
+      "screenshot": "evidence/replay_handoff_aborted/escalation_close_it.png",
+      "screen": "URL: http://127.0.0.1:8000/members/12345\nTitle: Member 12345 - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as \u00b7\"\n[e5] text \"teller01\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Member Profile\"\n[e14] text \"Member 12345 \u00b7 Oyelaran, Marcus\"\n[e15] cell \"Member Number\"\n[e16] cell \"12345\"\n[e17] cell \"Name\"\n[e18] cell \"Oyelaran, Marcus\"\n[e19] cell \"Status\"\n[e20] text \"Active\"\n[e21] cell \"Member Since\"\n[e22] cell \"2006-01-30\"\n[e23] cell \"Address\"\n[e24] cell \"2201 Ironwood Ct, Hermantown, MN 55811\"\n[e25] cell \"Phone\"\n[e26] cell \"(218) 555-0107\"\n[e27] cell \"E-mail\"\n[e28] cell \"m.oyelaran@example.com\"\n[e29] cell \"Tax ID (last 4)\"\n[e30] cell \"***-**-2088\"\n[e31] text \"Accounts\"\n[e32] link \"Open Sub-Account\" href=/members/12345/subaccount/new\n[e33] link \"New Search\" href=/members/search\n[e34] cell \"CoreLink Servicing Platform \u00a9 1998-2026 Meridian Core Systems, Inc. \u00b7 Unauthorized access is prohibited and monitored.\"\n--- frame: iframe[name=\"acctframe\"] ---\n[e35] cell \"Account No.\"\n[e36] cell \"Type\"\n[e37] cell \"Nickname\"\n[e38] cell \"Balance\"\n[e39] cell \"Status\"\n[e40] cell \"Action\"\n[e41] cell \"12345-S01\"\n[e42] cell \"Savings\"\n[e43] cell \"Primary Share\"\n[e44] cell \"$5,432.10\"\n[e45] text \"Open\"\n[e46] link \"Close Account\" href=/members/12345/accounts/12345-S01/close\n[e47] cell \"12345-D01\"\n[e48] cell \"Checking\"\n[e49] cell \"Household\"\n[e50] cell \"$1,020.00\"\n[e51] text \"Open\"\n[e52] link \"Close Account\" href=/members/12345/accounts/12345-D01/close\n[e53] cell \"12345-S02\"\n[e54] cell \"Savings\"\n[e55] cell \"Vacation Club\"\n[e56] cell \"$250.00\"\n[e57] text \"Open\"\n[e58] link \"Close Account\" href=/members/12345/accounts/12345-S02/close\n[e59] text \"3 account(s) on file. Balances as of close of business.\""
+    },
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 679,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 201,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 125,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 718,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 729,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 190,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 689,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 928,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s08_extract",
+        "action": "extract",
+        "status": "ok",
+        "strategy": "table_cell#0",
+        "attempts": 1,
+        "duration_ms": 331,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1369,14 +1387,16 @@
         "kind": "risky_action",
         "reason": "step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)",
         "decision": "denied",
-        "intervention_id": "int-c9d3e497",
+        "intervention_id": "int-5d7e34d4",
         "human_actions": 0,
         "summary": "aborted: no actions captured"
       }
     ],
+    "drift": [],
+    "variant": "base",
     "checkpoint_verified": false,
     "evidence_dir": "evidence/replay_handoff_aborted",
-    "duration_ms": 6915
+    "duration_ms": 6927
   },
   "subaccount_discovery": {
     "run_id": "20260909T020004-cd9f7c",
@@ -1648,7 +1668,7 @@
       "deposit": "125.50"
     },
     "outputs": {
-      "confirmation_number": "CNF-BF813D"
+      "confirmation_number": "CNF-016DE2"
     },
     "outcome_code": null,
     "outcome_message": null,
@@ -1661,7 +1681,7 @@
         "status": "ok",
         "strategy": null,
         "attempts": 1,
-        "duration_ms": 776,
+        "duration_ms": 698,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1672,7 +1692,7 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 175,
+        "duration_ms": 176,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1683,7 +1703,7 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 127,
+        "duration_ms": 139,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1694,7 +1714,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 718,
+        "duration_ms": 723,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1705,7 +1725,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 738,
+        "duration_ms": 731,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1716,7 +1736,7 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 155,
+        "duration_ms": 156,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1727,7 +1747,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 708,
+        "duration_ms": 686,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1738,7 +1758,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 927,
+        "duration_ms": 910,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1749,7 +1769,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 831,
+        "duration_ms": 815,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1771,7 +1791,7 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 154,
+        "duration_ms": 141,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1782,7 +1802,7 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 133,
+        "duration_ms": 138,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1793,7 +1813,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 743,
+        "duration_ms": 767,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -1804,7 +1824,209 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 2822,
+        "duration_ms": 2796,
+        "conditions": [],
+        "note": "human approved",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s14_extract",
+        "action": "extract",
+        "status": "ok",
+        "strategy": "anchor_relative#0",
+        "attempts": 1,
+        "duration_ms": 202,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [
+      {
+        "step_id": "s13_click",
+        "kind": "risky_action",
+        "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
+        "decision": "approved",
+        "intervention_id": "int-0945e3fe",
+        "human_actions": 0,
+        "summary": "approved: no actions captured"
+      }
+    ],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": true,
+    "evidence_dir": "evidence/subaccount_replay_success",
+    "duration_ms": 9403
+  },
+  "subaccount_replay_other_member": {
+    "status": "success",
+    "capability_id": "member.open_subaccount",
+    "capability_version": 3,
+    "run_id": "subaccount_replay_other_member",
+    "inputs": {
+      "member_id": "10001",
+      "product": "Savings - Holiday Club",
+      "nickname": "Holiday Fund",
+      "deposit": "125.50"
+    },
+    "outputs": {
+      "confirmation_number": "CNF-EF44D3"
+    },
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 711,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 185,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 120,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 719,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 726,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 155,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 704,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 877,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s08_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 790,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s09_select",
+        "action": "select",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 168,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s10_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 142,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s11_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 142,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s12_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 701,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s13_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 2898,
         "conditions": [],
         "note": "human approved",
         "subflow_of": null
@@ -1827,214 +2049,16 @@
         "kind": "risky_action",
         "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
         "decision": "approved",
-        "intervention_id": "int-d1af98ef",
+        "intervention_id": "int-1e40c626",
         "human_actions": 0,
         "summary": "approved: no actions captured"
       }
     ],
-    "checkpoint_verified": true,
-    "evidence_dir": "evidence/subaccount_replay_success",
-    "duration_ms": 9528
-  },
-  "subaccount_replay_other_member": {
-    "status": "success",
-    "capability_id": "member.open_subaccount",
-    "capability_version": 3,
-    "run_id": "subaccount_replay_other_member",
-    "inputs": {
-      "member_id": "10001",
-      "product": "Savings - Holiday Club",
-      "nickname": "Holiday Fund",
-      "deposit": "125.50"
-    },
-    "outputs": {
-      "confirmation_number": "CNF-9D2671"
-    },
-    "outcome_code": null,
-    "outcome_message": null,
-    "failure": null,
-    "escalation": null,
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 772,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 168,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 114,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 759,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 816,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 229,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 745,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s07_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 932,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s08_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 848,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s09_select",
-        "action": "select",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 180,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s10_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 144,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s11_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 134,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s12_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 742,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s13_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 2900,
-        "conditions": [],
-        "note": "human approved",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s14_extract",
-        "action": "extract",
-        "status": "ok",
-        "strategy": "anchor_relative#0",
-        "attempts": 1,
-        "duration_ms": 211,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [
-      {
-        "step_id": "s13_click",
-        "kind": "risky_action",
-        "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
-        "decision": "approved",
-        "intervention_id": "int-dc844381",
-        "human_actions": 0,
-        "summary": "approved: no actions captured"
-      }
-    ],
+    "drift": [],
+    "variant": "base",
     "checkpoint_verified": true,
     "evidence_dir": "evidence/subaccount_replay_other_member",
-    "duration_ms": 9855
+    "duration_ms": 9397
   },
   "subaccount_replay_validation_error": {
     "status": "business_outcome",
@@ -2059,7 +2083,7 @@
         "status": "ok",
         "strategy": null,
         "attempts": 1,
-        "duration_ms": 749,
+        "duration_ms": 690,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2070,7 +2094,7 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 175,
+        "duration_ms": 241,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2081,7 +2105,7 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 120,
+        "duration_ms": 135,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2092,7 +2116,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 721,
+        "duration_ms": 713,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2103,7 +2127,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 731,
+        "duration_ms": 707,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2114,7 +2138,7 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 161,
+        "duration_ms": 153,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2125,7 +2149,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 702,
+        "duration_ms": 696,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2136,7 +2160,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 949,
+        "duration_ms": 911,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2147,7 +2171,184 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 851,
+        "duration_ms": 818,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s09_select",
+        "action": "select",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 165,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s10_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 130,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s11_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 136,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s12_click",
+        "action": "click",
+        "status": "outcome",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 0,
+        "conditions": [
+          "validation_error"
+        ],
+        "note": "The app rejected the submitted form values (VAL-2xxx).",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "base",
+    "checkpoint_verified": false,
+    "evidence_dir": "evidence/subaccount_replay_validation_error",
+    "duration_ms": 6327
+  },
+  "subaccount_replay_escalation_aborted": {
+    "status": "escalated",
+    "capability_id": "member.open_subaccount",
+    "capability_version": 3,
+    "run_id": "subaccount_replay_escalation_aborted",
+    "inputs": {
+      "member_id": "12345",
+      "product": "Savings - Holiday Club",
+      "nickname": "Holiday Fund",
+      "deposit": "125.50"
+    },
+    "outputs": {},
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": null,
+    "escalation": {
+      "step_id": "s13_click",
+      "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
+      "kind": "risky_action",
+      "url": "http://127.0.0.1:8000/members/12345/subaccount/review",
+      "screenshot": "evidence/subaccount_replay_escalation_aborted/escalation_s13_click.png",
+      "screen": "URL: http://127.0.0.1:8000/members/12345/subaccount/review\nTitle: Review Sub-Account - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as \u00b7\"\n[e5] text \"teller01\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Review New Sub-Account\"\n[e14] text \"Please review the details below. Press to open the account.\"\n[e15] text \"Confirm\"\n[e16] text \"The account will be opened and funded immediately on confirmation.\"\n[e17] text \"This action cannot be reversed from this screen.\"\n[e18] cell \"Member Number\"\n[e19] cell \"12345\"\n[e20] cell \"Member Name\"\n[e21] cell \"Oyelaran, Marcus\"\n[e22] cell \"Product Type\"\n[e23] cell \"Savings - Holiday Club\"\n[e24] cell \"Nickname\"\n[e25] cell \"Holiday Fund\"\n[e26] cell \"Initial Deposit\"\n[e27] cell \"$125.50\"\n[e28] button \"Confirm\"\n[e29] link \"Edit\" href=/members/12345/subaccount/new\n[e30] link \"Cancel\" href=/members/12345\n[e31] cell \"CoreLink Servicing Platform \u00a9 1998-2026 Meridian Core Systems, Inc. \u00b7 Unauthorized access is prohibited and monitored.\""
+    },
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 698,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 177,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 166,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 713,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 726,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 163,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 703,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 919,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s08_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 792,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2180,182 +2381,7 @@
         "status": "ok",
         "strategy": "label_text#0",
         "attempts": 1,
-        "duration_ms": 144,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s12_click",
-        "action": "click",
-        "status": "outcome",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 0,
-        "conditions": [
-          "validation_error"
-        ],
-        "note": "The app rejected the submitted form values (VAL-2xxx).",
-        "subflow_of": null
-      }
-    ],
-    "interventions": [],
-    "checkpoint_verified": false,
-    "evidence_dir": "evidence/subaccount_replay_validation_error",
-    "duration_ms": 6466
-  },
-  "subaccount_replay_escalation_aborted": {
-    "status": "escalated",
-    "capability_id": "member.open_subaccount",
-    "capability_version": 3,
-    "run_id": "subaccount_replay_escalation_aborted",
-    "inputs": {
-      "member_id": "12345",
-      "product": "Savings - Holiday Club",
-      "nickname": "Holiday Fund",
-      "deposit": "125.50"
-    },
-    "outputs": {},
-    "outcome_code": null,
-    "outcome_message": null,
-    "failure": null,
-    "escalation": {
-      "step_id": "s13_click",
-      "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
-      "kind": "risky_action",
-      "url": "http://127.0.0.1:8000/members/12345/subaccount/review",
-      "screenshot": "evidence/subaccount_replay_escalation_aborted/escalation_s13_click.png",
-      "screen": "URL: http://127.0.0.1:8000/members/12345/subaccount/review\nTitle: Review Sub-Account - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as \u00b7\"\n[e5] text \"teller01\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Review New Sub-Account\"\n[e14] text \"Please review the details below. Press to open the account.\"\n[e15] text \"Confirm\"\n[e16] text \"The account will be opened and funded immediately on confirmation.\"\n[e17] text \"This action cannot be reversed from this screen.\"\n[e18] cell \"Member Number\"\n[e19] cell \"12345\"\n[e20] cell \"Member Name\"\n[e21] cell \"Oyelaran, Marcus\"\n[e22] cell \"Product Type\"\n[e23] cell \"Savings - Holiday Club\"\n[e24] cell \"Nickname\"\n[e25] cell \"Holiday Fund\"\n[e26] cell \"Initial Deposit\"\n[e27] cell \"$125.50\"\n[e28] button \"Confirm\"\n[e29] link \"Edit\" href=/members/12345/subaccount/new\n[e30] link \"Cancel\" href=/members/12345\n[e31] cell \"CoreLink Servicing Platform \u00a9 1998-2026 Meridian Core Systems, Inc. \u00b7 Unauthorized access is prohibited and monitored.\""
-    },
-    "steps": [
-      {
-        "step_id": "s00_navigate",
-        "action": "navigate",
-        "status": "ok",
-        "strategy": null,
-        "attempts": 1,
-        "duration_ms": 688,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s01_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 302,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s02_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 133,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s03_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 719,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s04_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 760,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s05_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 152,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s06_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 715,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s07_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 965,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s08_click",
-        "action": "click",
-        "status": "ok",
-        "strategy": "role_name#0",
-        "attempts": 1,
-        "duration_ms": 841,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s09_select",
-        "action": "select",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 174,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s10_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 141,
-        "conditions": [],
-        "note": "",
-        "subflow_of": null
-      },
-      {
-        "step_id": "s11_type",
-        "action": "type",
-        "status": "ok",
-        "strategy": "label_text#0",
-        "attempts": 1,
-        "duration_ms": 148,
+        "duration_ms": 131,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2366,7 +2392,7 @@
         "status": "ok",
         "strategy": "role_name#0",
         "attempts": 1,
-        "duration_ms": 716,
+        "duration_ms": 705,
         "conditions": [],
         "note": "",
         "subflow_of": null
@@ -2378,13 +2404,287 @@
         "kind": "risky_action",
         "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
         "decision": "denied",
-        "intervention_id": "int-b035118e",
+        "intervention_id": "int-e476c5c7",
         "human_actions": 0,
         "summary": "aborted: no actions captured"
       }
     ],
+    "drift": [],
+    "variant": "base",
     "checkpoint_verified": false,
     "evidence_dir": "evidence/subaccount_replay_escalation_aborted",
-    "duration_ms": 8609
+    "duration_ms": 8330
+  },
+  "tenant_lakeshore_without_overlay": {
+    "status": "success",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "tenant_lakeshore_without_overlay",
+    "inputs": {
+      "member_id": "12345"
+    },
+    "outputs": {
+      "savings_balance": "5432.10"
+    },
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 1002,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 183,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 124,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 735,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "css#2",
+        "attempts": 1,
+        "duration_ms": 793,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "css#2",
+        "attempts": 1,
+        "duration_ms": 180,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "css#2",
+        "attempts": 1,
+        "duration_ms": 752,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "css#2",
+        "attempts": 1,
+        "duration_ms": 954,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s08_extract",
+        "action": "extract",
+        "status": "ok",
+        "strategy": "role_name#1",
+        "attempts": 1,
+        "duration_ms": 383,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [
+      {
+        "step_id": "s04_click",
+        "strategy": "css",
+        "index": 2
+      },
+      {
+        "step_id": "s05_type",
+        "strategy": "css",
+        "index": 2
+      },
+      {
+        "step_id": "s06_click",
+        "strategy": "css",
+        "index": 2
+      },
+      {
+        "step_id": "s07_click",
+        "strategy": "css",
+        "index": 2
+      },
+      {
+        "step_id": "s08_extract",
+        "strategy": "role_name",
+        "index": 1
+      }
+    ],
+    "variant": "base",
+    "checkpoint_verified": true,
+    "evidence_dir": "evidence/tenant_lakeshore_without_overlay",
+    "duration_ms": 5424
+  },
+  "tenant_lakeshore_with_overlay": {
+    "status": "success",
+    "capability_id": "member.read_savings_balance",
+    "capability_version": 7,
+    "run_id": "tenant_lakeshore_with_overlay",
+    "inputs": {
+      "member_id": "12345"
+    },
+    "outputs": {
+      "savings_balance": "5432.10"
+    },
+    "outcome_code": null,
+    "outcome_message": null,
+    "failure": null,
+    "escalation": null,
+    "steps": [
+      {
+        "step_id": "s00_navigate",
+        "action": "navigate",
+        "status": "ok",
+        "strategy": null,
+        "attempts": 1,
+        "duration_ms": 696,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s01_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 177,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s02_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 141,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s03_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 724,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s04_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 745,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s05_type",
+        "action": "type",
+        "status": "ok",
+        "strategy": "label_text#0",
+        "attempts": 1,
+        "duration_ms": 187,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s06_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 717,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s07_click",
+        "action": "click",
+        "status": "ok",
+        "strategy": "role_name#0",
+        "attempts": 1,
+        "duration_ms": 968,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      },
+      {
+        "step_id": "s08_extract",
+        "action": "extract",
+        "status": "ok",
+        "strategy": "table_cell#0",
+        "attempts": 1,
+        "duration_ms": 346,
+        "conditions": [],
+        "note": "",
+        "subflow_of": null
+      }
+    ],
+    "interventions": [],
+    "drift": [],
+    "variant": "lakeshore",
+    "checkpoint_verified": true,
+    "evidence_dir": "evidence/tenant_lakeshore_with_overlay",
+    "duration_ms": 4998
   }
 }

@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "capability_id": "member.read_savings_balance",
+  "variant": "lakeshore",
+  "description": "Lakeshore Community CU runs CoreLink 4.3 with the member lookup relabeled and a Branch selector above the member number field. Nothing else differs; the recorded flow is reused as-is.",
+  "entry_url": "http://127.0.0.1:8010/login",
+  "text_substitutions": {
+    "Harbor Federal Credit Union": "Lakeshore Community Credit Union",
+    "Member Inquiry": "Member Lookup",
+    "Member Number": "Member No.",
+    "Search": "Find",
+    "View": "Open",
+    "Balance": "Current Balance"
+  },
+  "step_overrides": {},
+  "extra_conditions": {},
+  "remove_conditions": []
+}

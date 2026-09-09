@@ -1,7 +1,7 @@
 {
   "status": "business_outcome",
   "capability_id": "member.read_savings_balance",
-  "capability_version": 6,
+  "capability_version": 7,
   "run_id": "replay_not_found",
   "inputs": {
     "member_id": "99999"
@@ -18,7 +18,7 @@
       "status": "ok",
       "strategy": null,
       "attempts": 1,
-      "duration_ms": 693,
+      "duration_ms": 705,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -29,7 +29,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 202,
+      "duration_ms": 203,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -40,7 +40,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 122,
+      "duration_ms": 153,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -51,7 +51,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 727,
+      "duration_ms": 746,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -62,7 +62,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 726,
+      "duration_ms": 717,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -73,7 +73,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 151,
+      "duration_ms": 152,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -93,7 +93,9 @@
     }
   ],
   "interventions": [],
+  "drift": [],
+  "variant": "base",
   "checkpoint_verified": false,
   "evidence_dir": "evidence/replay_not_found",
-  "duration_ms": 3445
+  "duration_ms": 3504
 }

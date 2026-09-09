@@ -16,6 +16,7 @@ class Settings:
     # Member numbers that always trigger a specific server-side condition.
     restricted_members: frozenset[str]   # -> permission denied
     crashing_members: frozenset[str]     # -> application error page
+    variant: str = "harbor"              # tenant variant of the vendor product (see variants.py)
 
 
 def load_settings() -> Settings:
@@ -27,4 +28,5 @@ def load_settings() -> Settings:
         session_idle_seconds=int(os.getenv("MOCK_APP_SESSION_IDLE_SECONDS", "0")),
         restricted_members=frozenset({"40403"}),
         crashing_members=frozenset({"50500"}),
+        variant=os.getenv("MOCK_APP_VARIANT", "harbor"),
     )

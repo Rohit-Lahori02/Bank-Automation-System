@@ -6,7 +6,7 @@
 <body class="frame">
 {% if closed %}<div class="alert alert-success"><b>Account {{ closed }} has been closed.</b></div>{% endif %}
 <table class="grid" cellpadding="0" cellspacing="0" border="0">
-  <tr class="head"><td>Account No.</td><td>Type</td><td>Nickname</td><td class="num">Balance</td><td>Status</td><td>Action</td></tr>
+  <tr class="head"><td>Account No.</td><td>Type</td><td>Nickname</td><td class="num">{{ v.balance_header }}</td><td>Status</td><td>Action</td></tr>
   {% for a in member.accounts %}
   <tr>
     <td>{{ a.account_no }}</td>

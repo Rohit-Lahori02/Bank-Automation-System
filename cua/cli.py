@@ -82,11 +82,12 @@ def serve_app(
     host: str = typer.Option(None, help="Bind host (default: MOCK_APP_HOST or 127.0.0.1)"),
     port: int = typer.Option(None, help="Bind port (default: MOCK_APP_PORT or 8000)"),
     reload: bool = typer.Option(False, help="Auto-reload on code changes (dev only)"),
+    variant: str = typer.Option(None, help="Tenant variant of the product: harbor (default) or lakeshore"),
 ) -> None:
     """Run the mock legacy credit-union console (the automation target)."""
     from mock_app.__main__ import run
 
-    run(host=host, port=port, reload=reload)
+    run(host=host, port=port, reload=reload, variant=variant)
 
 
 @app.command("discover")
@@ -202,11 +203,14 @@ def replay(
     handoff_timeout: float = typer.Option(600.0, help="Seconds to wait for an operator decision"),
     slow_mo: int = typer.Option(0, help="Milliseconds to pause between browser actions, to watch the replay"),
     keep_open: bool = typer.Option(False, "--keep-open", help="Keep the browser open at the end until Enter is pressed"),
+    overlay: Path = typer.Option(None, help="Tenant overlay JSON to apply before replaying (see overlays/)"),
+    entry_url_override: str = typer.Option(None, "--entry-url", help="Point the recording at another instance without an overlay"),
 ) -> None:
     """Replay a capability deterministically (no model) and report the structured result.
 
     Exit codes: 0 success, 10 business outcome, 20 failure, 30 escalated.
     """
+    from cua.artifact.overlay import VariantOverlay, apply_overlay
     from cua.artifact.schema import Capability
     from cua.handoff import ReplayHandoff
     from cua.policy.engine import Policy, PolicyEngine
@@ -216,13 +220,22 @@ def replay(
     from cua.surface.session import SessionControl
 
     capability = Capability.model_validate_json(artifact.read_text(encoding="utf-8"))
+    if overlay is not None:
+        capability = apply_overlay(capability, VariantOverlay.load(overlay))
+    if entry_url_override:
+        old = capability.target.entry_url
+        capability.target.entry_url = entry_url_override
+        for step in capability.steps:
+            if step.url == old:
+                step.url = entry_url_override
     policy = PolicyEngine(Policy.load(policy_path))
     redactor = Redactor(sensitive_field_patterns=policy.policy.sensitive_field_patterns or DEFAULT_SENSITIVE_FIELDS)
     secrets = load_secrets(capability.secrets)
     if headed is None:
         headed = handoff != "none"
     run_id = __import__("time").strftime("%Y%m%dT%H%M%S") + "-replay"
-    typer.echo(f"replaying {capability.id} v{capability.version} with inputs {_parse_kv(inputs)}")
+    typer.echo(f"replaying {capability.id} v{capability.version} (variant {capability.target.variant}) "
+               f"with inputs {_parse_kv(inputs)}")
     control = SessionControl()
     surface = BrowserSurface(headless=not headed, trace_dir=evidence_dir / run_id, control=control,
                              cdp_port=CDP_PORT if handoff != "none" else None, slow_mo=slow_mo)
@@ -245,6 +258,9 @@ def replay(
     for iv in result.interventions:
         typer.echo(f"intervention at {iv.get('step_id')}: {iv.get('kind')} -> {iv.get('decision')} "
                    f"({iv.get('human_actions', 0)} human actions captured)")
+    if result.drift:
+        typer.echo("drift: " + ", ".join(f"{d['step_id']} resolved on {d['strategy']}#{d['index']}" for d in result.drift)
+                   + "  <- locators are falling back; consider an overlay or re-recording")
     typer.echo(f"evidence: {result.evidence_dir}")
     if json_out:
         typer.echo(result.to_json())

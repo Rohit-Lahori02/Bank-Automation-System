@@ -47,6 +47,26 @@ The operator in the handoff runs was a second Playwright client attached to the 
 over CDP — the same mechanism a person or a remote console uses — scripted so the evidence can
 be regenerated unattended. `operator_console/` shows the console a person would use.
 
+## Cross-tenant reuse (`tenant_*`)
+
+The mock console has a second tenant variant, **Lakeshore Community Credit Union**: the same
+CoreLink product on version 4.3 with the member lookup relabeled ("Member Lookup", "Member
+No.", "Find", "Open", "Current Balance"), a green theme, and a Branch selector inserted above
+the member number field so structural fallbacks shift too.
+
+| directory | what it shows |
+|---|---|
+| `tenant_lakeshore_without_overlay` | the base recording pointed at the second tenant, untouched: it **degrades gracefully** - `success`, but `drift` lists 5 of 8 steps that resolved on structural fallbacks (`css#2`) because "Member Inquiry", "Member Number", "Search" and "View" no longer exist under those names |
+| `tenant_lakeshore_with_overlay` | the same recording with `artifact/member.read_savings_balance.lakeshore.overlay.json` applied (six relabelings and an entry URL, no re-recording): `success`, every step on its first-choice strategy, `drift: []` |
+
+That pair is the multi-tenant claim in one comparison: a recording with deep locator chains
+survives a relabeled tenant on fallbacks, the `drift` list says exactly which steps are living
+on borrowed time, and a few-line overlay puts them back on semantic locators. (A shallow,
+hand-authored chain with only semantic strategies fails outright at the first relabeled control -
+`tests/test_tenant.py` covers that case too.) The overlay is reviewed like any other artifact;
+the recorded flow, the app's condition vocabulary and the input/output contract are shared
+unchanged.
+
 ## Second capability: open a sub-account (`subaccount_*`)
 
 A second genuine discovery run for the goal *"Open a new 'Savings - Holiday Club' sub-account

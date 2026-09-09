@@ -17,6 +17,11 @@ a:hover { color: #0f3d85; text-decoration: underline; }
 
 /* ---- header ------------------------------------------------------------ */
 table.hdr { background: linear-gradient(90deg, #0b2a5b 0%, #16418a 100%); color: #ffffff; }
+/* tenant theme: same product, different branding */
+body.theme-green table.hdr { background: linear-gradient(90deg, #0f3d2e 0%, #1f6b4a 100%); }
+body.theme-green .pagetitle { color: #0f3d2e; }
+body.theme-green input[type=submit], body.theme-green input[type=button] { background: #1f6b4a; border-color: #1f6b4a; }
+body.theme-green td.nav a:hover { border-left-color: #1f6b4a; }
 table.hdr td { padding: 14px 24px; }
 table.hdr .brand { font-size: 19px; font-weight: 600; letter-spacing: .2px; }
 table.hdr .sub { font-size: 12px; opacity: .8; margin-top: 2px; }

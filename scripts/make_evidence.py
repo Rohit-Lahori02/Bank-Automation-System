@@ -81,12 +81,24 @@ def operator(controller: HandoffController, act, decision: str):
         while not controller.pending():
             time.sleep(0.05)
         request = controller.pending()[0]
-        with sync_playwright() as p:
-            browser = p.chromium.connect_over_cdp(request.session_url)
-            page = browser.contexts[0].pages[0]
-            act(page)
-            time.sleep(1.0)
-        controller.decide(request.id, decision, token=request.control_token)
+        outcome = decision
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.connect_over_cdp(request.session_url)
+                page = browser.contexts[0].pages[0]
+                for attempt in range(3):          # a human would simply try again
+                    try:
+                        act(page)
+                        break
+                    except Exception:
+                        if attempt == 2:
+                            raise
+                        time.sleep(1.0)
+                time.sleep(1.0)
+        except Exception as exc:
+            print(f"operator: manual action failed ({type(exc).__name__}); aborting", file=sys.stderr)
+            outcome = "aborted"
+        controller.decide(request.id, outcome, token=request.control_token)
 
     thread = threading.Thread(target=run, daemon=True)
     thread.start()
@@ -202,6 +214,47 @@ def main() -> int:
             summary[name] = json.loads(result.to_json())
             print(f"{name:40s} {result.one_line()}")
 
+    # ---- cross-tenant reuse: the base recording on a second variant, without and with an overlay -----
+    import threading as _threading
+
+    import uvicorn
+
+    from cua.artifact.overlay import VariantOverlay, apply_overlay
+    from mock_app.app import create_app
+    from mock_app.chaos import ChaosController
+    from mock_app.config import Settings
+    from mock_app.data import MemberStore
+
+    tenant_port = free_port()
+    tenant_settings = Settings(host="127.0.0.1", port=tenant_port, username=secrets["app.username"],
+                               password=secrets["app.password"], session_idle_seconds=0,
+                               restricted_members=frozenset({"40403"}), crashing_members=frozenset({"50500"}),
+                               variant="lakeshore")
+    tenant_app = create_app(settings=tenant_settings, chaos=ChaosController(), store=MemberStore())
+    tenant_server = uvicorn.Server(uvicorn.Config(tenant_app, host="127.0.0.1", port=tenant_port, log_level="warning"))
+    _threading.Thread(target=tenant_server.run, daemon=True).start()
+    while not tenant_server.started:
+        time.sleep(0.05)
+    tenant_base = f"http://127.0.0.1:{tenant_port}"
+    tenant_policy = PolicyEngine(policy.policy.model_copy(
+        update={"allowed_origins": [*policy.policy.allowed_origins, tenant_base]}))
+    overlay = VariantOverlay.load(ROOT / "overlays" / "member.read_savings_balance.lakeshore.json")
+    (EVIDENCE / "artifact" / "member.read_savings_balance.lakeshore.overlay.json").write_text(
+        overlay.model_dump_json(indent=2), encoding="utf-8")
+    tenant_overlay = overlay.model_copy(update={"entry_url": f"{tenant_base}/login"})
+    naive = cap.model_copy(deep=True)
+    naive.target.entry_url = f"{tenant_base}/login"
+    naive.target.variant = "lakeshore (no overlay)"
+    naive.steps[0].url = f"{tenant_base}/login"
+    for name, capability in [("tenant_lakeshore_without_overlay", naive),
+                             ("tenant_lakeshore_with_overlay", apply_overlay(cap, tenant_overlay))]:
+        with BrowserSurface(headless=True, trace_dir=EVIDENCE / name) as surface:
+            engine = ReplayEngine(surface=surface, policy=tenant_policy, redactor=redactor, evidence_root=EVIDENCE)
+            result = engine.replay(capability, {"member_id": "12345"}, secrets, run_id=name)
+        summary[name] = json.loads(result.to_json())
+        print(f"{name:40s} {result.one_line()}  drift={result.drift}")
+    tenant_server.should_exit = True
+
     # ---- operator console screenshots -----------------------------------------------------------
     console_dir = EVIDENCE / "operator_console"
     console_dir.mkdir()
@@ -264,6 +317,8 @@ def main() -> int:
         if res.get("interventions"):
             iv = res["interventions"][0]
             detail = f"{detail}; handoff {iv['kind']} -> {iv['decision']}, {iv.get('human_actions', 0)} human actions"
+        if res.get("variant") and res["variant"] != "base":
+            detail = f"{detail}; variant {res['variant']}, drift {res.get('drift') or 'none'}"
         lines.append(f"| {name} | {res['status']} | {detail} |")
     (EVIDENCE / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))

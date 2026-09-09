@@ -1,5 +1,5 @@
 {
-  "id": "int-d1af98ef",
+  "id": "int-0945e3fe",
   "run_id": "subaccount_replay_success",
   "run_kind": "replay",
   "capability_id": "member.open_subaccount v3",
@@ -10,11 +10,11 @@
   "url": "http://127.0.0.1:8000/members/12345/subaccount/review",
   "screenshot": "evidence/subaccount_replay_success/escalation_s13_click.png",
   "screen": "URL: http://127.0.0.1:8000/members/12345/subaccount/review\nTitle: Review Sub-Account - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as \u00b7\"\n[e5] text \"[REDACTED:SECRET]\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Review New Sub-Account\"\n[e14] text \"Please review the details below. Press to open the account.\"\n[e15] text \"Confirm\"\n[e16] text \"The account will be opened and funded immediately on confirmation.\"\n[e17] text \"This action cannot be reversed from this screen.\"\n[e18] cell \"Member Number\"\n[e19] cell \"12345\"\n[e20] cell \"Member Name\"\n[e21] cell \"Oyelaran, Marcus\"\n[e22] cell \"Product Type\"\n[e23] cell \"Savings - Holiday Club\"\n[e24] cell \"Nickname\"\n[e25] cell \"Holiday Fund\"\n[e26] cell \"Initial Deposit\"\n[e27] cell \"$125.50\"\n[e28] button \"Confirm\"\n[e29] link \"Edit\" href=/members/12345/subaccount/new\n[e30] link \"Cancel\" href=/members/12345\n[e31] cell \"CoreLink Servicing Platform \u00a9 1998-2026 Meridian Core Systems, Inc. \u00b7 Unauthorized access is prohibited and monitored.\"",
-  "session_url": "http://127.0.0.1:54798",
+  "session_url": "http://127.0.0.1:53042",
   "evidence_dir": "evidence/subaccount_replay_success",
-  "created_at": 1788937440.4083953,
-  "control_token": "309f6cdbc55dff95",
+  "created_at": 1788939946.1583478,
+  "control_token": "b54f27fc8e8f8132",
   "status": "approved",
-  "decided_at": 1788937442.301174,
+  "decided_at": 1788939948.029346,
   "human_actions": []
 }

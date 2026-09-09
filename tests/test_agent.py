@@ -232,7 +232,7 @@ def test_recorder_produces_a_valid_parameterized_capability(surface, policy, tmp
                                              ActionKind.CLICK, ActionKind.TYPE, ActionKind.CLICK, ActionKind.CLICK,
                                              ActionKind.EXTRACT, ActionKind.EXTRACT]
     assert by_id["s00_navigate"].url.endswith("/login")               # the loop's own entry navigation is recorded
-    assert by_id["s00_navigate"].expect.detect.text == "Harbor Federal Credit Union"
+    assert by_id["s00_navigate"].expect.detect.text == "Operator Sign On"   # page title, not tenant branding
     assert by_id["s05_type"].value == "{{inputs.member_id}}"          # literal input parameterized
     assert by_id["s02_type"].value == "{{secrets.app.password}}"      # secret placeholder preserved
     assert by_id["s03_click"].expect.detect.text == "Main Menu"        # model's expect became a postcondition

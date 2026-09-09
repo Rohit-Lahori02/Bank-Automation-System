@@ -5,8 +5,10 @@ version: 1
 
 # Origins the agent may navigate to or act within. Anything else is blocked.
 allowed_origins:
-  - "http://127.0.0.1:8000"
+  - "http://127.0.0.1:8000"      # tenant "harbor" (base)
   - "http://localhost:8000"
+  - "http://127.0.0.1:8010"      # tenant "lakeshore" (second variant of the same product)
+  - "http://localhost:8010"
 
 # Path patterns (regex, matched against the URL path) the agent may visit.
 allowed_paths:

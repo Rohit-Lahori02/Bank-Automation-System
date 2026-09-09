@@ -1,67 +1,67 @@
-{"ts": 1788937433.849, "seq": 0, "kind": "replay_start", "capability": "member.open_subaccount", "version": 3, "inputs": {"member_id": "12345", "product": "Savings - Holiday Club", "nickname": "Holiday Fund", "deposit": "125.50"}}
-{"ts": 1788937433.851, "seq": 1, "kind": "step_start", "step": "s00_navigate", "action": "navigate", "target": null, "url": "about:blank"}
-{"ts": 1788937433.853, "seq": 2, "kind": "policy", "step": "s00_navigate", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "allowed"}}
-{"ts": 1788937434.627, "seq": 3, "kind": "step_end", "step": "s00_navigate", "status": "ok", "strategy": null, "attempts": 1, "conditions": [], "duration_ms": 776}
-{"ts": 1788937434.629, "seq": 4, "kind": "step_start", "step": "s01_type", "action": "type", "target": "textbox \"User ID\"", "url": "http://127.0.0.1:8000/login"}
-{"ts": 1788937434.631, "seq": 5, "kind": "policy", "step": "s01_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937434.74, "seq": 6, "kind": "resolved", "step": "s01_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788937434.804, "seq": 7, "kind": "step_end", "step": "s01_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 175}
-{"ts": 1788937434.805, "seq": 8, "kind": "step_start", "step": "s02_type", "action": "type", "target": "textbox \"Password\"", "url": "http://127.0.0.1:8000/login"}
-{"ts": 1788937434.807, "seq": 9, "kind": "policy", "step": "s02_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937434.871, "seq": 10, "kind": "resolved", "step": "s02_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788937434.933, "seq": 11, "kind": "step_end", "step": "s02_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 127}
-{"ts": 1788937434.934, "seq": 12, "kind": "step_start", "step": "s03_click", "action": "click", "target": "button \"Sign On\"", "url": "http://127.0.0.1:8000/login"}
-{"ts": 1788937434.935, "seq": 13, "kind": "policy", "step": "s03_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937434.989, "seq": 14, "kind": "resolved", "step": "s03_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788937435.652, "seq": 15, "kind": "step_end", "step": "s03_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 718}
-{"ts": 1788937435.653, "seq": 16, "kind": "step_start", "step": "s04_click", "action": "click", "target": "link \"Member Inquiry\"", "url": "http://127.0.0.1:8000/console"}
-{"ts": 1788937435.654, "seq": 17, "kind": "policy", "step": "s04_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937435.739, "seq": 18, "kind": "resolved", "step": "s04_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788937436.391, "seq": 19, "kind": "step_end", "step": "s04_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 738}
-{"ts": 1788937436.392, "seq": 20, "kind": "step_start", "step": "s05_type", "action": "type", "target": "textbox \"Member Number\"", "url": "http://127.0.0.1:8000/members/search"}
-{"ts": 1788937436.393, "seq": 21, "kind": "policy", "step": "s05_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937436.492, "seq": 22, "kind": "resolved", "step": "s05_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788937436.547, "seq": 23, "kind": "step_end", "step": "s05_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 155}
-{"ts": 1788937436.548, "seq": 24, "kind": "step_start", "step": "s06_click", "action": "click", "target": "button \"Search\"", "url": "http://127.0.0.1:8000/members/search"}
-{"ts": 1788937436.549, "seq": 25, "kind": "policy", "step": "s06_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937436.604, "seq": 26, "kind": "resolved", "step": "s06_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788937437.258, "seq": 27, "kind": "step_end", "step": "s06_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 708}
-{"ts": 1788937437.259, "seq": 28, "kind": "step_start", "step": "s07_click", "action": "click", "target": "link \"View\"", "url": "http://127.0.0.1:8000/members/search"}
-{"ts": 1788937437.26, "seq": 29, "kind": "policy", "step": "s07_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937437.349, "seq": 30, "kind": "resolved", "step": "s07_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788937438.186, "seq": 31, "kind": "step_end", "step": "s07_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 927}
-{"ts": 1788937438.187, "seq": 32, "kind": "step_start", "step": "s08_click", "action": "click", "target": "link \"Open Sub-Account\"", "url": "http://127.0.0.1:8000/members/12345"}
-{"ts": 1788937438.187, "seq": 33, "kind": "policy", "step": "s08_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937438.379, "seq": 34, "kind": "resolved", "step": "s08_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788937439.017, "seq": 35, "kind": "step_end", "step": "s08_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 831}
-{"ts": 1788937439.018, "seq": 36, "kind": "step_start", "step": "s09_select", "action": "select", "target": "combobox \"Product Type\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
-{"ts": 1788937439.019, "seq": 37, "kind": "policy", "step": "s09_select", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937439.132, "seq": 38, "kind": "resolved", "step": "s09_select", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788937439.194, "seq": 39, "kind": "step_end", "step": "s09_select", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 175}
-{"ts": 1788937439.197, "seq": 40, "kind": "step_start", "step": "s10_type", "action": "type", "target": "textbox \"Nickname\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
-{"ts": 1788937439.198, "seq": 41, "kind": "policy", "step": "s10_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937439.282, "seq": 42, "kind": "resolved", "step": "s10_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788937439.351, "seq": 43, "kind": "step_end", "step": "s10_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 154}
-{"ts": 1788937439.352, "seq": 44, "kind": "step_start", "step": "s11_type", "action": "type", "target": "textbox \"Initial Deposit ($)\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
-{"ts": 1788937439.354, "seq": 45, "kind": "policy", "step": "s11_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937439.428, "seq": 46, "kind": "resolved", "step": "s11_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788937439.485, "seq": 47, "kind": "step_end", "step": "s11_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 133}
-{"ts": 1788937439.486, "seq": 48, "kind": "step_start", "step": "s12_click", "action": "click", "target": "button \"Continue\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
-{"ts": 1788937439.487, "seq": 49, "kind": "policy", "step": "s12_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788937439.543, "seq": 50, "kind": "resolved", "step": "s12_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788937440.23, "seq": 51, "kind": "step_end", "step": "s12_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 743}
-{"ts": 1788937440.231, "seq": 52, "kind": "step_start", "step": "s13_click", "action": "click", "target": "button \"Confirm\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/review"}
-{"ts": 1788937440.232, "seq": 53, "kind": "policy", "step": "s13_click", "verdict": {"allowed": true, "risk": "risky", "requires": "escalate", "reason": "risky action requires escalate (irreversible step)"}}
-{"ts": 1788937440.407, "seq": 54, "kind": "escalation", "step": "s13_click", "escalation_kind": "risky_action", "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)"}
-{"ts": 1788937440.412, "seq": 55, "kind": "handoff_start", "intervention": "int-d1af98ef", "step": "s13_click", "detail_kind": "risky_action", "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)", "control": {"holder": "paused", "since": 1788937440.4083953, "transitions": [{"at": 1788937440.4083953, "from": "automation", "to": "paused", "reason": "escalation: step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)"}]}}
-{"ts": 1788937442.304, "seq": 56, "kind": "handoff_end", "intervention": "int-d1af98ef", "decision": "approved", "human_actions": [], "control": {"holder": "automation", "since": 1788937442.301174, "transitions": [{"at": 1788937440.4083953, "from": "automation", "to": "paused", "reason": "escalation: step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)"}, {"at": 1788937442.301174, "from": "paused", "to": "automation", "reason": "handoff ended: approved"}]}}
-{"ts": 1788937442.305, "seq": 57, "kind": "escalation_decision", "step": "s13_click", "step_id": "s13_click", "detail_kind": "risky_action", "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)", "decision": "approved", "intervention_id": "int-d1af98ef", "human_actions": 0, "summary": "approved: no actions captured"}
-{"ts": 1788937442.372, "seq": 58, "kind": "resolved", "step": "s13_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788937443.053, "seq": 59, "kind": "step_end", "step": "s13_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 2822}
-{"ts": 1788937443.054, "seq": 60, "kind": "step_start", "step": "s14_extract", "action": "extract", "target": "text \"CNF-E0548F\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/confirmed?ref=CNF-BF813D"}
-{"ts": 1788937443.055, "seq": 61, "kind": "policy", "step": "s14_extract", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "read-only action"}}
-{"ts": 1788937443.158, "seq": 62, "kind": "resolved", "step": "s14_extract", "strategy": "anchor_relative#0", "frame": "main"}
-{"ts": 1788937443.214, "seq": 63, "kind": "extracted", "step": "s14_extract", "output": "confirmation_number", "value": "CNF-BF813D"}
-{"ts": 1788937443.247, "seq": 64, "kind": "step_end", "step": "s14_extract", "status": "ok", "strategy": "anchor_relative#0", "attempts": 1, "conditions": [], "duration_ms": 192}
-{"ts": 1788937443.28, "seq": 65, "kind": "checkpoint", "verified": true}
-{"ts": 1788937443.38, "seq": 66, "kind": "replay_end", "status": "success", "outcome_code": null, "failure_code": null}
+{"ts": 1788939939.696, "seq": 0, "kind": "replay_start", "capability": "member.open_subaccount", "version": 3, "inputs": {"member_id": "12345", "product": "Savings - Holiday Club", "nickname": "Holiday Fund", "deposit": "125.50"}}
+{"ts": 1788939939.698, "seq": 1, "kind": "step_start", "step": "s00_navigate", "action": "navigate", "target": null, "url": "about:blank"}
+{"ts": 1788939939.699, "seq": 2, "kind": "policy", "step": "s00_navigate", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "allowed"}}
+{"ts": 1788939940.396, "seq": 3, "kind": "step_end", "step": "s00_navigate", "status": "ok", "strategy": null, "attempts": 1, "conditions": [], "duration_ms": 698}
+{"ts": 1788939940.397, "seq": 4, "kind": "step_start", "step": "s01_type", "action": "type", "target": "textbox \"User ID\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788939940.399, "seq": 5, "kind": "policy", "step": "s01_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939940.507, "seq": 6, "kind": "resolved", "step": "s01_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788939940.573, "seq": 7, "kind": "step_end", "step": "s01_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 176}
+{"ts": 1788939940.575, "seq": 8, "kind": "step_start", "step": "s02_type", "action": "type", "target": "textbox \"Password\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788939940.576, "seq": 9, "kind": "policy", "step": "s02_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939940.653, "seq": 10, "kind": "resolved", "step": "s02_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788939940.715, "seq": 11, "kind": "step_end", "step": "s02_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 139}
+{"ts": 1788939940.716, "seq": 12, "kind": "step_start", "step": "s03_click", "action": "click", "target": "button \"Sign On\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788939940.718, "seq": 13, "kind": "policy", "step": "s03_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939940.777, "seq": 14, "kind": "resolved", "step": "s03_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788939941.44, "seq": 15, "kind": "step_end", "step": "s03_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 723}
+{"ts": 1788939941.441, "seq": 16, "kind": "step_start", "step": "s04_click", "action": "click", "target": "link \"Member Inquiry\"", "url": "http://127.0.0.1:8000/console"}
+{"ts": 1788939941.442, "seq": 17, "kind": "policy", "step": "s04_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939941.528, "seq": 18, "kind": "resolved", "step": "s04_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788939942.173, "seq": 19, "kind": "step_end", "step": "s04_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 731}
+{"ts": 1788939942.173, "seq": 20, "kind": "step_start", "step": "s05_type", "action": "type", "target": "textbox \"Member Number\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788939942.174, "seq": 21, "kind": "policy", "step": "s05_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939942.273, "seq": 22, "kind": "resolved", "step": "s05_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788939942.331, "seq": 23, "kind": "step_end", "step": "s05_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 156}
+{"ts": 1788939942.332, "seq": 24, "kind": "step_start", "step": "s06_click", "action": "click", "target": "button \"Search\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788939942.333, "seq": 25, "kind": "policy", "step": "s06_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939942.378, "seq": 26, "kind": "resolved", "step": "s06_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788939943.018, "seq": 27, "kind": "step_end", "step": "s06_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 686}
+{"ts": 1788939943.02, "seq": 28, "kind": "step_start", "step": "s07_click", "action": "click", "target": "link \"View\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788939943.021, "seq": 29, "kind": "policy", "step": "s07_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939943.104, "seq": 30, "kind": "resolved", "step": "s07_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788939943.929, "seq": 31, "kind": "step_end", "step": "s07_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 910}
+{"ts": 1788939943.931, "seq": 32, "kind": "step_start", "step": "s08_click", "action": "click", "target": "link \"Open Sub-Account\"", "url": "http://127.0.0.1:8000/members/12345"}
+{"ts": 1788939943.931, "seq": 33, "kind": "policy", "step": "s08_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939944.087, "seq": 34, "kind": "resolved", "step": "s08_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788939944.746, "seq": 35, "kind": "step_end", "step": "s08_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 815}
+{"ts": 1788939944.747, "seq": 36, "kind": "step_start", "step": "s09_select", "action": "select", "target": "combobox \"Product Type\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
+{"ts": 1788939944.747, "seq": 37, "kind": "policy", "step": "s09_select", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939944.856, "seq": 38, "kind": "resolved", "step": "s09_select", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788939944.922, "seq": 39, "kind": "step_end", "step": "s09_select", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 175}
+{"ts": 1788939944.923, "seq": 40, "kind": "step_start", "step": "s10_type", "action": "type", "target": "textbox \"Nickname\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
+{"ts": 1788939944.924, "seq": 41, "kind": "policy", "step": "s10_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939945.002, "seq": 42, "kind": "resolved", "step": "s10_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788939945.064, "seq": 43, "kind": "step_end", "step": "s10_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 141}
+{"ts": 1788939945.065, "seq": 44, "kind": "step_start", "step": "s11_type", "action": "type", "target": "textbox \"Initial Deposit ($)\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
+{"ts": 1788939945.066, "seq": 45, "kind": "policy", "step": "s11_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939945.144, "seq": 46, "kind": "resolved", "step": "s11_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788939945.204, "seq": 47, "kind": "step_end", "step": "s11_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 138}
+{"ts": 1788939945.205, "seq": 48, "kind": "step_start", "step": "s12_click", "action": "click", "target": "button \"Continue\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
+{"ts": 1788939945.205, "seq": 49, "kind": "policy", "step": "s12_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788939945.264, "seq": 50, "kind": "resolved", "step": "s12_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788939945.972, "seq": 51, "kind": "step_end", "step": "s12_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 767}
+{"ts": 1788939945.973, "seq": 52, "kind": "step_start", "step": "s13_click", "action": "click", "target": "button \"Confirm\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/review"}
+{"ts": 1788939945.974, "seq": 53, "kind": "policy", "step": "s13_click", "verdict": {"allowed": true, "risk": "risky", "requires": "escalate", "reason": "risky action requires escalate (irreversible step)"}}
+{"ts": 1788939946.157, "seq": 54, "kind": "escalation", "step": "s13_click", "escalation_kind": "risky_action", "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)"}
+{"ts": 1788939946.161, "seq": 55, "kind": "handoff_start", "intervention": "int-0945e3fe", "step": "s13_click", "detail_kind": "risky_action", "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)", "control": {"holder": "paused", "since": 1788939946.1583478, "transitions": [{"at": 1788939946.1583478, "from": "automation", "to": "paused", "reason": "escalation: step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)"}]}}
+{"ts": 1788939948.032, "seq": 56, "kind": "handoff_end", "intervention": "int-0945e3fe", "decision": "approved", "human_actions": [], "control": {"holder": "automation", "since": 1788939948.029346, "transitions": [{"at": 1788939946.1583478, "from": "automation", "to": "paused", "reason": "escalation: step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)"}, {"at": 1788939948.029346, "from": "paused", "to": "automation", "reason": "handoff ended: approved"}]}}
+{"ts": 1788939948.033, "seq": 57, "kind": "escalation_decision", "step": "s13_click", "step_id": "s13_click", "detail_kind": "risky_action", "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)", "decision": "approved", "intervention_id": "int-0945e3fe", "human_actions": 0, "summary": "approved: no actions captured"}
+{"ts": 1788939948.092, "seq": 58, "kind": "resolved", "step": "s13_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788939948.769, "seq": 59, "kind": "step_end", "step": "s13_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 2796}
+{"ts": 1788939948.77, "seq": 60, "kind": "step_start", "step": "s14_extract", "action": "extract", "target": "text \"CNF-E0548F\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/confirmed?ref=CNF-016DE2"}
+{"ts": 1788939948.771, "seq": 61, "kind": "policy", "step": "s14_extract", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "read-only action"}}
+{"ts": 1788939948.877, "seq": 62, "kind": "resolved", "step": "s14_extract", "strategy": "anchor_relative#0", "frame": "main"}
+{"ts": 1788939948.938, "seq": 63, "kind": "extracted", "step": "s14_extract", "output": "confirmation_number", "value": "CNF-016DE2"}
+{"ts": 1788939948.973, "seq": 64, "kind": "step_end", "step": "s14_extract", "status": "ok", "strategy": "anchor_relative#0", "attempts": 1, "conditions": [], "duration_ms": 202}
+{"ts": 1788939949.004, "seq": 65, "kind": "checkpoint", "verified": true}
+{"ts": 1788939949.104, "seq": 66, "kind": "replay_end", "status": "success", "outcome_code": null, "failure_code": null}

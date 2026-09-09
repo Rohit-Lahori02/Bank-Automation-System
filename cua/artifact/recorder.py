@@ -126,8 +126,22 @@ def _static_texts(snapshot: Snapshot, inputs: dict[str, str]) -> list[str]:
 
 
 def _entry_step(run: DiscoveryRun, first_snapshot: Snapshot) -> Step:
-    """Open the entry URL; expect something distinctive from the first screen the agent saw."""
+    """Open the entry URL; expect something distinctive from the first screen the agent saw.
+
+    Prefer the text nearest above the first control (a page title like "Operator Sign On")
+    over whatever comes first in the document (usually the institution's branding, which is
+    exactly what differs between tenants running the same product).
+    """
     landmark = next((e.name for e in first_snapshot.elements if e.role == "heading" and 4 <= len(e.name) <= 40), None)
+    if landmark is None:
+        static = set(_static_texts(first_snapshot, run.inputs))
+        first_control = next((e for e in first_snapshot.elements if e.interactive and e.role != "link"), None)
+        if first_control is not None:
+            above = [e for e in first_snapshot.elements
+                     if e.name in static and 4 <= len(e.name) <= 40 and e.frame == first_control.frame
+                     and e.bbox.bottom <= first_control.bbox.y + 4 and first_control.bbox.y - e.bbox.bottom < 200]
+            if above:
+                landmark = max(above, key=lambda e: e.bbox.bottom).name
     if landmark is None:
         landmark = next((t for t in _static_texts(first_snapshot, run.inputs) if 4 <= len(t) <= 40), None)
     expect = Expectation(description=f'entry screen shows "{landmark}"', detect=TextVisible(text=landmark)) \

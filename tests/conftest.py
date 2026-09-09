@@ -24,12 +24,10 @@ def _free_port() -> int:
         return s.getsockname()[1]
 
 
-@pytest.fixture(scope="session")
-def mock_server():
-    """Run the mock console with uvicorn in a background thread for browser tests."""
+def _serve(variant: str):
     settings = Settings(
         host="127.0.0.1", port=_free_port(), username=USER, password=PASSWORD, session_idle_seconds=0,
-        restricted_members=frozenset({"40403"}), crashing_members=frozenset({"50500"}),
+        restricted_members=frozenset({"40403"}), crashing_members=frozenset({"50500"}), variant=variant,
     )
     chaos = ChaosController()
     app = create_app(settings=settings, chaos=chaos, store=MemberStore())
@@ -41,6 +39,24 @@ def mock_server():
     while not server.started and time.time() < deadline:
         time.sleep(0.05)
     assert server.started, "mock server failed to start"
-    yield SimpleNamespace(base_url=f"http://{settings.host}:{settings.port}", chaos=chaos, settings=settings)
+    handle = SimpleNamespace(base_url=f"http://{settings.host}:{settings.port}", chaos=chaos, settings=settings,
+                             variant=variant)
+    return handle, server, thread
+
+
+@pytest.fixture(scope="session")
+def mock_server():
+    """Run the mock console (base tenant) with uvicorn in a background thread for browser tests."""
+    handle, server, thread = _serve("harbor")
+    yield handle
+    server.should_exit = True
+    thread.join(timeout=5)
+
+
+@pytest.fixture(scope="session")
+def mock_server_b():
+    """A second tenant running the same product with different labels, theme and layout."""
+    handle, server, thread = _serve("lakeshore")
+    yield handle
     server.should_exit = True
     thread.join(timeout=5)

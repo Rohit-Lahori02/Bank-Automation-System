@@ -1,7 +1,7 @@
 {
   "status": "failed",
   "capability_id": "member.read_savings_balance",
-  "capability_version": 6,
+  "capability_version": 7,
   "run_id": "replay_app_error",
   "inputs": {
     "member_id": "50500"
@@ -13,7 +13,7 @@
     "step_id": "s07_click",
     "code": "APP_ERROR",
     "message": "The application returned an error page.",
-    "expected": "url matches //members/[^/]+$/",
+    "expected": "url matches //members/[^/]+(?:[?#]|$)/",
     "observed": "url=http://127.0.0.1:8000/members/50500; title=\"Application Error - HFCU Member Servicing\"; texts=\"Harbor Federal Credit Union\" | \"Member Servicing Console\" | \"CoreLink v4.2.1\" | \"Signed on as ·\" | \"[REDACTED:SECRET]\" | \"Menu\" | \"Application Error\" | \"The request could not be completed.\"",
     "screenshot": "evidence/replay_app_error/failure_s07_click.png",
     "attempts": []
@@ -26,7 +26,7 @@
       "status": "ok",
       "strategy": null,
       "attempts": 1,
-      "duration_ms": 728,
+      "duration_ms": 705,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -37,7 +37,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 202,
+      "duration_ms": 184,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -48,7 +48,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 129,
+      "duration_ms": 123,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -59,7 +59,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 717,
+      "duration_ms": 721,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -70,7 +70,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 727,
+      "duration_ms": 723,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -81,7 +81,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 185,
+      "duration_ms": 158,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -92,7 +92,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 698,
+      "duration_ms": 704,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -112,7 +112,9 @@
     }
   ],
   "interventions": [],
+  "drift": [],
+  "variant": "base",
   "checkpoint_verified": false,
   "evidence_dir": "evidence/replay_app_error",
-  "duration_ms": 4252
+  "duration_ms": 4192
 }

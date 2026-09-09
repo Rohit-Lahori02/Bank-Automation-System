@@ -462,6 +462,8 @@ class ReplayEngine:
         if not result.steps and self._reports:
             result.steps = list(self._reports)
         result.interventions = list(self._interventions)
+        result.variant = self._cap.target.variant if self._cap else "base"
+        result.compute_drift()
         result.evidence_dir = str(self._log.run_dir) if self._log else ""
         result.duration_ms = int((time.perf_counter() - self._started) * 1000)
         if self._log:

@@ -30,9 +30,9 @@ from .chaos import ChaosController
 from .config import Settings, load_settings
 from .data import MIN_INITIAL_DEPOSIT, PRODUCTS, MemberStore, money, parse_money
 from .sessions import COOKIE_NAME, SessionStore
+from .variants import get_variant
 
 BASE_DIR = Path(__file__).parent
-APP_VERSION = "4.2.1"
 
 
 class NotAuthenticated(Exception):
@@ -50,9 +50,11 @@ def create_app(
     chaos = chaos or ChaosController()
     store = store or MemberStore()
     sessions = SessionStore(idle_seconds=settings.session_idle_seconds)
+    variant = get_variant(settings.variant)
 
-    app = FastAPI(title="HFCU Member Servicing Console (mock)", docs_url=None, redoc_url=None)
+    app = FastAPI(title=f"{variant.institution} Member Servicing Console (mock)", docs_url=None, redoc_url=None)
     app.state.settings = settings
+    app.state.variant = variant
     app.state.chaos = chaos
     app.state.store = store
     app.state.sessions = sessions
@@ -65,7 +67,7 @@ def create_app(
     def render(request: Request, name: str, status_code: int = 200, *, full_page: bool = True, **ctx):
         session = getattr(request.state, "session", None)
         dialog = chaos.consume("maintenance_dialog") if full_page else False
-        context = {"session": session, "dialog": dialog, "app_version": APP_VERSION, **ctx}
+        context = {"session": session, "dialog": dialog, "app_version": variant.version, "v": variant, **ctx}
         return templates.TemplateResponse(request, name, context, status_code=status_code)
 
     def require_session(request: Request) -> dict:
@@ -141,7 +143,7 @@ def create_app(
         return render(request, "search.html", q="", error="", result=None, not_found=False)
 
     @app.post("/members/search", response_class=HTMLResponse)
-    async def search_submit(request: Request, q: str = Form("")):
+    async def search_submit(request: Request, q: str = Form(""), branch: str = Form("")):
         require_session(request)
         q = q.strip()
         if not (q.isdigit() and len(q) == 5):

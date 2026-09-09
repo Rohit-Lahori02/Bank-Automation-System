@@ -5,7 +5,7 @@
 <div class="pagesub">Welcome, <b>{{ session.user }}</b>. Select a function to begin.</div>
 <table class="grid" cellpadding="0" cellspacing="0" border="0">
   <tr class="head"><td>Function</td><td>Description</td></tr>
-  <tr><td><a href="/members/search">Member Inquiry</a></td><td>Look up a member by member number and view profile and accounts.</td></tr>
+  <tr><td><a href="/members/search">{{ v.nav_inquiry }}</a></td><td>Look up a member by member number and view profile and accounts.</td></tr>
   <tr><td><a href="/console">Transactions</a></td><td>Post deposits, withdrawals and transfers. <span class="muted">Unavailable in this build.</span></td></tr>
   <tr><td><a href="/console">Reports</a></td><td>End-of-day and audit reports. <span class="muted">Unavailable in this build.</span></td></tr>
 </table>

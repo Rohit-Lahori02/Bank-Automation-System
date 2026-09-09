@@ -28,7 +28,7 @@
       "status": "ok",
       "strategy": null,
       "attempts": 1,
-      "duration_ms": 688,
+      "duration_ms": 698,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -39,7 +39,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 302,
+      "duration_ms": 177,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -50,7 +50,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 133,
+      "duration_ms": 166,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -61,7 +61,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 719,
+      "duration_ms": 713,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -72,7 +72,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 760,
+      "duration_ms": 726,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -83,7 +83,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 152,
+      "duration_ms": 163,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -94,7 +94,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 715,
+      "duration_ms": 703,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -105,7 +105,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 965,
+      "duration_ms": 919,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -116,7 +116,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 841,
+      "duration_ms": 792,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -127,7 +127,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 174,
+      "duration_ms": 177,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -138,7 +138,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 141,
+      "duration_ms": 137,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -149,7 +149,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 148,
+      "duration_ms": 131,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -160,7 +160,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 716,
+      "duration_ms": 705,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -172,12 +172,14 @@
       "kind": "risky_action",
       "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
       "decision": "denied",
-      "intervention_id": "int-b035118e",
+      "intervention_id": "int-e476c5c7",
       "human_actions": 0,
       "summary": "aborted: no actions captured"
     }
   ],
+  "drift": [],
+  "variant": "base",
   "checkpoint_verified": false,
   "evidence_dir": "evidence/subaccount_replay_escalation_aborted",
-  "duration_ms": 8609
+  "duration_ms": 8330
 }

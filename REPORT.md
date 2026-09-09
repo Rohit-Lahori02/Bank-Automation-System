@@ -123,15 +123,21 @@ protocol over UI Automation / AT-SPI: roles and names map directly, `anchor_rela
 `bbox` plus a grounding model for `role_name`. The artifact never mentions the DOM; nothing above
 the seam changes.
 
-**Multi-tenant reuse.** A capability's `target` names the vendor `app` and a `variant`. The plan:
-one capability recorded on the base variant; an app profile (`cua/artifact/profiles.py`) holds the
-shared failure vocabulary and login sub-flow; per-tenant *overlays* (entry URL, secrets binding,
-overridden strategies or expectations for specific steps, extra conditions) are small diffs applied
-at load, never re-recordings. Drift detection is the strategy index and expectation timings from
-each replay: a tenant whose steps resolve lower in the chain than the base, or slower, is
-flagged, and `status` gates unattended replay on `approved` per variant. Not built here: overlays,
-the drift dashboard, a capability catalogue — but the ids, the profile split and the per-replay
-provenance are in place so they are additive.
+**Multi-tenant reuse — built and demonstrated (stretch goal).** A capability's `target` names
+the vendor `app` and a `variant`. One capability is recorded on the base variant; the app profile
+(`cua/artifact/profiles.py`) holds the shared failure vocabulary and login sub-flow; a per-tenant
+**overlay** (`cua/artifact/overlay.py`) is a small reviewed diff applied at load: entry URL,
+relabelings applied to every locator, expectation and detector, per-step strategy overrides or
+replacements, extra or removed conditions. The result is re-validated as a full capability. The
+mock console has a second tenant (Lakeshore: relabeled lookup, new theme, a Branch selector that
+shifts the layout). Evidence (`evidence/tenant_*`): the base recording, untouched, *degrades
+gracefully* on it - it succeeds, but five of eight steps resolve on structural fallbacks and the
+result's `drift` list names them; with a six-line overlay every step is back on its first-choice
+semantic strategy and `drift` is empty. **Drift detection** is therefore built in: every replay
+result carries the steps that resolved below strategy index 0. A tenant whose steps start
+resolving on `css` or `bbox` still works today and is flagged for an overlay or re-recording
+before it breaks. Not built: a fleet-level drift dashboard and `status` gating per variant; both
+are additive over the per-replay provenance that already exists.
 
 ## 5. Escalation & handoff
 
@@ -185,12 +191,14 @@ inherent to the task; the allowlist is per deployment, not per capability.
 
 ## 7. Cuts
 
-Cut deliberately: tenant overlays and a drift dashboard (design only); a desktop surface (seam
-only); the co-browsing operator console (minimal console + CDP seam); the agent-facing capability
-catalogue endpoint; a CI workflow for the 119 tests; input `pattern`s in recorded artifacts are
-not inferred (the hand-authored reference shows the intent); the final discovery run was made on
-a free NVIDIA NIM model rather than Claude — the adapter exists and the run is one config change.
+Cut deliberately: a fleet-level drift dashboard (the per-replay drift signal exists); a desktop
+surface (seam only); the co-browsing operator console (minimal console + CDP seam); the
+agent-facing capability catalogue endpoint; a CI workflow for the 126 tests; input `pattern`s in
+recorded artifacts are not inferred (the hand-authored reference shows the intent); the discovery
+runs were made on a free NVIDIA NIM model rather than Claude — the adapter exists and the run is
+one config change.
 
-Next, in order: a Claude-recorded run for comparison of expectation quality; overlays with one
-"second tenant" variant of the mock app; `cua serve` exposing approved capabilities as callable
-tools with typed arguments; a multi-run stability score feeding `status: approved`.
+Stretch goal taken: canonicalization / cross-tenant reuse (Section 4). Next, in order: a
+multi-run stability score feeding `status: approved` and gating unattended replay; a
+Claude-recorded run for comparison of expectation quality; `cua serve` exposing approved
+capabilities as callable tools with typed arguments.

@@ -73,6 +73,8 @@ class ReplayResult(BaseModel):
     escalation: Escalation | None = None
     steps: list[StepReport] = Field(default_factory=list)
     interventions: list[dict] = Field(default_factory=list)   # human handoffs that happened during the run
+    drift: list[dict] = Field(default_factory=list)   # steps that did not resolve on their first-choice strategy
+    variant: str = "base"
     checkpoint_verified: bool = False
     evidence_dir: str = ""
     duration_ms: int = 0
@@ -84,6 +86,21 @@ class ReplayResult(BaseModel):
     def exit_code(self) -> int:
         return {ReplayStatus.SUCCESS: 0, ReplayStatus.BUSINESS_OUTCOME: 10,
                 ReplayStatus.FAILED: 20, ReplayStatus.ESCALATED: 30}[self.status]
+
+    def compute_drift(self) -> None:
+        """Locator drift signal: any step whose target resolved below strategy index 0.
+
+        A capability that starts resolving on structural or coordinate fallbacks still works
+        today but is telling you the tenant/version has moved; it needs an overlay or a
+        re-recording before it breaks.
+        """
+        self.drift = []
+        for r in self.steps:
+            if not r.strategy or "#" not in r.strategy or r.subflow_of:
+                continue
+            kind, index = r.strategy.rsplit("#", 1)
+            if index.isdigit() and int(index) > 0:
+                self.drift.append({"step_id": r.step_id, "strategy": kind, "index": int(index)})
 
     def one_line(self) -> str:
         if self.status is ReplayStatus.SUCCESS:

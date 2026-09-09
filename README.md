@@ -331,6 +331,26 @@ cua replay artifacts/member.open_subaccount.v1.json --input member_id=12345 --in
 
 (Sub-accounts opened this way live in the mock app's memory and vanish when it restarts.)
 
+**Cross-tenant reuse (stretch goal).** Run the second tenant of the same product on another
+port. Replay the base recording against it untouched and read the `drift:` line: it succeeds on
+structural fallbacks and tells you which steps did. Then apply the overlay and watch every step
+resolve on its first-choice locator with no drift:
+
+```bash
+cua serve-app --variant lakeshore --port 8010
+```
+
+```bash
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=12345 --handoff none --entry-url http://127.0.0.1:8010/login
+```
+
+```bash
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=12345 --handoff none --overlay overlays/member.read_savings_balance.lakeshore.json
+```
+
+The overlay is five relabelings and an entry URL (`overlays/`). Every replay result carries a
+`drift` list: steps that resolved below their first-choice locator strategy.
+
 Regenerate the whole evidence folder from real runs:
 
 ```bash

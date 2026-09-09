@@ -1,7 +1,7 @@
 {
   "status": "business_outcome",
   "capability_id": "member.read_savings_balance",
-  "capability_version": 6,
+  "capability_version": 7,
   "run_id": "replay_permission_denied",
   "inputs": {
     "member_id": "40403"
@@ -18,7 +18,7 @@
       "status": "ok",
       "strategy": null,
       "attempts": 1,
-      "duration_ms": 720,
+      "duration_ms": 686,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -29,7 +29,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 208,
+      "duration_ms": 176,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -40,7 +40,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 126,
+      "duration_ms": 134,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -51,7 +51,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 729,
+      "duration_ms": 710,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -62,7 +62,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 753,
+      "duration_ms": 728,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -73,7 +73,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 156,
+      "duration_ms": 165,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -93,7 +93,9 @@
     }
   ],
   "interventions": [],
+  "drift": [],
+  "variant": "base",
   "checkpoint_verified": false,
   "evidence_dir": "evidence/replay_permission_denied",
-  "duration_ms": 3524
+  "duration_ms": 3431
 }
