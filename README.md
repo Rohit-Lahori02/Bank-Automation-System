@@ -18,7 +18,7 @@ Evidence from real runs: [`evidence/`](evidence/).
 | 0 | Repo scaffold, config, policy file | done |
 | 1 | Mock legacy credit-union console (the automation target) with fault injection | done |
 | 2 | Surface layer: Playwright driver, accessibility-style snapshot, locator strategies | done |
-| 3 | Artifact schema, policy engine, redaction | planned |
+| 3 | Artifact schema, policy engine, redaction | done |
 | 4 | LLM-driven discovery loop + recorder | planned |
 | 5 | Deterministic replay engine + CLI | planned |
 | 6 | Escalation and human handoff | planned |
