@@ -106,6 +106,8 @@ def discover(
     max_steps: int = typer.Option(25, help="Step budget for the agent"),
     handoff: str = typer.Option("console", help="Human handoff: console (operator UI on :8001), file (cua resume), none"),
     handoff_timeout: float = typer.Option(600.0, help="Seconds to wait for an operator decision"),
+    slow_mo: int = typer.Option(0, help="Milliseconds to pause between browser actions, to watch the run"),
+    keep_open: bool = typer.Option(False, "--keep-open", help="Keep the browser open at the end until Enter is pressed"),
 ) -> None:
     """Run an LLM-driven discovery against the target and record a capability artifact."""
     from cua.agent.loop import DiscoveryAgent, DiscoveryConfig
@@ -137,7 +139,7 @@ def discover(
     run_id = DiscoveryAgent.new_run_id()
     control = SessionControl()
     surface = BrowserSurface(headless=not headed, trace_dir=evidence_dir / run_id, control=control,
-                             cdp_port=CDP_PORT if handoff != "none" else None)
+                             cdp_port=CDP_PORT if handoff != "none" else None, slow_mo=slow_mo)
     surface.start()
     controller, console = _handoff_setup(handoff, surface, control, redactor, handoff_timeout)
     hooks = {}
@@ -148,6 +150,9 @@ def discover(
                            config=DiscoveryConfig(max_steps=max_steps), **hooks)
     try:
         run = agent.run(goal, entry_url=entry_url, inputs=input_values, secrets=secrets, run_id=run_id)
+        if keep_open and headed:
+            typer.echo(f"status: {run.status}; browser left open; press Enter to close it")
+            input()
     finally:
         surface.stop()
         if console:
@@ -195,6 +200,8 @@ def replay(
     json_out: bool = typer.Option(False, "--json", help="Print the full result JSON"),
     handoff: str = typer.Option("console", help="Human handoff: console (operator UI on :8001), file (cua resume), none"),
     handoff_timeout: float = typer.Option(600.0, help="Seconds to wait for an operator decision"),
+    slow_mo: int = typer.Option(0, help="Milliseconds to pause between browser actions, to watch the replay"),
+    keep_open: bool = typer.Option(False, "--keep-open", help="Keep the browser open at the end until Enter is pressed"),
 ) -> None:
     """Replay a capability deterministically (no model) and report the structured result.
 
@@ -218,18 +225,21 @@ def replay(
     typer.echo(f"replaying {capability.id} v{capability.version} with inputs {_parse_kv(inputs)}")
     control = SessionControl()
     surface = BrowserSurface(headless=not headed, trace_dir=evidence_dir / run_id, control=control,
-                             cdp_port=CDP_PORT if handoff != "none" else None)
+                             cdp_port=CDP_PORT if handoff != "none" else None, slow_mo=slow_mo)
     surface.start()
     controller, console = _handoff_setup(handoff, surface, control, redactor, handoff_timeout)
     try:
         engine = ReplayEngine(surface=surface, policy=policy, redactor=redactor, evidence_root=evidence_dir,
                               escalation_handler=ReplayHandoff(controller) if controller else None)
         result = engine.replay(capability, _parse_kv(inputs), secrets, run_id=run_id)
+        typer.echo(result.one_line())
+        if keep_open and headed:
+            typer.echo("browser left open; press Enter to close it")
+            input()
     finally:
         surface.stop()
         if console:
             console.stop()
-    typer.echo(result.one_line())
     typer.echo(f"steps: " + ", ".join(f"{r.step_id}:{r.status}" + (f"({r.strategy})" if r.strategy else "")
                                        for r in result.steps))
     for iv in result.interventions:
