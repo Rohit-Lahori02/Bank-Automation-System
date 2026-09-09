@@ -26,7 +26,7 @@ from cua.artifact.schema import (
     ActionKind, Capability, ClickHandler, Condition, ConditionClass, EscalateHandler, InputError, RetryHandler,
     RiskClass, Step, SubflowHandler, parse_output,
 )
-from cua.artifact.templating import render_template
+from cua.artifact.templating import render_target, render_template
 from cua.evidence.logger import RunLogger
 from cua.policy.engine import PolicyEngine
 from cua.policy.redaction import Redactor
@@ -108,6 +108,13 @@ class ReplayEngine:
             return self._finish(self._failed(None, "MISSING_SECRET", f"secrets not supplied: {missing}"))
 
         try:
+            if capability.steps[0].action is not ActionKind.NAVIGATE:
+                # artifacts should start with a navigate; tolerate ones that assume the entry page is open
+                verdict = self.policy.check_navigation(capability.target.entry_url)
+                if not verdict.allowed:
+                    raise _Stop(self._failed(None, "POLICY_DENIED", verdict.reason))
+                self.surface.navigate(capability.target.entry_url)
+                self._log.event("entry", url=capability.target.entry_url, note="implicit navigate to entry_url")
             for step in capability.steps:
                 self._run_step(step, depth=0)
             self._verify_checkpoint()
@@ -201,7 +208,7 @@ class ReplayEngine:
         if step.action is ActionKind.WAIT:
             time.sleep((step.wait_before_ms or 1000) / 1000)
             return
-        resolved: Resolved = s.resolve(step.target)
+        resolved: Resolved = s.resolve(render_target(step.target, self._inputs, self._secrets))
         report.strategy = f"{resolved.strategy_kind}#{resolved.strategy_index}"
         self._log.event("resolved", step=step.id, strategy=report.strategy, frame=resolved.frame)
         if step.action is ActionKind.CLICK:

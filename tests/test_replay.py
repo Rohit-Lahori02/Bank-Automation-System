@@ -71,6 +71,24 @@ def test_replay_is_parameterized_by_inputs(surface, policy, tmp_path, capability
     assert r2.outputs["savings_balance"] == Decimal("15900.00")
 
 
+def test_templated_locator_strategies_render_per_invocation(surface, policy, tmp_path, capability):
+    """A recorded row anchor like '{{inputs.member_id}}-S01' resolves to the invocation's own row."""
+    templated = capability.model_copy(deep=True)
+    step = next(s for s in templated.steps if s.id == "read_balance")
+    step.target.strategies[0].row_text = "{{inputs.member_id}}-S01"
+    result = make_engine(surface, policy, tmp_path).replay(templated, {"member_id": "10001"}, SECRETS)
+    assert result.status is ReplayStatus.SUCCESS, result.one_line()
+    assert result.outputs["savings_balance"] == Decimal("1240.50")
+    assert next(r for r in result.steps if r.step_id == "read_balance").strategy == "table_cell#0"
+
+
+def test_artifact_without_navigate_step_still_starts_at_entry_url(surface, policy, tmp_path, capability):
+    trimmed = capability.model_copy(deep=True)
+    trimmed.steps = trimmed.steps[1:]
+    result = make_engine(surface, policy, tmp_path).replay(trimmed, {"member_id": "12345"}, SECRETS)
+    assert result.status is ReplayStatus.SUCCESS, result.one_line()
+
+
 # ------------------------------------------------------------ business outcomes
 def test_not_found_is_a_business_outcome_not_a_failure(surface, policy, tmp_path, capability):
     result = make_engine(surface, policy, tmp_path).replay(capability, {"member_id": "99999"}, SECRETS)

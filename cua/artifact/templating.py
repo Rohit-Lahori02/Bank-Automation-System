@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
+from cua.surface.locators import Target
+
 from .schema import PLACEHOLDER_RE
+
+# Strategy fields that may carry {{inputs.x}} templates (e.g. a row anchor "{{inputs.member_id}}-S01")
+STRATEGY_TEXT_FIELDS = ("name", "text", "row_text", "column_header", "anchor_text", "selector")
 
 
 class TemplateError(KeyError):
@@ -23,6 +28,19 @@ def render_template(text: str | None, inputs: Mapping[str, Any], secrets: Mappin
         return str(pool[name])
 
     return PLACEHOLDER_RE.sub(sub, text)
+
+
+def render_target(target: Target, inputs: Mapping[str, Any], secrets: Mapping[str, str]) -> Target:
+    """Return a copy of the target with templated strategy fields rendered for this invocation."""
+    if not any(is_template(getattr(s, f, None)) for s in target.strategies for f in STRATEGY_TEXT_FIELDS):
+        return target
+    rendered = target.model_copy(deep=True)
+    for strategy in rendered.strategies:
+        for field in STRATEGY_TEXT_FIELDS:
+            value = getattr(strategy, field, None)
+            if is_template(value):
+                setattr(strategy, field, render_template(value, inputs, secrets))
+    return rendered
 
 
 def is_template(text: str | None) -> bool:

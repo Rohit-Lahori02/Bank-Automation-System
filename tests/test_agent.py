@@ -228,9 +228,11 @@ def test_recorder_produces_a_valid_parameterized_capability(surface, policy, tmp
 
     assert cap.inputs["member_id"].example == "12345"
     by_id = {s.id: s for s in cap.steps}
-    assert [s.action for s in cap.steps] == [ActionKind.TYPE, ActionKind.TYPE, ActionKind.CLICK, ActionKind.CLICK,
-                                             ActionKind.TYPE, ActionKind.CLICK, ActionKind.CLICK,
+    assert [s.action for s in cap.steps] == [ActionKind.NAVIGATE, ActionKind.TYPE, ActionKind.TYPE, ActionKind.CLICK,
+                                             ActionKind.CLICK, ActionKind.TYPE, ActionKind.CLICK, ActionKind.CLICK,
                                              ActionKind.EXTRACT, ActionKind.EXTRACT]
+    assert by_id["s00_navigate"].url.endswith("/login")               # the loop's own entry navigation is recorded
+    assert by_id["s00_navigate"].expect.detect.text == "Harbor Federal Credit Union"
     assert by_id["s05_type"].value == "{{inputs.member_id}}"          # literal input parameterized
     assert by_id["s02_type"].value == "{{secrets.app.password}}"      # secret placeholder preserved
     assert by_id["s03_click"].expect.detect.text == "Main Menu"        # model's expect became a postcondition
@@ -238,9 +240,11 @@ def test_recorder_produces_a_valid_parameterized_capability(surface, policy, tmp
     assert cap.outputs["savings_balance"].type is ParamType.MONEY
     assert cap.outputs["member_name"].type is ParamType.STRING
     assert cap.outputs["savings_balance"].from_step == "s08_extract"
-    # value cell got a value-independent table strategy first
+    # value cell got a value-independent table strategy first, with the input parameterized in the row anchor
     assert by_id["s08_extract"].target.strategies[0].kind == "table_cell"
-    assert by_id["s08_extract"].target.strategies[0].row_text == "12345-S01"
+    assert by_id["s08_extract"].target.strategies[0].row_text == "{{inputs.member_id}}-S01"
+    view = by_id["s07_click"].target
+    assert any(getattr(s, "selector", "") == 'a[href="/members/{{inputs.member_id}}"]' for s in view.strategies)
     # sign-on became the re-login subflow of the app's session_expired condition
     sub = cap.conditions["session_expired"].handler
     assert [s.id for s in sub.steps] == ["s01_type", "s02_type", "s03_click"]
@@ -267,11 +271,32 @@ def test_recorder_turns_dialog_dismissal_into_condition(surface, policy, tmp_pat
     spec = RecorderSpec(capability_id="member.read_savings_balance", name="x", description="x",
                         app="corelink-member-servicing")
     cap = record_capability(run, spec, policy=policy)
-    assert len(cap.steps) == 9                          # the OK click is not a flow step
+    assert len(cap.steps) == 10                         # entry navigate + 9 flow steps; the OK click is not one
     learned = cap.conditions["dialog_system_maintenance_notice"]
     assert learned.classification is ConditionClass.RECOVERABLE
     assert learned.detect.name_contains == "System Maintenance Notice"
     assert learned.handler.target.strategies[0].kind == "role_name"
+
+
+def test_recorder_validates_checkpoint_and_infers_expectations(surface, policy, tmp_path, mock_server):
+    """A model that writes a sentence as its checkpoint, and omits 'expect' on a same-URL form post."""
+    script = [
+        *HAPPY_PATH[:5],
+        act("button", "Search", action="click"),                   # no expect; URL does not change
+        *HAPPY_PATH[6:9],
+        {"reasoning": "done", "action": "done",
+         "checkpoint": "Member 12345 profile shows savings balance $5,432.10",   # a sentence, not screen text
+         "outputs": {"savings_balance": "$5,432.10", "member_name": "Oyelaran, Marcus"}},
+    ]
+    run, llm, agent = run_happy(surface, policy, tmp_path, mock_server, script)
+    cap = record_capability(run, RecorderSpec("member.read_savings_balance", "x", "x", "corelink-member-servicing"),
+                            policy=policy)
+    by_id = {s.id: s for s in cap.steps}
+    assert by_id["s06_click"].expect.detect.text == "Search Results"     # inferred from text that appeared
+    detectors = cap.checkpoint.detect.detectors
+    assert detectors[0].pattern == r"/members/[^/]+$"
+    assert detectors[1].text == "Member Profile"                          # sentence reduced to a visible fragment
+    assert "reduced to the visible fragment" in cap.provenance.notes
 
 
 def test_recorder_refuses_unsuccessful_runs(surface, policy, tmp_path, mock_server):
