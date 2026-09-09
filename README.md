@@ -21,7 +21,7 @@ Evidence from real runs: [`evidence/`](evidence/).
 | 3 | Artifact schema, policy engine, redaction | done |
 | 4 | LLM-driven discovery loop + recorder | done |
 | 5 | Deterministic replay engine + CLI | done |
-| 6 | Escalation and human handoff | planned |
+| 6 | Escalation and human handoff | done |
 | 7 | Evidence, REPORT.md, final run | planned |
 
 ## Setup
@@ -208,6 +208,52 @@ cua chaos --app-error
 ```bash
 cua chaos --reset
 ```
+
+## Escalation and handoff (phase 6)
+
+When automation cannot safely continue, it hands the **same live browser session** to a human
+and takes it back afterwards. Three triggers:
+
+| Trigger | Where | Kind |
+|---|---|---|
+| a step is irreversible (policy says `escalate`) | replay and discovery | `risky_action` |
+| a state failure the artifact has no answer for (`TARGET_NOT_FOUND`, `EXPECTATION_TIMEOUT`, `CHECKPOINT_FAILED`, ...) | replay | `unrecoverable` |
+| the model reports it is stuck | discovery | `stuck` |
+
+The control-transfer model is a token held by exactly one party:
+
+```
+automation ──escalate──▶ paused ──claim──▶ human ──decision──▶ automation
+```
+
+Every automated action asserts that automation holds the token, so nothing can act behind the
+operator's back. While a human holds it, everything they do in the live window is captured
+(clicks, inputs with sensitive values masked, submits) into the run's evidence next to the
+automation's own steps, and written to `runs/<run_id>/intervention.json`.
+
+The human decides one of:
+
+- **resumed** — "I did the manual steps": replay verifies the step's expected state on screen
+  before continuing (and re-runs a safe step if it does not hold; a risky one fails loudly)
+- **approved** — automation may perform the held step itself
+- **aborted** — the run ends as `escalated`
+
+Two operator surfaces, both real, both minimal:
+
+- **Operator console** (`--handoff console`, default): a small web UI on
+  http://127.0.0.1:8001 that lists intervention requests, shows the context (reason, step,
+  screenshot, screen listing, captured human actions live) and offers the three decisions.
+  Opening a request claims the session.
+- **Shell** (`--handoff file`): the run prints the evidence directory; from another terminal:
+
+```bash
+cua resume runs/<run_id> --decision resumed
+```
+
+The browser is launched headed with a Chrome DevTools endpoint (`CUA_CDP_PORT`, default 9222),
+so a remote operator client can attach to the very same session; the tests do exactly that
+with a second Playwright client. See `REPORT.md` for how this seam extends to a co-browsing
+console.
 
 ## Demo path
 

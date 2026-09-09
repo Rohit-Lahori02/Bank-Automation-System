@@ -23,6 +23,7 @@ from .session import SessionControl
 from .snapshot import Element, Snapshot, TEXTUAL_ROLES
 
 WALKER_JS = (Path(__file__).parent / "snapshot.js").read_text(encoding="utf-8")
+CAPTURE_JS = (Path(__file__).parent / "capture.js").read_text(encoding="utf-8")
 REF_ATTR = "data-cua-ref"
 PROBE_ATTR = "data-cua-probe"
 
@@ -38,8 +39,10 @@ class BrowserSurface(Surface):
         mask_patterns: Iterable[str] = (r"(?i)password", r"(?i)passwd"),
         control: SessionControl | None = None,
         action_timeout_ms: int = 10_000,
+        cdp_port: int | None = None,
     ) -> None:
         self.headless = headless
+        self.cdp_port = cdp_port
         self.trace_dir = Path(trace_dir) if trace_dir else None
         self.viewport = viewport
         self.slow_mo = slow_mo
@@ -48,6 +51,8 @@ class BrowserSurface(Surface):
         self.action_timeout_ms = action_timeout_ms
         self.js_dialogs: list[dict] = []
         self.last_snapshot: Snapshot | None = None
+        self._capture_handler = None
+        self._capture_bound = False
         self._pw = None
         self._browser = None
         self._context = None
@@ -57,7 +62,8 @@ class BrowserSurface(Surface):
     # ------------------------------------------------------------ lifecycle
     def start(self) -> "BrowserSurface":
         self._pw = sync_playwright().start()
-        self._browser = self._pw.chromium.launch(headless=self.headless, slow_mo=self.slow_mo)
+        args = [f"--remote-debugging-port={self.cdp_port}"] if self.cdp_port else []
+        self._browser = self._pw.chromium.launch(headless=self.headless, slow_mo=self.slow_mo, args=args)
         self._context = self._browser.new_context(viewport={"width": self.viewport[0], "height": self.viewport[1]})
         if self.trace_dir:
             self.trace_dir.mkdir(parents=True, exist_ok=True)
@@ -91,6 +97,11 @@ class BrowserSurface(Surface):
     def page(self) -> Page:
         assert self._page is not None, "surface not started"
         return self._page
+
+    @property
+    def cdp_url(self) -> str | None:
+        """Where a second client (an operator) can attach to this very browser session."""
+        return f"http://127.0.0.1:{self.cdp_port}" if self.cdp_port else None
 
     def _on_js_dialog(self, dialog) -> None:
         entry = {"type": dialog.type, "message": dialog.message, "at": time.time()}
@@ -375,6 +386,48 @@ class BrowserSurface(Surface):
         self.control.assert_automation()
         self.page.keyboard.press(key)
         self.settle()
+
+    # --------------------------------------------------- human-control capture
+    def start_human_capture(self, handler) -> None:
+        """Record what a human does on the live session: handler(payload: dict, frame_path: str)."""
+        self._capture_handler = handler
+        if not self._capture_bound:
+            def on_event(source, payload):
+                if self._capture_handler is None:
+                    return
+                # No Playwright round-trips inside a binding callback (they can deadlock mid-navigation):
+                # derive the frame label from cached frame attributes only.
+                frame = source.get("frame")
+                frame_path = "main"
+                try:
+                    if frame is not None and frame is not self._page.main_frame:
+                        frame_path = f'iframe[name="{frame.name}"]' if frame.name else f'iframe[src="{frame.url}"]'
+                except Exception:
+                    pass
+                self._capture_handler(payload, frame_path)
+
+            self._context.expose_binding("__cuaHumanEvent", on_event)
+            self._context.add_init_script(CAPTURE_JS)   # every future document
+            self._capture_bound = True
+        for _, frame in self.frames():                # the documents already open
+            try:
+                frame.evaluate(CAPTURE_JS)
+            except Exception:
+                continue
+
+    def stop_human_capture(self) -> None:
+        self.pump()
+        self._capture_handler = None
+
+    def pump(self) -> None:
+        """Let Playwright dispatch pending events (bindings, dialogs) while automation is otherwise idle.
+
+        The sync API only delivers callbacks during an API call; a waiting controller must pump.
+        """
+        try:
+            self.page.evaluate("0")
+        except Exception:
+            pass
 
     def read_text(self, target: str | Target | Resolved) -> str:
         """Read the operator-visible text of an element (value for inputs, selected label for selects)."""

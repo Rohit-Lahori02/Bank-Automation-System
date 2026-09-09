@@ -26,8 +26,10 @@ class RunLogger:
         self.log_path = self.run_dir / "log.jsonl"
         self._count = 0
 
-    def event(self, kind: str, **data: Any) -> dict:
-        record = {"ts": round(time.time(), 3), "seq": self._count, "kind": kind, **self.redactor.redact(_jsonable(data))}
+    def event(self, _kind: str, **data: Any) -> dict:
+        payload = self.redactor.redact(_jsonable(data))
+        record = {"ts": round(time.time(), 3), "seq": self._count, "kind": _kind,
+                  **{("detail_kind" if k == "kind" else k): v for k, v in payload.items()}}
         with open(self.log_path, "a", encoding="utf-8") as fh:
             fh.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
         self._count += 1

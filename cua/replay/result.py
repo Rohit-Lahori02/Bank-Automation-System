@@ -71,6 +71,7 @@ class ReplayResult(BaseModel):
     failure: Failure | None = None
     escalation: Escalation | None = None
     steps: list[StepReport] = Field(default_factory=list)
+    interventions: list[dict] = Field(default_factory=list)   # human handoffs that happened during the run
     checkpoint_verified: bool = False
     evidence_dir: str = ""
     duration_ms: int = 0

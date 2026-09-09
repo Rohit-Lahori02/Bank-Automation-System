@@ -156,8 +156,8 @@ class DiscoveryConfig:
     max_tokens: int = 1024
 
 
-RiskyHandler = Callable[[ActionRecord, Verdict], bool]
-StuckHandler = Callable[["DiscoveryRun", ActionRecord | None], bool]
+RiskyHandler = Callable[[ActionRecord, Verdict, "DiscoveryRun"], bool]
+StuckHandler = Callable[["DiscoveryRun", ActionRecord | None], bool | str]   # truthy = human intervened, resume
 
 
 class DiscoveryAgent:
@@ -241,9 +241,14 @@ class DiscoveryAgent:
                 record.result = "stuck"
                 log.screenshot(self.surface, "stuck")
                 log.event("stuck", step=record.index, reason=decision.reason, url=self.surface.url)
-                if self.stuck_handler and self.stuck_handler(run, record):
+                outcome = self.stuck_handler(run, record) if self.stuck_handler else None
+                if outcome:
                     run.status, run.stop_reason = "running", None
-                    record.result = "stuck -> human intervened; resuming"
+                    what = outcome if isinstance(outcome, str) else "manual steps performed"
+                    record.result = (f"a human operator took over the session and intervened ({what}). "
+                                     "Control is back with you: re-read the screen and continue toward the goal.")
+                    record.executed = False
+                    no_progress = 0
                     continue
                 break
 
@@ -272,7 +277,7 @@ class DiscoveryAgent:
                     break
                 continue
             if verdict.needs_human:
-                approved = bool(self.risky_handler and self.risky_handler(record, verdict))
+                approved = bool(self.risky_handler and self.risky_handler(record, verdict, run))
                 log.event("policy", step=record.index, verdict=verdict.model_dump(),
                           result="approved" if approved else "held")
                 if not approved:

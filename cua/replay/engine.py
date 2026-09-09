@@ -51,11 +51,13 @@ class ReplayConfig:
     checkpoint_timeout_ms: int = 8000
     max_recoveries_per_step: int = 3
     subflow_depth: int = 1
+    escalate_on_failure: bool = True   # hand unrecoverable state failures to a human when a handler exists
     before_step: Callable[[str], None] | None = None   # test/demo hook: inject faults before a step
 
 
-EscalationDecision = str   # "approved" | "resumed" | "denied"
-EscalationHandler = Callable[[Escalation, "ReplayEngine"], EscalationDecision | None]
+# A handler returns "approved" (automation performs the step), "resumed" (the human did the
+# work; continue), "denied", or a dict {"decision": ..., "intervention_id": ..., "human_actions": n}.
+EscalationHandler = Callable[[Escalation, "ReplayEngine"], str | dict | None]
 
 
 class ReplayEngine:
@@ -81,6 +83,7 @@ class ReplayEngine:
         self._secrets: dict = {}
         self._reports: list[StepReport] = []
         self._current: StepReport | None = None
+        self._interventions: list[dict] = []
         self._suppressed: set[str] = set()      # conditions currently being recovered (not re-detected)
         self._raw_outputs: dict[str, str] = {}
         self._started = 0.0
@@ -92,6 +95,7 @@ class ReplayEngine:
         self._run_id = run_id or time.strftime("%Y%m%dT%H%M%S") + "-replay"
         self._cap, self._secrets = capability, dict(secrets)
         self._reports, self._raw_outputs, self._current, self._suppressed = [], {}, None, set()
+        self._interventions = []
         self._started = time.perf_counter()
         for value in secrets.values():
             self.redactor.add_secret(value)
@@ -149,44 +153,13 @@ class ReplayEngine:
             self._log.event("step_start", step=step.id, action=step.action.value,
                             target=step.target.description if step.target else None, url=self.surface.url)
 
-            self._policy_gate(step, report)
+            human_did_it = self._policy_gate(step, report)
             self._scan_conditions(step, report, depth, phase="before")
 
-            retry = self._retry_policy()
-            attempts = retry.max_attempts if (retry and step.risk is RiskClass.SAFE) else 1
-            for attempt in range(1, attempts + 1):
-                report.attempts = attempt
-                try:
-                    self._act(step, report)
-                except TargetNotFound as exc:
-                    self._log.event("resolve_failed", step=step.id, attempt=attempt, attempts=exc.attempts)
-                    if self._recover_if_possible(step, report, depth):
-                        continue   # the screen was in a known bad state; it is handled, try again
-                    if attempt < attempts:
-                        time.sleep(retry.backoff_ms / 1000)
-                        continue
-                    raise _Stop(self._failed(step.id, "TARGET_NOT_FOUND",
-                                             f"could not locate {step.target.description}",
-                                             expected=step.target.description, observed=self._observed(),
-                                             attempts=exc.attempts))
-                except Exception as exc:
-                    error = f"{type(exc).__name__}: {str(exc).splitlines()[0][:200]}"
-                    self._log.event("action_error", step=step.id, attempt=attempt, error=error)
-                    if attempt < attempts:
-                        time.sleep(retry.backoff_ms / 1000)
-                        continue
-                    raise _Stop(self._failed(step.id, "ACTION_FAILED", error, observed=self._observed()))
-
-                if self._await_expectation(step, report, depth):
-                    break
-                if attempt < attempts:
-                    self._log.event("retry", step=step.id, attempt=attempt, reason="expectation timeout")
-                    report.conditions.append("slow_or_failed_load")
-                    time.sleep(retry.backoff_ms / 1000)
-                    continue
-                raise _Stop(self._failed(step.id, "EXPECTATION_TIMEOUT",
-                                         f"step '{step.id}' did not reach its expected state",
-                                         expected=describe(step.expect.detect), observed=self._observed()))
+            if human_did_it:
+                self._after_human(step, report, depth, decision="resumed")
+            else:
+                self._act_with_retries(step, report, depth)
 
             self._scan_conditions(step, report, depth, phase="after")
             report.status = report.status or "ok"
@@ -196,6 +169,73 @@ class ReplayEngine:
                             attempts=report.attempts, conditions=report.conditions, duration_ms=report.duration_ms)
         finally:
             self._current = outer
+
+    def _act_with_retries(self, step: Step, report: StepReport, depth: int) -> None:
+        retry = self._retry_policy()
+        attempts = retry.max_attempts if (retry and step.risk is RiskClass.SAFE) else 1
+        for attempt in range(1, attempts + 1):
+            report.attempts = attempt
+            try:
+                self._act(step, report)
+            except TargetNotFound as exc:
+                self._log.event("resolve_failed", step=step.id, attempt=attempt, attempts=exc.attempts)
+                if self._recover_if_possible(step, report, depth):
+                    continue   # the screen was in a known bad state; it is handled, try again
+                if attempt < attempts:
+                    time.sleep(retry.backoff_ms / 1000)
+                    continue
+                self._unrecoverable(step, report, depth, "TARGET_NOT_FOUND",
+                                    f"could not locate {step.target.description}",
+                                    expected=step.target.description, attempts=exc.attempts)
+                return
+            except Exception as exc:
+                error = f"{type(exc).__name__}: {str(exc).splitlines()[0][:200]}"
+                self._log.event("action_error", step=step.id, attempt=attempt, error=error)
+                if attempt < attempts:
+                    time.sleep(retry.backoff_ms / 1000)
+                    continue
+                self._unrecoverable(step, report, depth, "ACTION_FAILED", error)
+                return
+
+            if self._await_expectation(step, report, depth):
+                return
+            if attempt < attempts:
+                self._log.event("retry", step=step.id, attempt=attempt, reason="expectation timeout")
+                report.conditions.append("slow_or_failed_load")
+                time.sleep(retry.backoff_ms / 1000)
+                continue
+            self._unrecoverable(step, report, depth, "EXPECTATION_TIMEOUT",
+                                f"step '{step.id}' did not reach its expected state",
+                                expected=describe(step.expect.detect))
+            return
+
+    def _unrecoverable(self, step: Step, report: StepReport, depth: int, code: str, message: str, *,
+                       expected: str = "", attempts: list[str] | None = None) -> None:
+        """A state failure the artifact has no answer for: hand it to a human if we can, else fail."""
+        if not (self.escalation_handler and self.cfg.escalate_on_failure):
+            raise _Stop(self._failed(step.id, code, message, expected=expected, observed=self._observed(),
+                                     attempts=attempts or []))
+        self._log.screenshot(self.surface, f"failure_{step.id}")
+        decision = self._escalate(step, report, kind="unrecoverable", reason=f"[{code}] {message}")
+        self._after_human(step, report, depth, decision=decision)
+
+    def _after_human(self, step: Step, report: StepReport, depth: int, *, decision: str) -> None:
+        """Continue after a handoff: trust the screen, not the human's word."""
+        must_act = step.action is ActionKind.EXTRACT or decision == "approved" or not self._expectation_holds(step)
+        if must_act:
+            if step.risk is not RiskClass.SAFE and decision != "approved":
+                raise _Stop(self._failed(step.id, "HANDOFF_STATE_MISMATCH",
+                                         "the human resumed but the risky step's expected state is not on screen",
+                                         expected=describe(step.expect.detect) if step.expect else "",
+                                         observed=self._observed()))
+            self._act(step, report)
+            if not self._await_expectation(step, report, depth):
+                raise _Stop(self._failed(step.id, "HANDOFF_STATE_MISMATCH",
+                                         "after the handoff the step still did not reach its expected state",
+                                         expected=describe(step.expect.detect) if step.expect else "",
+                                         observed=self._observed()))
+        report.status = "recovered"
+        report.note = f"human {decision}" + ("" if must_act else " (step performed manually)")
 
     def _act(self, step: Step, report: StepReport) -> None:
         s = self.surface
@@ -223,7 +263,8 @@ class ReplayEngine:
             self._log.event("extracted", step=step.id, output=step.output, value=text)
 
     # ------------------------------------------------------------ policy
-    def _policy_gate(self, step: Step, report: StepReport) -> None:
+    def _policy_gate(self, step: Step, report: StepReport) -> bool:
+        """Returns True when a human performed the step during a risky-action handoff."""
         if step.action is ActionKind.NAVIGATE:
             url = render_template(step.url, self._inputs, self._secrets) or ""
             verdict = self.policy.check_navigation(url)
@@ -235,26 +276,33 @@ class ReplayEngine:
         if not verdict.allowed:
             raise _Stop(self._failed(step.id, "POLICY_DENIED", verdict.reason))
         if verdict.needs_human:
-            self._escalate(step, report, kind="risky_action",
-                           reason=f"step '{step.id}' ({step.target.description if step.target else step.action.value}) "
-                                  f"is irreversible: {verdict.reason}")
-        elif verdict.requires == "flag":
+            decision = self._escalate(step, report, kind="risky_action",
+                                      reason=f"step '{step.id}' ({step.target.description if step.target else step.action.value}) "
+                                             f"is irreversible: {verdict.reason}")
+            if decision == "approved":
+                report.note = "human approved"
+                return False
+            return True
+        if verdict.requires == "flag":
             report.note = "risky action flagged"
+        return False
 
-    def _escalate(self, step: Step | None, report: StepReport | None, *, kind: str, reason: str) -> None:
+    def _escalate(self, step: Step | None, report: StepReport | None, *, kind: str, reason: str) -> str:
+        """Hand the live session to a human. Returns 'approved' or 'resumed'; anything else ends the run."""
         shot = self._log.screenshot(self.surface, f"escalation_{step.id if step else 'run'}")
         snap = self.surface.snapshot()
         esc = Escalation(step_id=step.id if step else None, reason=reason, kind=kind, url=self.surface.url,
                          screenshot=str(shot) if shot else None, screen=snap.render(max_elements=80))
         self._log.event("escalation", step=esc.step_id, escalation_kind=kind, reason=reason)
-        decision = self.escalation_handler(esc, self) if self.escalation_handler else None
-        self._log.event("escalation_decision", step=esc.step_id, decision=decision)
+        raw = self.escalation_handler(esc, self) if self.escalation_handler else None
+        details = raw if isinstance(raw, dict) else {"decision": raw}
+        decision = details.get("decision") or "denied"
+        record = {"step_id": esc.step_id, "kind": kind, "reason": reason, "decision": decision,
+                  **{k: v for k, v in details.items() if k != "decision"}}
+        self._interventions.append(record)
+        self._log.event("escalation_decision", step=esc.step_id, **record)
         if decision in ("approved", "resumed"):
-            if report is not None:
-                report.note = f"human {decision}"
-                if decision == "resumed":
-                    report.status = "recovered"
-            return
+            return decision
         result = ReplayResult(status=ReplayStatus.ESCALATED, capability_id=self._cap.id,
                               capability_version=self._cap.version, run_id=self._run_id, inputs=self._inputs,
                               escalation=esc, steps=list(self._reports))
@@ -359,7 +407,10 @@ class ReplayEngine:
                 return False
             time.sleep(self.cfg.poll_ms / 1000)
 
-    def _verify_checkpoint(self) -> None:
+    def _expectation_holds(self, step: Step) -> bool:
+        return step.expect is None or detect(step.expect.detect, self.surface.snapshot(), self.surface.url)
+
+    def _verify_checkpoint(self, *, allow_handoff: bool = True) -> None:
         deadline = time.time() + self.cfg.checkpoint_timeout_ms / 1000
         while True:
             snap = self.surface.snapshot()
@@ -367,8 +418,13 @@ class ReplayEngine:
                 self._log.event("checkpoint", verified=True)
                 return
             if time.time() >= deadline:
+                expected = describe(self._cap.checkpoint.detect)
+                if allow_handoff and self.escalation_handler and self.cfg.escalate_on_failure:
+                    self._escalate(None, None, kind="unrecoverable",
+                                   reason=f"[CHECKPOINT_FAILED] final checkpoint not satisfied; expected {expected}")
+                    return self._verify_checkpoint(allow_handoff=False)
                 raise _Stop(self._failed(None, "CHECKPOINT_FAILED", "final checkpoint not satisfied",
-                                         expected=describe(self._cap.checkpoint.detect), observed=observed(snap)))
+                                         expected=expected, observed=observed(snap)))
             time.sleep(self.cfg.poll_ms / 1000)
 
     # ------------------------------------------------------------ results
@@ -402,6 +458,7 @@ class ReplayEngine:
     def _finish(self, result: ReplayResult) -> ReplayResult:
         if not result.steps and self._reports:
             result.steps = list(self._reports)
+        result.interventions = list(self._interventions)
         result.evidence_dir = str(self._log.run_dir) if self._log else ""
         result.duration_ms = int((time.perf_counter() - self._started) * 1000)
         if self._log:
