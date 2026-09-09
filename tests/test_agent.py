@@ -285,7 +285,8 @@ def test_recorder_validates_checkpoint_and_infers_expectations(surface, policy, 
         act("button", "Search", action="click"),                   # no expect; URL does not change
         *HAPPY_PATH[6:9],
         {"reasoning": "done", "action": "done",
-         "checkpoint": "Member 12345 profile shows savings balance $5,432.10",   # a sentence, not screen text
+         # a sentence, not screen text - and it names the member, which must NOT become the checkpoint
+         "checkpoint": "Member 12345 · Oyelaran, Marcus profile shows savings balance $5,432.10",
          "outputs": {"savings_balance": "$5,432.10", "member_name": "Oyelaran, Marcus"}},
     ]
     run, llm, agent = run_happy(surface, policy, tmp_path, mock_server, script)
@@ -295,7 +296,7 @@ def test_recorder_validates_checkpoint_and_infers_expectations(surface, policy, 
     assert by_id["s06_click"].expect.detect.text == "Search Results"     # inferred from text that appeared
     detectors = cap.checkpoint.detect.detectors
     assert detectors[0].pattern == r"/members/[^/]+$"
-    assert detectors[1].text == "Member Profile"                          # sentence reduced to a visible fragment
+    assert detectors[1].text == "Member Profile"    # static label wins over the member's name (a value cell)
     assert "reduced to the visible fragment" in cap.provenance.notes
 
 

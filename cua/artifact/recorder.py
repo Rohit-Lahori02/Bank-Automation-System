@@ -22,8 +22,8 @@ from urllib.parse import urlsplit
 from cua.agent.loop import ActionRecord, DiscoveryRun
 from cua.policy.engine import PolicyEngine
 from cua.policy.redaction import Redactor
-from cua.surface.locators import Target, build_target
-from cua.surface.snapshot import Snapshot
+from cua.surface.locators import Target, build_target, grid_context
+from cua.surface.snapshot import Snapshot, TEXTUAL_ROLES
 
 from .profiles import conditions_for
 from .templating import STRATEGY_TEXT_FIELDS
@@ -108,12 +108,28 @@ def record_capability(run: DiscoveryRun, spec: RecorderSpec, *, policy: PolicyEn
 
 
 # ----------------------------------------------------------------- pieces
+def _static_texts(snapshot: Snapshot, inputs: dict[str, str]) -> list[str]:
+    """Texts that are UI chrome, not instance data.
+
+    A grid cell with a label to its left (a value in a key/value or data grid) is data about
+    THIS record - a member's name, a balance - and must never become a checkpoint or an
+    expectation, or the capability only works for the record it was discovered on.
+    """
+    out = []
+    for el in snapshot.elements:
+        if el.role not in TEXTUAL_ROLES or not el.name or _contains_input(el.name, inputs):
+            continue
+        if el.role == "cell" and grid_context(el, snapshot.elements)[0] is not None:
+            continue
+        out.append(el.name)
+    return out
+
+
 def _entry_step(run: DiscoveryRun, first_snapshot: Snapshot) -> Step:
     """Open the entry URL; expect something distinctive from the first screen the agent saw."""
     landmark = next((e.name for e in first_snapshot.elements if e.role == "heading" and 4 <= len(e.name) <= 40), None)
     if landmark is None:
-        landmark = next((t for t in first_snapshot.texts() if 4 <= len(t) <= 40 and not _contains_input(t, run.inputs)),
-                        None)
+        landmark = next((t for t in _static_texts(first_snapshot, run.inputs) if 4 <= len(t) <= 40), None)
     expect = Expectation(description=f'entry screen shows "{landmark}"', detect=TextVisible(text=landmark)) \
         if landmark else None
     return Step(id="s00_navigate", action=ActionKind.NAVIGATE, url=_parameterize(run.entry_url, run.inputs),
@@ -151,8 +167,8 @@ def _expectation(a: ActionRecord, run: DiscoveryRun, next_snapshot: Snapshot | N
     if a.action in {"click", "press", "select"} and next_snapshot is not None and a.digest_after != a.digest_before:
         # same URL, changed screen (a server-rendered form post): key on text that newly appeared
         before = set(a.snapshot.texts())
-        for text in next_snapshot.texts():
-            if text in before or not (4 <= len(text) <= 60) or _contains_input(text, run.inputs):
+        for text in _static_texts(next_snapshot, run.inputs):
+            if text in before or not (4 <= len(text) <= 60):
                 continue
             return Expectation(description=f'"{text}" appears', detect=TextVisible(text=text))
     return None
@@ -188,11 +204,13 @@ def _checkpoint(run: DiscoveryRun, final_snapshot: Snapshot | None) -> tuple[Che
 def _best_fragment(sentence: str, snapshot: Snapshot, inputs: dict[str, str]) -> str | None:
     """The visible text sharing the most words with the model's sentence (earliest on screen wins ties)."""
     words = {w for w in re.findall(r"[a-z]{4,}", sentence.casefold())}
-    best, best_score = None, 0
-    for text in snapshot.texts():
-        if not (4 <= len(text) <= 40) or _contains_input(text, inputs):
+    best, best_score = None, 0.0
+    for text in _static_texts(snapshot, inputs):
+        if not (4 <= len(text) <= 40):
             continue
         score = len(words & set(re.findall(r"[a-z]{4,}", text.casefold())))
+        if any(ch.isdigit() for ch in text):
+            score -= 0.5            # prefer pure labels over anything that looks like a value
         if score > best_score:
             best, best_score = text, score
     return best
