@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Member Inquiry{% endblock %}
+{% block content %}
+<font face="Arial" size="3"><b>Member Inquiry</b></font>
+<hr size="1" noshade>
+<form method="post" action="/members/search">
+<table cellpadding="4" cellspacing="0" border="0" class="formtbl">
+  <tr>
+    <td><font face="Arial" size="2">Member Number:</font></td>
+    <td><input type="text" name="q" size="10" maxlength="5" value="{{ q }}"></td>
+    <td><input type="submit" value="Search"></td>
+  </tr>
+</table>
+</form>
+{% if error %}
+<br><font face="Arial" size="2" color="#cc0000"><b>{{ error }}</b></font>
+{% endif %}
+{% if not_found %}
+<br><font face="Arial" size="2" color="#cc0000"><b>No member found for number {{ q }}.</b></font>
+<br><font face="Arial" size="2">Verify the member number and try again.</font>
+{% endif %}
+{% if result %}
+<br>
+<font face="Arial" size="2"><b>Search Results</b></font>
+<table cellpadding="4" cellspacing="0" border="1" bordercolor="#808080" width="560">
+  <tr bgcolor="#000080">
+    <td><font face="Arial" size="2" color="#ffffff"><b>Member No.</b></font></td>
+    <td><font face="Arial" size="2" color="#ffffff"><b>Name</b></font></td>
+    <td><font face="Arial" size="2" color="#ffffff"><b>Status</b></font></td>
+    <td><font face="Arial" size="2" color="#ffffff"><b>Action</b></font></td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td><font face="Arial" size="2">{{ result.member_id }}</font></td>
+    <td><font face="Arial" size="2">{{ result.last_name }}, {{ result.first_name }}</font></td>
+    <td><font face="Arial" size="2">{{ result.status }}</font></td>
+    <td><font face="Arial" size="2"><a href="/members/{{ result.member_id }}">View</a></font></td>
+  </tr>
+</table>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Accounts</title>
+<link rel="stylesheet" type="text/css" href="/static/legacy.css">
+</head>
+<body bgcolor="#ffffff" topmargin="4" leftmargin="4">
+{% if closed %}<font face="Arial" size="2" color="#006600"><b>Account {{ closed }} has been closed.</b></font><br>{% endif %}
+<table cellpadding="3" cellspacing="0" border="1" bordercolor="#808080" width="100%">
+  <tr bgcolor="#000080">
+    <td><font face="Arial" size="2" color="#ffffff"><b>Account No.</b></font></td>
+    <td><font face="Arial" size="2" color="#ffffff"><b>Type</b></font></td>
+    <td><font face="Arial" size="2" color="#ffffff"><b>Nickname</b></font></td>
+    <td align="right"><font face="Arial" size="2" color="#ffffff"><b>Balance</b></font></td>
+    <td><font face="Arial" size="2" color="#ffffff"><b>Status</b></font></td>
+    <td><font face="Arial" size="2" color="#ffffff"><b>Action</b></font></td>
+  </tr>
+  {% for a in member.accounts %}
+  <tr bgcolor="{{ '#ffffff' if loop.index is odd else '#f0f0f0' }}">
+    <td><font face="Arial" size="2">{{ a.account_no }}</font></td>
+    <td><font face="Arial" size="2">{{ a.type }}</font></td>
+    <td><font face="Arial" size="2">{{ a.nickname }}</font></td>
+    <td align="right"><font face="Arial" size="2">{{ a.balance | money }}</font></td>
+    <td><font face="Arial" size="2">{{ a.status }}</font></td>
+    <td><font face="Arial" size="2">{% if a.status == 'Open' %}<a href="/members/{{ member.member_id }}/accounts/{{ a.account_no }}/close" target="_top">Close Account</a>{% else %}&nbsp;{% endif %}</font></td>
+  </tr>
+  {% endfor %}
+</table>
+<font face="Arial" size="1" color="#555555">{{ member.accounts | length }} account(s) on file. Balances as of close of business.</font>
+</body>
+</html>

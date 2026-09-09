@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Main Menu{% endblock %}
+{% block content %}
+<font face="Arial" size="3"><b>Main Menu</b></font>
+<hr size="1" noshade>
+<font face="Arial" size="2">Welcome, <b>{{ session.user }}</b>. Select a function from the menu.</font>
+<br><br>
+<table cellpadding="6" cellspacing="0" border="1" bordercolor="#808080" width="520">
+  <tr bgcolor="#000080">
+    <td><font face="Arial" size="2" color="#ffffff"><b>Function</b></font></td>
+    <td><font face="Arial" size="2" color="#ffffff"><b>Description</b></font></td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td><font face="Arial" size="2"><a href="/members/search">Member Inquiry</a></font></td>
+    <td><font face="Arial" size="2">Look up a member by member number and view profile and accounts.</font></td>
+  </tr>
+  <tr bgcolor="#f0f0f0">
+    <td><font face="Arial" size="2"><a href="/console">Transactions</a></font></td>
+    <td><font face="Arial" size="2">Post deposits, withdrawals and transfers. (Unavailable in this build.)</font></td>
+  </tr>
+  <tr bgcolor="#ffffff">
+    <td><font face="Arial" size="2"><a href="/console">Reports</a></font></td>
+    <td><font face="Arial" size="2">End-of-day and audit reports. (Unavailable in this build.)</font></td>
+  </tr>
+</table>
+<br>
+<font face="Arial" size="1" color="#555555">Last sign on: today &nbsp; Terminal: TLR-07</font>
+{% endblock %}

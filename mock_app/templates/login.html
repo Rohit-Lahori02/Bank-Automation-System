@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Sign On{% endblock %}
+{% block content %}
+<font face="Arial" size="3"><b>Operator Sign On</b></font>
+<hr size="1" noshade>
+{% if notice %}<font face="Arial" size="2" color="#000080"><b>{{ notice }}</b></font><br><br>{% endif %}
+{% if error %}<font face="Arial" size="2" color="#cc0000"><b>{{ error }}</b></font><br><br>{% endif %}
+<form method="post" action="/login">
+<table cellpadding="4" cellspacing="0" border="0" class="formtbl">
+  <tr>
+    <td align="right"><font face="Arial" size="2">User ID:</font></td>
+    <td><input type="text" name="userid" size="16" maxlength="16"></td>
+  </tr>
+  <tr>
+    <td align="right"><font face="Arial" size="2">Password:</font></td>
+    <td><input type="password" name="passwd" size="16" maxlength="32"></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><input type="submit" value="Sign On"> &nbsp; <input type="reset" value="Clear"></td>
+  </tr>
+</table>
+</form>
+<br>
+<font face="Arial" size="1" color="#555555">Use of this system is restricted to authorized personnel. Sessions are logged.</font>
+{% endblock %}

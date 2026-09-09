@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Member {{ member.member_id }}{% endblock %}
+{% block content %}
+<font face="Arial" size="3"><b>Member Profile</b></font>
+<hr size="1" noshade>
+<table cellpadding="3" cellspacing="0" border="0" width="560" class="proftbl">
+  <tr><td width="140"><font face="Arial" size="2"><b>Member Number:</b></font></td><td><font face="Arial" size="2">{{ member.member_id }}</font></td></tr>
+  <tr><td><font face="Arial" size="2"><b>Name:</b></font></td><td><font face="Arial" size="2">{{ member.last_name }}, {{ member.first_name }}</font></td></tr>
+  <tr><td><font face="Arial" size="2"><b>Status:</b></font></td><td><font face="Arial" size="2">{{ member.status }}</font></td></tr>
+  <tr><td><font face="Arial" size="2"><b>Member Since:</b></font></td><td><font face="Arial" size="2">{{ member.member_since }}</font></td></tr>
+  <tr><td><font face="Arial" size="2"><b>Address:</b></font></td><td><font face="Arial" size="2">{{ member.address }}</font></td></tr>
+  <tr><td><font face="Arial" size="2"><b>Phone:</b></font></td><td><font face="Arial" size="2">{{ member.phone }}</font></td></tr>
+  <tr><td><font face="Arial" size="2"><b>E-mail:</b></font></td><td><font face="Arial" size="2">{{ member.email }}</font></td></tr>
+  <tr><td><font face="Arial" size="2"><b>Tax ID (last 4):</b></font></td><td><font face="Arial" size="2">***-**-{{ member.tax_id_last4 }}</font></td></tr>
+</table>
+<br>
+<font face="Arial" size="2"><b>Accounts</b></font><br>
+<iframe name="acctframe" src="/members/{{ member.member_id }}/accounts" width="640" height="200" frameborder="1" scrolling="auto"></iframe>
+<br><br>
+<font face="Arial" size="2">
+[ <a href="/members/{{ member.member_id }}/subaccount/new">Open Sub-Account</a> ]
+&nbsp; [ <a href="/members/search">New Search</a> ]
+</font>
+{% endblock %}

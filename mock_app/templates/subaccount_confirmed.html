@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Sub-Account Opened{% endblock %}
+{% block content %}
+<font face="Arial" size="3"><b>Sub-Account Opened</b></font>
+<hr size="1" noshade>
+<font face="Arial" size="2" color="#006600"><b>The sub-account was opened successfully.</b></font>
+<br><br>
+<table cellpadding="4" cellspacing="0" border="1" bordercolor="#808080" width="480">
+  <tr bgcolor="#f0f0f0"><td width="160"><font face="Arial" size="2"><b>Confirmation Number</b></font></td><td><font face="Arial" size="2"><b>{{ result.confirmation_no }}</b></font></td></tr>
+  <tr><td><font face="Arial" size="2"><b>Member Number</b></font></td><td><font face="Arial" size="2">{{ member.member_id }}</font></td></tr>
+  <tr bgcolor="#f0f0f0"><td><font face="Arial" size="2"><b>New Account No.</b></font></td><td><font face="Arial" size="2">{{ result.account.account_no }}</font></td></tr>
+  <tr><td><font face="Arial" size="2"><b>Nickname</b></font></td><td><font face="Arial" size="2">{{ result.account.nickname }}</font></td></tr>
+  <tr bgcolor="#f0f0f0"><td><font face="Arial" size="2"><b>Opening Balance</b></font></td><td><font face="Arial" size="2">{{ result.account.balance | money }}</font></td></tr>
+</table>
+<br>
+<font face="Arial" size="2">[ <a href="/members/{{ member.member_id }}">Return to Member Profile</a> ] &nbsp; [ <a href="/members/search">New Search</a> ]</font>
+{% endblock %}

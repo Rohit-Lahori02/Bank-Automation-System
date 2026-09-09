@@ -1,0 +1,109 @@
+{
+  "_note": "Synthetic demo data only. No real people, accounts, or identifiers.",
+  "members": [
+    {
+      "member_id": "10001",
+      "first_name": "Alicia",
+      "last_name": "Brandt",
+      "status": "Active",
+      "member_since": "2011-04-18",
+      "address": "418 Pelican Way, Duluth, MN 55802",
+      "phone": "(218) 555-0142",
+      "email": "a.brandt@example.com",
+      "tax_id_last4": "4471",
+      "accounts": [
+        {"account_no": "10001-S01", "type": "Savings", "nickname": "Primary Share", "balance": 1240.50, "status": "Open"},
+        {"account_no": "10001-D01", "type": "Checking", "nickname": "Everyday Draft", "balance": 312.07, "status": "Open"}
+      ]
+    },
+    {
+      "member_id": "10002",
+      "first_name": "Priya",
+      "last_name": "Natarajan",
+      "status": "Active",
+      "member_since": "2019-09-02",
+      "address": "77 Lakeshore Dr Apt 3B, Superior, WI 54880",
+      "phone": "(715) 555-0199",
+      "email": "priya.n@example.com",
+      "tax_id_last4": "9130",
+      "accounts": [
+        {"account_no": "10002-S01", "type": "Savings", "nickname": "Primary Share", "balance": 88.25, "status": "Open"}
+      ]
+    },
+    {
+      "member_id": "12345",
+      "first_name": "Marcus",
+      "last_name": "Oyelaran",
+      "status": "Active",
+      "member_since": "2006-01-30",
+      "address": "2201 Ironwood Ct, Hermantown, MN 55811",
+      "phone": "(218) 555-0107",
+      "email": "m.oyelaran@example.com",
+      "tax_id_last4": "2088",
+      "accounts": [
+        {"account_no": "12345-S01", "type": "Savings", "nickname": "Primary Share", "balance": 5432.10, "status": "Open"},
+        {"account_no": "12345-D01", "type": "Checking", "nickname": "Household", "balance": 1020.00, "status": "Open"},
+        {"account_no": "12345-S02", "type": "Savings", "nickname": "Vacation Club", "balance": 250.00, "status": "Open"}
+      ]
+    },
+    {
+      "member_id": "20077",
+      "first_name": "Dolores",
+      "last_name": "Whitfield",
+      "status": "Active",
+      "member_since": "1998-11-12",
+      "address": "9 Harbor View Rd, Two Harbors, MN 55616",
+      "phone": "(218) 555-0163",
+      "email": "d.whitfield@example.com",
+      "tax_id_last4": "5519",
+      "accounts": [
+        {"account_no": "20077-S01", "type": "Savings", "nickname": "Primary Share", "balance": 15900.00, "status": "Open"},
+        {"account_no": "20077-C01", "type": "Certificate", "nickname": "24 Month CD", "balance": 10000.00, "status": "Open"},
+        {"account_no": "20077-D01", "type": "Checking", "nickname": "Bills", "balance": 2310.44, "status": "Closed"}
+      ]
+    },
+    {
+      "member_id": "31415",
+      "first_name": "Tomas",
+      "last_name": "Ekberg",
+      "status": "Dormant",
+      "member_since": "2015-06-22",
+      "address": "1500 Birch St, Cloquet, MN 55720",
+      "phone": "(218) 555-0121",
+      "email": "t.ekberg@example.com",
+      "tax_id_last4": "7702",
+      "accounts": [
+        {"account_no": "31415-S01", "type": "Savings", "nickname": "Primary Share", "balance": 0.00, "status": "Open"},
+        {"account_no": "31415-D01", "type": "Checking", "nickname": "Everyday Draft", "balance": 45.10, "status": "Open"}
+      ]
+    },
+    {
+      "member_id": "40403",
+      "first_name": "Restricted",
+      "last_name": "Record",
+      "status": "Active",
+      "member_since": "2001-03-05",
+      "address": "Withheld",
+      "phone": "Withheld",
+      "email": "withheld@example.com",
+      "tax_id_last4": "0000",
+      "accounts": [
+        {"account_no": "40403-S01", "type": "Savings", "nickname": "Primary Share", "balance": 999999.99, "status": "Open"}
+      ]
+    },
+    {
+      "member_id": "50500",
+      "first_name": "Faulty",
+      "last_name": "Record",
+      "status": "Active",
+      "member_since": "2020-02-29",
+      "address": "1 Null Pointer Ln, Nowhere, MN 55000",
+      "phone": "(218) 555-0000",
+      "email": "faulty@example.com",
+      "tax_id_last4": "1111",
+      "accounts": [
+        {"account_no": "50500-S01", "type": "Savings", "nickname": "Primary Share", "balance": 10.00, "status": "Open"}
+      ]
+    }
+  ]
+}

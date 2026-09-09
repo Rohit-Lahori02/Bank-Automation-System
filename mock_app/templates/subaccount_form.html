@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Open Sub-Account{% endblock %}
+{% block content %}
+<font face="Arial" size="3"><b>Open Sub-Account</b></font>
+<hr size="1" noshade>
+<font face="Arial" size="2">Member: <b>{{ member.member_id }}</b> &nbsp; {{ member.last_name }}, {{ member.first_name }}</font>
+<br><br>
+{% if errors %}
+<table cellpadding="4" cellspacing="0" border="1" bordercolor="#cc0000" bgcolor="#fff0f0" width="520">
+  <tr><td><font face="Arial" size="2" color="#cc0000"><b>Please correct the following:</b><br>
+  {% for e in errors %}&bull; {{ e }}<br>{% endfor %}
+  </font></td></tr>
+</table>
+<br>
+{% endif %}
+<form method="post" action="/members/{{ member.member_id }}/subaccount/new">
+<table cellpadding="4" cellspacing="0" border="0" class="formtbl">
+  <tr>
+    <td align="right"><font face="Arial" size="2">Product Type:</font></td>
+    <td><select name="product">
+      {% for code, label in products.items() %}
+      <option value="{{ code }}" {% if form.product == code %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select></td>
+  </tr>
+  <tr>
+    <td align="right"><font face="Arial" size="2">Nickname:</font></td>
+    <td><input type="text" name="nickname" size="30" maxlength="30" value="{{ form.nickname }}"></td>
+  </tr>
+  <tr>
+    <td align="right"><font face="Arial" size="2">Initial Deposit ($):</font></td>
+    <td><input type="text" name="deposit" size="12" value="{{ form.deposit }}"> <font face="Arial" size="1" color="#555555">minimum $25.00</font></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><input type="submit" value="Continue"> &nbsp; <a href="/members/{{ member.member_id }}"><font face="Arial" size="2">Cancel</font></a></td>
+  </tr>
+</table>
+</form>
+{% endblock %}

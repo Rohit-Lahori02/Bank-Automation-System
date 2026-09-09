@@ -1,0 +1,56 @@
+# Safety policy for the computer-use agent and the replay engine.
+# Loaded by cua.policy.engine. Everything not explicitly allowed is denied.
+
+version: 1
+
+# Origins the agent may navigate to or act within. Anything else is blocked.
+allowed_origins:
+  - "http://127.0.0.1:8000"
+  - "http://localhost:8000"
+
+# Path patterns (regex, matched against the URL path) the agent may visit.
+allowed_paths:
+  - "^/login$"
+  - "^/logout$"
+  - "^/console$"
+  - "^/members(/.*)?$"
+
+# Paths that are never allowed, even if they match an allowed pattern above.
+denied_paths:
+  - "^/__chaos"          # test-harness controls are not a business surface
+  - "^/admin(/.*)?$"
+
+# Action types the agent may perform on the surface.
+allowed_actions:
+  - navigate
+  - click
+  - type
+  - select
+  - extract
+  - wait
+
+# Risk classification. A step is "risky" if its target's accessible name matches
+# any pattern below, or if the artifact marks the step irreversible.
+risky_target_patterns:
+  - "(?i)\\bconfirm\\b"
+  - "(?i)\\bsubmit\\b"
+  - "(?i)\\btransfer\\b"
+  - "(?i)\\bapprove\\b"
+  - "(?i)\\bclose account\\b"
+  - "(?i)\\bdelete\\b"
+
+# How risky actions are handled:
+#   block    - refuse the action and fail the run
+#   escalate - pause and hand the live session to a human for confirmation
+#   flag     - perform the action but mark it in the evidence log
+risky_action_mode: escalate
+
+# Field names whose values are treated as sensitive and redacted from
+# artifacts, logs, snapshots and screenshots' metadata.
+sensitive_field_patterns:
+  - "(?i)password"
+  - "(?i)passwd"
+  - "(?i)ssn"
+  - "(?i)tax[_ ]?id"
+  - "(?i)token"
+  - "(?i)secret"
