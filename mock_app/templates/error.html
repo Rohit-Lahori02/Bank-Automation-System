@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-<font face="Arial" size="3"><b>{{ title }}</b></font>
-<hr size="1" noshade>
-<table cellpadding="6" cellspacing="0" border="1" bordercolor="#cc0000" bgcolor="#fff0f0" width="560">
-  <tr><td><font face="Arial" size="2" color="#cc0000"><b>Error {{ code }}</b></font><br>
-  <font face="Arial" size="2">{{ message }}</font></td></tr>
-</table>
-<br>
-<font face="Arial" size="2">[ <a href="/members/search">Member Inquiry</a> ] &nbsp; [ <a href="/console">Main Menu</a> ]</font>
+<div class="pagetitle">{{ title }}</div>
+<div class="pagesub">The request could not be completed.</div>
+<div class="alert alert-error"><b>Error {{ code }}</b><br>{{ message }}</div>
+<div class="linkrow">
+  <a href="/members/search">Member Inquiry</a>
+  <a href="/console">Main Menu</a>
+</div>
 {% endblock %}

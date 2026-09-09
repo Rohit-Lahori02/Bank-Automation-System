@@ -2,48 +2,53 @@
 <head>
 <title>{% block title %}Console{% endblock %} - HFCU Member Servicing</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/static/legacy.css">
 </head>
-<body bgcolor="#d4d0c8" topmargin="0" leftmargin="0">
-<table width="100%" cellpadding="4" cellspacing="0" border="0" class="hdr">
+<body>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" class="hdr">
   <tr>
-    <td class="brand"><font size="4" face="Arial"><b>Harbor Federal Credit Union</b></font><br>
-      <font size="2" face="Arial">Member Servicing Console &nbsp;&middot;&nbsp; CoreLink v{{ app_version }}</font></td>
-    <td align="right" valign="top"><font size="2" face="Arial">
-      {% if session %}Signed on as <b>{{ session.user }}</b> &nbsp;|&nbsp; <a href="/logout">Sign Off</a>{% else %}Not signed on{% endif %}
-    </font></td>
+    <td>
+      <div class="brand">Harbor Federal Credit Union</div>
+      <div class="sub">Member Servicing Console <span class="ver">CoreLink v{{ app_version }}</span></div>
+    </td>
+    <td align="right" valign="middle" class="who">
+      {% if session %}Signed on as <b>{{ session.user }}</b> &nbsp;&middot;&nbsp; <a href="/logout">Sign Off</a>{% else %}Not signed on{% endif %}
+    </td>
   </tr>
 </table>
-<table width="100%" cellpadding="8" cellspacing="0" border="0">
-  <tr valign="top">
+<table class="shell" cellpadding="0" cellspacing="0" border="0">
+  <tr>
     {% if session %}
-    <td width="160" class="nav" nowrap>
-      <font size="2" face="Arial"><b>MENU</b></font><br><br>
-      <font size="2" face="Arial">
-      &raquo; <a href="/console">Main Menu</a><br>
-      &raquo; <a href="/members/search">Member Inquiry</a><br>
-      &raquo; <a href="/console">Transactions</a><br>
-      &raquo; <a href="/console">Reports</a><br>
-      &raquo; <a href="/console">Help Desk</a>
-      </font>
+    <td class="nav">
+      <div class="navbox">
+        <div class="navhead">Menu</div>
+        <a href="/console">Main Menu</a>
+        <a href="/members/search">Member Inquiry</a>
+        <a href="/console">Transactions</a>
+        <a href="/console">Reports</a>
+        <a href="/console">Help Desk</a>
+      </div>
     </td>
     {% endif %}
     <td class="content">
       {% if dialog %}
       <div class="sysdlg">
-        <table class="sysdlgbox" cellpadding="8" cellspacing="0" border="1" bordercolor="#000080">
-          <tr><td class="sysdlgtitle"><font face="Arial" size="2" color="#ffffff"><b>System Maintenance Notice</b></font></td></tr>
-          <tr><td bgcolor="#ffffff"><font face="Arial" size="2">Scheduled maintenance will occur tonight between 11:00 PM and 2:00 AM CT.<br>Some functions may be temporarily unavailable.</font></td></tr>
-          <tr><td bgcolor="#ffffff" align="center"><input type="button" value="OK" onclick="document.querySelector('.sysdlg').style.display='none';return false;"></td></tr>
+        <table class="sysdlgbox" cellpadding="0" cellspacing="0" border="0">
+          <tr><td class="sysdlgtitle">System Maintenance Notice</td></tr>
+          <tr><td class="sysdlgbody">Scheduled maintenance will occur tonight between 11:00 PM and 2:00 AM CT. Some functions may be temporarily unavailable.</td></tr>
+          <tr><td class="sysdlgfoot"><input type="button" value="OK" onclick="document.querySelector('.sysdlg').style.display='none';return false;"></td></tr>
         </table>
       </div>
       {% endif %}
+      <div class="card">
       {% block content %}{% endblock %}
+      </div>
     </td>
   </tr>
 </table>
-<table width="100%" cellpadding="4" cellspacing="0" border="0">
-  <tr><td class="footer"><font size="1" face="Arial">CoreLink Servicing Platform &copy; 1998-2026 Meridian Core Systems, Inc. &nbsp; Unauthorized access is prohibited and monitored.</font></td></tr>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr><td class="footer">CoreLink Servicing Platform &copy; 1998-2026 Meridian Core Systems, Inc. &nbsp;&middot;&nbsp; Unauthorized access is prohibited and monitored.</td></tr>
 </table>
 </body>
 </html>

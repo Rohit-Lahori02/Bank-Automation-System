@@ -1,26 +1,112 @@
-/* CoreLink v4 legacy skin. Intentionally table-era styling. */
-body { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; }
-a { color: #000080; }
-a:visited { color: #000080; }
-a:hover { color: #cc0000; }
-table.hdr { background-color: #000080; border-bottom: 3px solid #c0c0c0; }
-table.hdr td.brand { color: #ffffff; }
-table.hdr td.brand font { color: #ffffff; }
-table.hdr td font { color: #ffffff; }
-table.hdr a { color: #ffff99; }
-td.nav { background-color: #c0c0c0; border-right: 2px solid #808080; }
-td.content { background-color: #ffffff; border: 1px solid #808080; }
-td.footer { background-color: #c0c0c0; border-top: 2px solid #808080; color: #333333; }
-table.formtbl td { padding: 4px; }
-input, select { font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+/* CoreLink Member Servicing Console skin.
+ *
+ * Visually modern, structurally legacy on purpose: the markup underneath is still
+ * table-based layout, no test IDs, no <label for>, an <iframe> accounts panel, and
+ * generic <input type=submit> controls. Only the paint changed.
+ */
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Segoe UI", Inter, system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px; line-height: 1.45; color: #1e2733; background: #eef2f7;
+}
+a { color: #1a56b3; text-decoration: none; }
+a:hover { color: #0f3d85; text-decoration: underline; }
+
+/* ---- header ------------------------------------------------------------ */
+table.hdr { background: linear-gradient(90deg, #0b2a5b 0%, #16418a 100%); color: #ffffff; }
+table.hdr td { padding: 14px 24px; }
+table.hdr .brand { font-size: 19px; font-weight: 600; letter-spacing: .2px; }
+table.hdr .sub { font-size: 12px; opacity: .8; margin-top: 2px; }
+table.hdr .ver { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px;
+  background: rgba(255,255,255,.16); font-size: 11px; }
+table.hdr .who { font-size: 13px; opacity: .95; }
+table.hdr .who b { font-weight: 600; }
+table.hdr a { color: #dbe7ff; }
+table.hdr a:hover { color: #ffffff; }
+
+/* ---- shell ------------------------------------------------------------- */
+table.shell { width: 100%; border-collapse: collapse; }
+table.shell > tbody > tr > td { padding: 20px 24px; vertical-align: top; }
+td.nav { width: 210px; padding-right: 0 !important; }
+td.nav .navbox { background: #ffffff; border: 1px solid #dbe2ec; border-radius: 10px; padding: 10px 0; }
+td.nav .navhead { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: #6b7a90;
+  text-transform: uppercase; padding: 6px 16px 8px; }
+td.nav a { display: block; padding: 8px 16px; color: #1e2733; border-left: 3px solid transparent; }
+td.nav a:hover { background: #f3f6fb; text-decoration: none; border-left-color: #16418a; }
+td.content .card { background: #ffffff; border: 1px solid #dbe2ec; border-radius: 10px;
+  padding: 24px 28px 28px; box-shadow: 0 1px 2px rgba(16,32,64,.04); max-width: 900px; }
+.pagetitle { font-size: 20px; font-weight: 600; margin: 0 0 4px; color: #0b2a5b; }
+.pagesub { color: #6b7a90; font-size: 13px; margin-bottom: 18px; }
+hr.rule { border: 0; border-top: 1px solid #e6ebf2; margin: 14px 0 18px; }
+.muted { color: #6b7a90; font-size: 12px; }
+.section { font-size: 13px; font-weight: 600; color: #34425a; margin: 18px 0 8px; letter-spacing: .02em; }
+
+/* ---- footer ------------------------------------------------------------ */
+td.footer { padding: 10px 24px 24px; color: #8592a6; font-size: 11.5px; }
+
+/* ---- forms ------------------------------------------------------------- */
+table.formtbl { border-collapse: separate; border-spacing: 0 10px; }
+table.formtbl td { padding: 0 8px 0 0; vertical-align: middle; }
+table.formtbl td.lbl { color: #41506a; font-size: 13px; text-align: right; padding-right: 14px; white-space: nowrap; }
+input[type=text], input[type=password], select {
+  font: inherit; padding: 8px 10px; border: 1px solid #c5cfdd; border-radius: 6px;
+  background: #ffffff; color: #1e2733; min-width: 220px;
+}
+input[type=text]:focus, input[type=password]:focus, select:focus {
+  outline: none; border-color: #2b6cd9; box-shadow: 0 0 0 3px rgba(43,108,217,.18);
+}
+input[type=text].short { min-width: 140px; }
 input[type=submit], input[type=button], input[type=reset] {
-  background-color: #d4d0c8; border: 2px outset #ffffff; padding: 2px 10px;
+  font: inherit; font-weight: 600; padding: 8px 18px; border-radius: 6px; cursor: pointer;
+  border: 1px solid #16418a; background: #16418a; color: #ffffff;
 }
-div.sysdlg {
-  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-  background-color: rgba(64, 64, 64, 0.35); z-index: 1000;
-}
-table.sysdlgbox {
-  position: absolute; left: 35%; top: 30%; width: 360px; background-color: #ffffff;
-}
-td.sysdlgtitle { background-color: #000080; }
+input[type=submit]:hover, input[type=button]:hover { background: #0f3470; }
+input[type=reset], input.secondary { background: #ffffff; color: #1e2733; border-color: #c5cfdd; }
+input[type=reset]:hover, input.secondary:hover { background: #f3f6fb; }
+input.danger { background: #b3261e; border-color: #b3261e; }
+input.danger:hover { background: #8f1d17; }
+.actions { margin-top: 6px; }
+.actions a { margin-left: 12px; font-size: 13px; }
+.linkrow { margin-top: 20px; font-size: 13px; }
+.linkrow a { margin-right: 18px; }
+
+/* ---- alerts ------------------------------------------------------------ */
+.alert { border-radius: 8px; padding: 10px 14px; margin: 0 0 16px; font-size: 13px; border: 1px solid; }
+.alert-error { background: #fdecec; border-color: #f3b9b4; color: #8f1d17; }
+.alert-info { background: #e9f1ff; border-color: #bcd2f7; color: #0f3470; }
+.alert-success { background: #e8f7ee; border-color: #b6e3c6; color: #135c2f; }
+.alert-warn { background: #fff6e5; border-color: #f5d9a3; color: #7a4d00; }
+.alert b { font-weight: 600; }
+.alert ul { margin: 6px 0 0 18px; padding: 0; }
+.code { font-family: Consolas, "SF Mono", Menlo, monospace; font-size: 12px; color: #6b7a90; }
+
+/* ---- data grids -------------------------------------------------------- */
+table.grid { border-collapse: collapse; width: 100%; font-size: 13px; }
+table.grid tr.head td { background: #f3f6fb; color: #41506a; font-weight: 600; font-size: 12px;
+  letter-spacing: .03em; text-transform: uppercase; border-bottom: 1px solid #dbe2ec; padding: 9px 12px; }
+table.grid td { padding: 10px 12px; border-bottom: 1px solid #edf1f6; }
+table.grid tr:not(.head):hover td { background: #fafcff; }
+table.grid td.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.kv { border-collapse: collapse; font-size: 13.5px; }
+table.kv td { padding: 7px 0; border-bottom: 1px solid #f0f3f8; }
+table.kv td.k { color: #6b7a90; width: 170px; padding-right: 16px; }
+.pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
+.pill-open, .pill-active { background: #e8f7ee; color: #135c2f; }
+.pill-closed, .pill-dormant { background: #f1f3f6; color: #5b6778; }
+
+/* ---- accounts iframe --------------------------------------------------- */
+iframe.acct { width: 100%; height: 210px; border: 1px solid #dbe2ec; border-radius: 8px; background: #ffffff; }
+body.frame { background: #ffffff; padding: 8px 10px; }
+
+/* ---- modal ------------------------------------------------------------- */
+div.sysdlg { position: fixed; inset: 0; background: rgba(11,42,91,.45); z-index: 1000; }
+table.sysdlgbox { position: absolute; left: 50%; top: 32%; transform: translateX(-50%); width: 420px;
+  background: #ffffff; border-radius: 10px; border-collapse: collapse; overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,.25); }
+table.sysdlgbox td { padding: 14px 18px; }
+td.sysdlgtitle { background: #16418a; color: #ffffff; font-weight: 600; }
+td.sysdlgbody { color: #34425a; font-size: 13.5px; }
+td.sysdlgfoot { text-align: right; border-top: 1px solid #e6ebf2; }

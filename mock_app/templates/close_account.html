@@ -1,20 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Close Account{% endblock %}
 {% block content %}
-<font face="Arial" size="3"><b>Close Account</b></font>
-<hr size="1" noshade>
-<table cellpadding="4" cellspacing="0" border="1" bordercolor="#cc0000" bgcolor="#fff0f0" width="520">
-  <tr><td><font face="Arial" size="2" color="#cc0000"><b>Warning:</b> Closing an account is permanent. Any remaining balance will be transferred to the primary share account per policy 4.7.</font></td></tr>
+<div class="pagetitle">Close Account</div>
+<div class="pagesub">Member {{ member.member_id }} &nbsp;&middot;&nbsp; {{ member.last_name }}, {{ member.first_name }}</div>
+<div class="alert alert-error"><b>Warning:</b> Closing an account is permanent. Any remaining balance will be transferred to the primary share account per policy 4.7.</div>
+<table class="kv" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tr><td class="k">Account</td><td>{{ account.account_no }}</td></tr>
+  <tr><td class="k">Type</td><td>{{ account.type }}</td></tr>
+  <tr><td class="k">Nickname</td><td>{{ account.nickname }}</td></tr>
+  <tr><td class="k">Balance</td><td>{{ account.balance | money }}</td></tr>
 </table>
-<br>
-<table cellpadding="4" cellspacing="0" border="0">
-  <tr><td><font face="Arial" size="2"><b>Member:</b></font></td><td><font face="Arial" size="2">{{ member.member_id }} &nbsp; {{ member.last_name }}, {{ member.first_name }}</font></td></tr>
-  <tr><td><font face="Arial" size="2"><b>Account:</b></font></td><td><font face="Arial" size="2">{{ account.account_no }} &nbsp; {{ account.type }} &nbsp; "{{ account.nickname }}"</font></td></tr>
-  <tr><td><font face="Arial" size="2"><b>Balance:</b></font></td><td><font face="Arial" size="2">{{ account.balance | money }}</font></td></tr>
-</table>
-<br>
-<form method="post" action="/members/{{ member.member_id }}/accounts/{{ account.account_no }}/close">
-  <input type="submit" value="Confirm Close"> &nbsp;
-  <a href="/members/{{ member.member_id }}"><font face="Arial" size="2">Cancel</font></a>
+<form method="post" action="/members/{{ member.member_id }}/accounts/{{ account.account_no }}/close" class="actions" style="margin-top:20px">
+  <input type="submit" value="Confirm Close" class="danger">
+  <a href="/members/{{ member.member_id }}">Cancel</a>
 </form>
 {% endblock %}

@@ -1,21 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Review Sub-Account{% endblock %}
 {% block content %}
-<font face="Arial" size="3"><b>Review New Sub-Account</b></font>
-<hr size="1" noshade>
-<font face="Arial" size="2">Please review the details below. Press <b>Confirm</b> to open the account. This action cannot be reversed from this screen.</font>
-<br><br>
-<table cellpadding="4" cellspacing="0" border="1" bordercolor="#808080" width="480">
-  <tr bgcolor="#f0f0f0"><td width="160"><font face="Arial" size="2"><b>Member Number</b></font></td><td><font face="Arial" size="2">{{ member.member_id }}</font></td></tr>
-  <tr><td><font face="Arial" size="2"><b>Member Name</b></font></td><td><font face="Arial" size="2">{{ member.last_name }}, {{ member.first_name }}</font></td></tr>
-  <tr bgcolor="#f0f0f0"><td><font face="Arial" size="2"><b>Product Type</b></font></td><td><font face="Arial" size="2">{{ product_name }}</font></td></tr>
-  <tr><td><font face="Arial" size="2"><b>Nickname</b></font></td><td><font face="Arial" size="2">{{ pending.nickname }}</font></td></tr>
-  <tr bgcolor="#f0f0f0"><td><font face="Arial" size="2"><b>Initial Deposit</b></font></td><td><font face="Arial" size="2">{{ pending.deposit | money }}</font></td></tr>
+<div class="pagetitle">Review New Sub-Account</div>
+<div class="pagesub">Please review the details below. Press <b>Confirm</b> to open the account.</div>
+<div class="alert alert-warn"><b>This action cannot be reversed from this screen.</b> The account will be opened and funded immediately on confirmation.</div>
+<table class="kv" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tr><td class="k">Member Number</td><td>{{ member.member_id }}</td></tr>
+  <tr><td class="k">Member Name</td><td>{{ member.last_name }}, {{ member.first_name }}</td></tr>
+  <tr><td class="k">Product Type</td><td>{{ product_name }}</td></tr>
+  <tr><td class="k">Nickname</td><td>{{ pending.nickname }}</td></tr>
+  <tr><td class="k">Initial Deposit</td><td>{{ pending.deposit | money }}</td></tr>
 </table>
-<br>
-<form method="post" action="/members/{{ member.member_id }}/subaccount/confirm">
-  <input type="submit" value="Confirm"> &nbsp;
-  <a href="/members/{{ member.member_id }}/subaccount/new"><font face="Arial" size="2">Edit</font></a> &nbsp;
-  <a href="/members/{{ member.member_id }}"><font face="Arial" size="2">Cancel</font></a>
+<form method="post" action="/members/{{ member.member_id }}/subaccount/confirm" class="actions" style="margin-top:20px">
+  <input type="submit" value="Confirm">
+  <a href="/members/{{ member.member_id }}/subaccount/new">Edit</a>
+  <a href="/members/{{ member.member_id }}">Cancel</a>
 </form>
 {% endblock %}
