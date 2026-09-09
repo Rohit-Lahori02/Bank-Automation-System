@@ -246,6 +246,12 @@ The human decides one of:
 - **approved** — automation may perform the held step itself
 - **aborted** — the run ends as `escalated`
 
+**Auto-resume.** If the human performs the held step in the live window and the step's own
+expected state then appears on screen, the handoff resolves itself as `resumed` (logged as
+`handoff_auto_resume`) and automation takes control back without a second round-trip. Anything
+short of that - a partial fix, a different screen, no action - still waits for an explicit
+decision. Disable with `--no-auto-resume` if you want every handoff to end with a click.
+
 Two operator surfaces, both real, both minimal:
 
 - **Operator console** (`--handoff console`, default): a small web UI on

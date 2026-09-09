@@ -51,6 +51,7 @@ class InterventionRequest(BaseModel):
     control_token: str = ""
     status: str = "pending"         # pending | claimed | approved | resumed | aborted | timeout
     decided_at: float | None = None
+    auto_resumed: bool = False      # the step's expected state was observed after the human acted
     human_actions: list[HumanAction] = Field(default_factory=list)
 
     @property

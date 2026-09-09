@@ -52,6 +52,7 @@ class ReplayConfig:
     max_recoveries_per_step: int = 3
     subflow_depth: int = 1
     escalate_on_failure: bool = True   # hand unrecoverable state failures to a human when a handler exists
+    auto_resume: bool = True           # take control back once a human acted and the step's expected state holds
     before_step: Callable[[str], None] | None = None   # test/demo hook: inject faults before a step
 
 
@@ -295,6 +296,8 @@ class ReplayEngine:
         esc = Escalation(step_id=step.id if step else None, reason=reason, kind=kind, url=self.surface.url,
                          screenshot=str(shot) if shot else None, screen=snap.render(max_elements=80))
         self._log.event("escalation", step=esc.step_id, escalation_kind=kind, reason=reason)
+        # what "the human did the step" looks like on screen, for the handoff's auto-resume check
+        self._resume_check = (lambda: self._expectation_holds(step)) if step is not None and step.expect else None
         raw = self.escalation_handler(esc, self) if self.escalation_handler else None
         details = raw if isinstance(raw, dict) else {"decision": raw}
         decision = details.get("decision") or "denied"

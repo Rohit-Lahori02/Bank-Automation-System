@@ -32,8 +32,8 @@ def _handoff_setup(mode: str, surface, control, redactor, timeout_s: float):
     def announce(request) -> None:
         typer.echo("")
         typer.echo(f"*** INTERVENTION REQUIRED [{request.kind}] at {request.step_id}: {request.reason}")
-        typer.echo("    The live browser window is now the operator's. Do the manual steps there, then DECIDE")
-        typer.echo("    (automation stays paused until you do; your actions in the window are recorded below):")
+        typer.echo("    The live browser window is now the operator's. Do the manual steps there. If the step's")
+        typer.echo("    expected screen appears afterwards, automation resumes by itself; otherwise decide:")
         if console:
             typer.echo(f"    operator console: {console.url}/interventions/{request.id}")
         typer.echo(f"    or from a shell:  cua resume \"{request.evidence_dir}\" --decision resumed|approved|aborted")
@@ -43,8 +43,14 @@ def _handoff_setup(mode: str, surface, control, redactor, timeout_s: float):
     def captured(request, action) -> None:
         typer.echo(f"    captured human action: {action.render()}")
 
+    def decided(request) -> None:
+        if request.auto_resumed:
+            typer.echo("    automation resumed on its own: the step's expected state appeared after your actions")
+        else:
+            typer.echo(f"    decision received: {request.status}; control back with automation")
+
     controller = HandoffController(surface=surface, control=control, redactor=redactor, timeout_s=timeout_s,
-                                   on_escalate=announce, on_human_action=captured)
+                                   on_escalate=announce, on_human_action=captured, on_decision=decided)
     if mode == "console":
         console = ConsoleServer(controller, port=CONSOLE_PORT).start()
         typer.echo(f"operator console listening at {console.url}")
@@ -209,6 +215,8 @@ def replay(
     keep_open: bool = typer.Option(False, "--keep-open", help="Keep the browser open at the end until Enter is pressed"),
     overlay: Path = typer.Option(None, help="Tenant overlay JSON to apply before replaying (see overlays/)"),
     entry_url_override: str = typer.Option(None, "--entry-url", help="Point the recording at another instance without an overlay"),
+    auto_resume: bool = typer.Option(True, "--auto-resume/--no-auto-resume",
+                                     help="Resume by itself once a human acted and the step's expected state holds"),
 ) -> None:
     """Replay a capability deterministically (no model) and report the structured result.
 
@@ -219,7 +227,7 @@ def replay(
     from cua.handoff import ReplayHandoff
     from cua.policy.engine import Policy, PolicyEngine
     from cua.policy.redaction import DEFAULT_SENSITIVE_FIELDS, Redactor
-    from cua.replay.engine import ReplayEngine
+    from cua.replay.engine import ReplayConfig, ReplayEngine
     from cua.surface.driver import BrowserSurface
     from cua.surface.session import SessionControl
 
@@ -247,6 +255,7 @@ def replay(
     controller, console = _handoff_setup(handoff, surface, control, redactor, handoff_timeout)
     try:
         engine = ReplayEngine(surface=surface, policy=policy, redactor=redactor, evidence_root=evidence_dir,
+                              config=ReplayConfig(auto_resume=auto_resume),
                               escalation_handler=ReplayHandoff(controller) if controller else None)
         result = engine.replay(capability, _parse_kv(inputs), secrets, run_id=run_id)
         typer.echo(result.one_line())

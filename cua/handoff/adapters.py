@@ -29,10 +29,12 @@ class ReplayHandoff:
             reason=esc.reason, url=esc.url, screenshot=esc.screenshot, screen=esc.screen,
             evidence_dir=str(engine._log.run_dir) if engine._log else "",
         )
-        done = self.controller.escalate(request, log=engine._log)
+        resume_when = getattr(engine, "_resume_check", None) if getattr(engine.cfg, "auto_resume", True) else None
+        done = self.controller.escalate(request, log=engine._log, resume_when=resume_when)
         decision = done.decision or Decision.TIMEOUT
         return {"decision": "denied" if decision in (Decision.ABORTED, Decision.TIMEOUT) else decision.value,
-                "intervention_id": done.id, "human_actions": len(done.human_actions), "summary": done.summary()}
+                "intervention_id": done.id, "human_actions": len(done.human_actions), "summary": done.summary(),
+                "auto_resumed": done.auto_resumed}
 
 
 class DiscoveryHandoff:

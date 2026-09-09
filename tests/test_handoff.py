@@ -215,6 +215,58 @@ def test_replay_risky_step_performed_by_human(surface, policy, controller, mock_
     assert 'click link "Close Account"' in result.interventions[0]["summary"]
 
 
+def test_replay_auto_resumes_when_the_human_reaches_the_expected_state(surface, policy, controller, mock_server,
+                                                                       tmp_path):
+    """The operator clicks Close Account and never decides: the step's expectation now holds, so the
+    handoff resolves itself and replay continues."""
+    def human_who_never_decides(page):
+        page.frame_locator('iframe[name="acctframe"]').get_by_role("link", name="Close Account").first.click()
+        page.wait_for_url("**/close")
+
+    errors: list[BaseException] = []
+
+    def run() -> None:
+        try:
+            while not controller.pending():
+                time.sleep(0.05)
+            request = controller.pending()[0]
+            with sync_playwright() as p:
+                browser = p.chromium.connect_over_cdp(request.session_url)
+                human_who_never_decides(browser.contexts[0].pages[0])
+                time.sleep(0.5)
+        except BaseException as exc:
+            errors.append(exc)
+
+    threading.Thread(target=run, daemon=True).start()
+    engine = ReplayEngine(surface=surface, policy=policy, redactor=Redactor([PASSWORD]), evidence_root=tmp_path,
+                          escalation_handler=ReplayHandoff(controller))
+    result = engine.replay(_risky_capability(mock_server), {"member_id": "12345"}, SECRETS)
+    assert not errors, errors
+    assert result.status is ReplayStatus.SUCCESS, result.one_line()
+    iv = result.interventions[0]
+    assert iv["decision"] == "resumed" and iv["auto_resumed"] is True and iv["human_actions"] >= 1
+    assert controller.control.holder is Controller.AUTOMATION
+    events = [json.loads(l)["kind"] for l in (Path(result.evidence_dir) / "log.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert "handoff_auto_resume" in events
+
+
+def test_no_auto_resume_without_the_expected_state(surface, policy, controller, mock_server, tmp_path):
+    """The operator only opens the wrong thing; nothing resumes until an explicit decision."""
+    def human(page):
+        page.get_by_role("link", name="New Search").click()   # not the held step
+        page.wait_for_url("**/members/search")
+        time.sleep(1.5)                                        # long enough for auto-resume to have fired if it would
+        assert controller.pending() and controller.pending()[0].status in ("pending", "claimed")
+
+    thread, errors = operator(controller, human, "aborted")
+    engine = ReplayEngine(surface=surface, policy=policy, redactor=Redactor([PASSWORD]), evidence_root=tmp_path,
+                          escalation_handler=ReplayHandoff(controller))
+    result = engine.replay(_risky_capability(mock_server), {"member_id": "12345"}, SECRETS)
+    thread.join(10)
+    assert not errors, errors
+    assert result.status is ReplayStatus.ESCALATED and result.interventions[0]["auto_resumed"] is False
+
+
 def test_replay_risky_step_approved_then_automation_acts(surface, policy, controller, mock_server, tmp_path):
     thread, errors = operator(controller, lambda page: None, "approved")
     engine = ReplayEngine(surface=surface, policy=policy, redactor=Redactor([PASSWORD]), evidence_root=tmp_path,

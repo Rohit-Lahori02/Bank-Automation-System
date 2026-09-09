@@ -162,8 +162,11 @@ next to the automation's own steps.
 **Handing back** is a decision carrying the token: *resumed* (the human did the work — replay
 verifies the step's expected state on screen before continuing; a safe step is re-run if it
 does not hold, a risky one fails as `HANDOFF_STATE_MISMATCH`), *approved* (automation performs
-the held step), *aborted*/timeout (the run ends `escalated`). In discovery the model is told what
-the human did and continues from a fresh screen.
+the held step), *aborted*/timeout (the run ends `escalated`). One shortcut, because operators
+expect it: when a human action has been captured and the held step's own postcondition then
+holds on screen, the handoff resolves itself as *resumed* — the screen is the proof, and it is
+the same check replay would make anyway. Anything less waits for an explicit decision. In
+discovery the model is told what the human did and continues from a fresh screen.
 
 **The operator surface** is a minimal in-process web console (list, claim, context, live captured
 actions, three decisions) plus a shell command. What I mocked and why: there is no co-browsing

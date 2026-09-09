@@ -47,6 +47,7 @@ class HandoffController:
         poll_s: float = 0.5,
         on_escalate: Callable[[InterventionRequest], None] | None = None,
         on_human_action: Callable[[InterventionRequest, HumanAction], None] | None = None,
+        on_decision: Callable[[InterventionRequest], None] | None = None,
     ) -> None:
         self.surface = surface
         self.control = control
@@ -55,14 +56,22 @@ class HandoffController:
         self.poll_s = poll_s
         self.on_escalate = on_escalate
         self.on_human_action = on_human_action
+        self.on_decision = on_decision
         self.interventions: dict[str, InterventionRequest] = {}
         self._events: dict[str, threading.Event] = {}
         self._lock = threading.Lock()
         self._log: RunLogger | None = None
 
     # ------------------------------------------------------------ requests
-    def escalate(self, request: InterventionRequest, *, log: RunLogger | None = None) -> InterventionRequest:
-        """Route an intervention request and block until a human decides (or the timeout hits)."""
+    def escalate(self, request: InterventionRequest, *, log: RunLogger | None = None,
+                 resume_when: Callable[[], bool] | None = None) -> InterventionRequest:
+        """Route an intervention request and block until a human decides (or the timeout hits).
+
+        `resume_when` is an optional check of the step's expected state. Once at least one human
+        action has been captured and the check holds, the handoff resolves itself as "resumed":
+        the human did the step, the screen proves it, and automation takes control back without
+        a second round-trip. Anything else still needs an explicit decision.
+        """
         self._log = log
         run_dir = Path(request.evidence_dir) if request.evidence_dir else None
         if not request.session_url:
@@ -80,7 +89,7 @@ class HandoffController:
 
         self.surface.start_human_capture(lambda payload, frame: self._on_human_action(request, payload, frame))
         try:
-            self._wait(request, run_dir)
+            self._wait(request, run_dir, resume_when)
         finally:
             self.surface.stop_human_capture()
             if request.status == "pending" or request.status == "claimed":
@@ -91,8 +100,14 @@ class HandoffController:
             self._write(request)
             if log:
                 log.event("handoff_end", intervention=request.id, decision=request.status,
+                          auto_resumed=request.auto_resumed,
                           human_actions=[a.model_dump() for a in request.human_actions],
                           control=self.control.as_dict())
+            if self.on_decision:
+                try:
+                    self.on_decision(request)
+                except Exception:
+                    pass
         return request
 
     def decide(self, intervention_id: str, decision: str | Decision, *, token: str | None = None) -> InterventionRequest:
@@ -124,7 +139,8 @@ class HandoffController:
         return [r for r in self.interventions.values() if r.status in ("pending", "claimed")]
 
     # ------------------------------------------------------------- internals
-    def _wait(self, request: InterventionRequest, run_dir: Path | None) -> None:
+    def _wait(self, request: InterventionRequest, run_dir: Path | None,
+              resume_when: Callable[[], bool] | None = None) -> None:
         event = self._events[request.id]
         deadline = time.time() + self.timeout_s
         pump = getattr(self.surface, "pump", None)
@@ -135,6 +151,18 @@ class HandoffController:
                 if pump:
                     pump()
                 return
+            if resume_when is not None and request.human_actions and request.status in ("pending", "claimed"):
+                try:
+                    reached = resume_when()
+                except Exception:
+                    reached = False
+                if reached:
+                    request.auto_resumed = True
+                    if self._log:
+                        self._log.event("handoff_auto_resume", intervention=request.id,
+                                        note="step's expected state observed after human action")
+                    self.decide(request.id, Decision.RESUMED)
+                    return
             if run_dir is not None:
                 signal = run_dir / RESUME_FILE
                 if signal.exists():
