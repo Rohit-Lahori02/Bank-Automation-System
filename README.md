@@ -20,7 +20,7 @@ Evidence from real runs: [`evidence/`](evidence/).
 | 2 | Surface layer: Playwright driver, accessibility-style snapshot, locator strategies | done |
 | 3 | Artifact schema, policy engine, redaction | done |
 | 4 | LLM-driven discovery loop + recorder | done |
-| 5 | Deterministic replay engine + CLI | planned |
+| 5 | Deterministic replay engine + CLI | done |
 | 6 | Escalation and human handoff | planned |
 | 7 | Evidence, REPORT.md, final run | planned |
 
@@ -165,6 +165,50 @@ The agent speaks a plain JSON action protocol (see `cua/agent/prompts.py`) rathe
 provider-native tool calling, so the same loop runs on free models during development and on
 Claude for the final evidence run.
 
+## Replay (phase 5)
+
+Replay runs a saved capability with **no model in the loop**. For each step it applies the
+policy gate, scans the screen for declared conditions, resolves the target through its
+strategy chain (recording which strategy hit), acts, and waits for the step's expectation
+while still watching for conditions. It ends by verifying the checkpoint and returning the
+declared outputs.
+
+```bash
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=12345
+```
+
+The result contract has four terminal states, and the exit code follows it:
+
+| Status | Exit | Meaning | Carries |
+|---|---|---|---|
+| `success` | 0 | checkpoint held | typed `outputs` |
+| `business_outcome` | 10 | the app gave a legitimate non-happy answer (`MEMBER_NOT_FOUND`, `PERMISSION_DENIED`, `INVALID_INPUT`) | `outcome_code`, message |
+| `failed` | 20 | something broke (`APP_ERROR`, `AUTH_FAILED`, `TARGET_NOT_FOUND`, `EXPECTATION_TIMEOUT`, `POLICY_DENIED`, `CHECKPOINT_FAILED`, ...) | step id, expected vs observed, screenshot, strategies tried |
+| `escalated` | 30 | a human must decide (risky step, unrecoverable state) | step id, reason, screenshot, screen listing |
+
+Recoverable conditions never surface as results: a maintenance dialog is dismissed, an
+expired session triggers the recorded re-login sub-flow and the step is redone, a slow load
+gets a bounded retry. Every replay writes `runs/<run_id>/log.jsonl`, `result.json`,
+screenshots on outcome/failure/escalation, and a Playwright trace.
+
+To exercise the error paths, inject faults into the mock console before replaying:
+
+```bash
+cua chaos --maintenance-dialog
+```
+
+```bash
+cua chaos --expire-session
+```
+
+```bash
+cua chaos --app-error
+```
+
+```bash
+cua chaos --reset
+```
+
 ## Demo path
 
 ```bash
@@ -175,4 +219,6 @@ cua discover --goal "Look up member 12345 and read their current savings balance
 cua replay artifacts/member.read_savings_balance.v1.json --input member_id=12345
 ```
 
-(`replay` lands in phase 5.)
+```bash
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=99999
+```

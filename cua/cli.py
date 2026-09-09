@@ -35,11 +35,14 @@ def load_secrets(names: list[str]) -> dict[str, str]:
     For the bundled mock console, MOCK_APP_USERNAME / MOCK_APP_PASSWORD are accepted as
     fallbacks for app.username / app.password so the demo runs from .env.example alone.
     """
-    fallbacks = {"app.username": "MOCK_APP_USERNAME", "app.password": "MOCK_APP_PASSWORD"}
+    fallbacks = {"app.username": ("MOCK_APP_USERNAME", "teller01"), "app.password": ("MOCK_APP_PASSWORD", "Pa55word!")}
     out: dict[str, str] = {}
     for name in names:
         env_key = "CUA_SECRET_" + name.upper().replace(".", "_")
-        value = os.getenv(env_key) or (os.getenv(fallbacks[name]) if name in fallbacks else None)
+        value = os.getenv(env_key)
+        if not value and name in fallbacks:
+            env_name, default = fallbacks[name]
+            value = os.getenv(env_name) or default   # same demo defaults the mock console uses
         if not value:
             raise typer.BadParameter(f"secret '{name}' not found: set {env_key} in .env")
         out[name] = value
@@ -136,6 +139,70 @@ def describe(path: Path = typer.Argument(..., help="Capability JSON file")) -> N
     from cua.artifact.schema import Capability
 
     typer.echo(Capability.model_validate_json(path.read_text(encoding="utf-8")).describe())
+
+
+@app.command("replay")
+def replay(
+    artifact: Path = typer.Argument(..., help="Capability JSON file to replay"),
+    inputs: list[str] = typer.Option([], "--input", "-i", help="Input value, name=value (repeatable)"),
+    policy_path: Path = typer.Option(Path("policy.yaml"), "--policy", help="Safety policy file"),
+    evidence_dir: Path = typer.Option(Path("runs"), help="Where run evidence goes"),
+    headed: bool = typer.Option(False, help="Show the browser"),
+    json_out: bool = typer.Option(False, "--json", help="Print the full result JSON"),
+) -> None:
+    """Replay a capability deterministically (no model) and report the structured result.
+
+    Exit codes: 0 success, 10 business outcome, 20 failure, 30 escalated.
+    """
+    from cua.artifact.schema import Capability
+    from cua.policy.engine import Policy, PolicyEngine
+    from cua.policy.redaction import DEFAULT_SENSITIVE_FIELDS, Redactor
+    from cua.replay.engine import ReplayEngine
+    from cua.surface.driver import BrowserSurface
+
+    capability = Capability.model_validate_json(artifact.read_text(encoding="utf-8"))
+    policy = PolicyEngine(Policy.load(policy_path))
+    redactor = Redactor(sensitive_field_patterns=policy.policy.sensitive_field_patterns or DEFAULT_SENSITIVE_FIELDS)
+    secrets = load_secrets(capability.secrets)
+    run_id = __import__("time").strftime("%Y%m%dT%H%M%S") + "-replay"
+    typer.echo(f"replaying {capability.id} v{capability.version} with inputs {_parse_kv(inputs)}")
+    surface = BrowserSurface(headless=not headed, trace_dir=evidence_dir / run_id)
+    surface.start()
+    try:
+        engine = ReplayEngine(surface=surface, policy=policy, redactor=redactor, evidence_root=evidence_dir)
+        result = engine.replay(capability, _parse_kv(inputs), secrets, run_id=run_id)
+    finally:
+        surface.stop()
+    typer.echo(result.one_line())
+    typer.echo(f"steps: " + ", ".join(f"{r.step_id}:{r.status}" + (f"({r.strategy})" if r.strategy else "")
+                                       for r in result.steps))
+    typer.echo(f"evidence: {result.evidence_dir}")
+    if json_out:
+        typer.echo(result.to_json())
+    raise typer.Exit(code=result.exit_code)
+
+
+@app.command("chaos")
+def chaos(
+    url: str = typer.Option(DEFAULT_ENTRY.rsplit("/", 1)[0], help="Mock app base URL"),
+    slow_ms: int = typer.Option(None, help="Delay every page by N ms"),
+    expire_session: bool = typer.Option(None, "--expire-session/--no-expire-session", help="Bounce the next request to sign-on"),
+    maintenance_dialog: bool = typer.Option(None, "--maintenance-dialog/--no-maintenance-dialog", help="Show the modal notice on the next page"),
+    app_error: bool = typer.Option(None, "--app-error/--no-app-error", help="Fail the next member profile load"),
+    sticky: bool = typer.Option(None, "--sticky/--no-sticky", help="Keep one-shot flags armed"),
+    reset: bool = typer.Option(False, help="Clear all flags"),
+) -> None:
+    """Inject runtime faults into the mock console (for demos and error-path evidence)."""
+    import httpx
+
+    if reset:
+        state = httpx.post(f"{url}/__chaos/reset").json()
+    else:
+        payload = {k: v for k, v in dict(slow_ms=slow_ms, expire_session=expire_session,
+                                         maintenance_dialog=maintenance_dialog, app_error=app_error,
+                                         sticky=sticky).items() if v is not None}
+        state = httpx.post(f"{url}/__chaos", json=payload).json() if payload else httpx.get(f"{url}/__chaos").json()
+    typer.echo(state)
 
 
 if __name__ == "__main__":

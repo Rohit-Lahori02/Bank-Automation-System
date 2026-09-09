@@ -19,11 +19,11 @@ def test_extract_json_tolerates_prose_and_fences():
 
 def test_client_from_env_selects_provider(monkeypatch):
     monkeypatch.setenv("LLM_PROVIDER", "openai_compat")
-    monkeypatch.setenv("LLM_MODEL", "meta/llama-3.3-70b-instruct")
+    monkeypatch.setenv("LLM_MODEL", "nvidia/nemotron-3-super-120b-a12b")
     monkeypatch.setenv("NVIDIA_API_KEY", "nvapi-test-not-real")
     monkeypatch.delenv("LLM_API_KEY", raising=False)
     client = client_from_env()
-    assert client.provider == "openai_compat" and client.model == "meta/llama-3.3-70b-instruct"
+    assert client.provider == "openai_compat" and client.model == "nvidia/nemotron-3-super-120b-a12b"
     assert client.base_url.startswith("https://integrate.api.nvidia.com")
 
     monkeypatch.setenv("LLM_PROVIDER", "anthropic")

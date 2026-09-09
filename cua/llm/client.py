@@ -73,7 +73,7 @@ def client_from_env() -> LLMClient:
         if not api_key:
             raise LLMError("no API key: set NVIDIA_API_KEY (or LLM_API_KEY) in .env")
         return OpenAICompatClient(
-            model=model or "meta/llama-3.3-70b-instruct",
+            model=model or "nvidia/nemotron-3-super-120b-a12b",
             api_key=api_key,
             base_url=os.getenv("LLM_BASE_URL", "https://integrate.api.nvidia.com/v1"),
             json_mode=os.getenv("LLM_JSON_MODE", "0") == "1",
