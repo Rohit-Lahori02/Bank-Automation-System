@@ -38,6 +38,7 @@ class StepReport(BaseModel):
     duration_ms: int = 0
     conditions: list[str] = Field(default_factory=list)   # condition ids that fired during this step
     note: str = ""
+    subflow_of: str | None = None     # set when this step ran inside a recovery subflow for that condition
 
 
 class Failure(BaseModel):

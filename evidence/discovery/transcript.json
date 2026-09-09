@@ -1,0 +1,107 @@
+[
+  {
+    "step": 1,
+    "screen": "URL: http://127.0.0.1:8000/login\nTitle: Sign On - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Not signed on\"\n[e5] text \"Operator Sign On\"\n[e6] text \"Enter your operator credentials to access the servicing console.\"\n[e7] cell \"User ID\"\n[e8] textbox \"User ID\" value=\"\"\n[e9] cell \"Password\"\n[e10] textbox \"Password\" value=\"\"\n[e11] button \"Sign On\"\n[e12] button \"Clear\"\n[e13] text \"Use of this system is restricted to authorized personnel. Sessions are logged.\"\n[e14] cell \"CoreLink Servicing Platform © 1998-2026 Meridian Core Systems, Inc. · Unauthorized access is prohibited and monitored.\"",
+    "decision": {
+      "reasoning": "We are at the login screen. Need to sign on using the provided credentials before we can look up member 12345. We'll enter the username and password, then click Sign On.",
+      "action": "type",
+      "ref": "e8",
+      "value": "{{secrets.app.username}}",
+      "expect": "Username entered"
+    },
+    "result": "ok (expected text \"Username entered\" is NOT visible)"
+  },
+  {
+    "step": 2,
+    "screen": "URL: http://127.0.0.1:8000/login\nTitle: Sign On - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Not signed on\"\n[e5] text \"Operator Sign On\"\n[e6] text \"Enter your operator credentials to access the servicing console.\"\n[e7] cell \"User ID\"\n[e8] textbox \"User ID\" value=\"[REDACTED:SECRET]\"\n[e9] cell \"Password\"\n[e10] textbox \"Password\" value=\"\"\n[e11] button \"Sign On\"\n[e12] button \"Clear\"\n[e13] text \"Use of this system is restricted to authorized personnel. Sessions are logged.\"\n[e14] cell \"CoreLink Servicing Platform © 1998-2026 Meridian Core Systems, Inc. · Unauthorized access is prohibited and monitored.\"",
+    "decision": {
+      "reasoning": "Username entered successfully. Now need to enter password.",
+      "action": "type",
+      "ref": "e10",
+      "value": "{{secrets.app.password}}",
+      "expect": "Password entered"
+    },
+    "result": "ok (expected text \"Password entered\" is NOT visible)"
+  },
+  {
+    "step": 3,
+    "screen": "URL: http://127.0.0.1:8000/login\nTitle: Sign On - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Not signed on\"\n[e5] text \"Operator Sign On\"\n[e6] text \"Enter your operator credentials to access the servicing console.\"\n[e7] cell \"User ID\"\n[e8] textbox \"User ID\" value=\"[REDACTED:SECRET]\"\n[e9] cell \"Password\"\n[e10] textbox \"Password\" value=\"••••••\"\n[e11] button \"Sign On\"\n[e12] button \"Clear\"\n[e13] text \"Use of this system is restricted to authorized personnel. Sessions are logged.\"\n[e14] cell \"CoreLink Servicing Platform © 1998-2026 Meridian Core Systems, Inc. · Unauthorized access is prohibited and monitored.\"",
+    "decision": {
+      "reasoning": "Credentials entered. Now click Sign On to log in.",
+      "action": "click",
+      "ref": "e11",
+      "expect": "Signed on successfully"
+    },
+    "result": "ok (expected text \"Signed on successfully\" is NOT visible)"
+  },
+  {
+    "step": 4,
+    "screen": "URL: http://127.0.0.1:8000/console\nTitle: Main Menu - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as ·\"\n[e5] text \"[REDACTED:SECRET]\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Main Menu\"\n[e14] text \"Welcome, . Select a function to begin.\"\n[e15] text \"[REDACTED:SECRET]\"\n[e16] cell \"Function\"\n[e17] cell \"Description\"\n[e18] link \"Member Inquiry\" href=/members/search\n[e19] cell \"Look up a member by member number and view profile and accounts.\"\n[e20] link \"Transactions\" href=/console\n[e21] cell \"Post deposits, withdrawals and transfers.\"\n[e22] text \"Unavailable in this build.\"\n[e23] link \"Reports\" href=/console\n[e24] cell \"End-of-day and audit reports.\"\n[e25] text \"Unavailable in this build.\"\n[e26] text \"Last sign on: today · Terminal TLR-07\"\n[e27] cell \"CoreLink Servicing Platform © 1998-2026 Meridian Core Systems, Inc. · Unauthorized access is prohibited and monitored.\"",
+    "decision": {
+      "reasoning": "We are at the main menu. Need to look up member 12345. Click on 'Member Inquiry' link to go to the search page.",
+      "action": "click",
+      "ref": "e18",
+      "expect": "Member search page"
+    },
+    "result": "ok (expected text \"Member search page\" is NOT visible)"
+  },
+  {
+    "step": 5,
+    "screen": "URL: http://127.0.0.1:8000/members/search\nTitle: Member Inquiry - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as ·\"\n[e5] text \"[REDACTED:SECRET]\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Member Inquiry\"\n[e14] text \"Search by 5-digit member number.\"\n[e15] cell \"Member Number\"\n[e16] textbox \"Member Number\" value=\"\"\n[e17] button \"Search\"\n[e18] cell \"CoreLink Servicing Platform © 1998-2026 Meridian Core Systems, Inc. · Unauthorized access is prohibited and monitored.\"",
+    "decision": {
+      "reasoning": "We are at the member search page. Need to enter member number 12345 and click Search.",
+      "action": "type",
+      "ref": "e16",
+      "value": "12345",
+      "expect": "Member number entered"
+    },
+    "result": "ok (expected text \"Member number entered\" is NOT visible)"
+  },
+  {
+    "step": 6,
+    "screen": "URL: http://127.0.0.1:8000/members/search\nTitle: Member Inquiry - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as ·\"\n[e5] text \"[REDACTED:SECRET]\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Member Inquiry\"\n[e14] text \"Search by 5-digit member number.\"\n[e15] cell \"Member Number\"\n[e16] textbox \"Member Number\" value=\"12345\"\n[e17] button \"Search\"\n[e18] cell \"CoreLink Servicing Platform © 1998-2026 Meridian Core Systems, Inc. · Unauthorized access is prohibited and monitored.\"",
+    "decision": {
+      "reasoning": "Member number entered. Now click Search to retrieve member details.",
+      "action": "click",
+      "ref": "e17",
+      "expect": "Member details page"
+    },
+    "result": "ok (expected text \"Member details page\" is NOT visible)"
+  },
+  {
+    "step": 7,
+    "screen": "URL: http://127.0.0.1:8000/members/search\nTitle: Member Inquiry - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as ·\"\n[e5] text \"[REDACTED:SECRET]\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Member Inquiry\"\n[e14] text \"Search by 5-digit member number.\"\n[e15] cell \"Member Number\"\n[e16] textbox \"Member Number\" value=\"12345\"\n[e17] button \"Search\"\n[e18] text \"Search Results\"\n[e19] cell \"Member No.\"\n[e20] cell \"Name\"\n[e21] cell \"Status\"\n[e22] cell \"Action\"\n[e23] cell \"12345\"\n[e24] cell \"Oyelaran, Marcus\"\n[e25] text \"Active\"\n[e26] link \"View\" href=/members/12345\n[e27] cell \"CoreLink Servicing Platform © 1998-2026 Meridian Core Systems, Inc. · Unauthorized access is prohibited and monitored.\"",
+    "decision": {
+      "reasoning": "Search results show member 12345. Click the View link to go to the member details page.",
+      "action": "click",
+      "ref": "e26",
+      "expect": "Member details page"
+    },
+    "result": "ok (expected text \"Member details page\" is NOT visible)"
+  },
+  {
+    "step": 8,
+    "screen": "URL: http://127.0.0.1:8000/members/12345\nTitle: Member 12345 - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as ·\"\n[e5] text \"[REDACTED:SECRET]\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Member Profile\"\n[e14] text \"Member 12345 · Oyelaran, Marcus\"\n[e15] cell \"Member Number\"\n[e16] cell \"12345\"\n[e17] cell \"Name\"\n[e18] cell \"Oyelaran, Marcus\"\n[e19] cell \"Status\"\n[e20] text \"Active\"\n[e21] cell \"Member Since\"\n[e22] cell \"2006-01-30\"\n[e23] cell \"Address\"\n[e24] cell \"2201 Ironwood Ct, Hermantown, MN 55811\"\n[e25] cell \"Phone\"\n[e26] cell \"[REDACTED:PHONE]\"\n[e27] cell \"E-mail\"\n[e28] cell \"[REDACTED:EMAIL]\"\n[e29] cell \"Tax ID (last 4)\"\n[e30] cell \"***-**-2088\"\n[e31] text \"Accounts\"\n[e32] link \"Open Sub-Account\" href=/members/12345/subaccount/new\n[e33] link \"New Search\" href=/members/search\n[e34] cell \"CoreLink Servicing Platform © 1998-2026 Meridian Core Systems, Inc. · Unauthorized access is prohibited and monitored.\"\n--- frame: iframe[name=\"acctframe\"] ---\n[e35] cell \"Account No.\"\n[e36] cell \"Type\"\n[e37] cell \"Nickname\"\n[e38] cell \"Balance\"\n[e39] cell \"Status\"\n[e40] cell \"Action\"\n[e41] cell \"12345-S01\"\n[e42] cell \"Savings\"\n[e43] cell \"Primary Share\"\n[e44] cell \"$5,432.10\"\n[e45] text \"Open\"\n[e46] link \"Close Account\" href=/members/12345/accounts/12345-S01/close\n[e47] cell \"12345-D01\"\n[e48] cell \"Checking\"\n[e49] cell \"Household\"\n[e50] cell \"$1,020.00\"\n[e51] text \"Open\"\n[e52] link \"Close Account\" href=/members/12345/accounts/12345-D01/close\n[e53] cell \"12345-S02\"\n[e54] cell \"Savings\"\n[e55] cell \"Vacation Club\"\n[e56] cell \"$250.00\"\n[e57] text \"Open\"\n[e58] link \"Close Account\" href=/members/12345/accounts/12345-S02/close\n[e59] text \"3 account(s) on file. Balances as of close of business.\"",
+    "decision": {
+      "reasoning": "We are on the member details page for member 12345. The savings account balance is shown in the iframe account frame as element e44 with value '$5,432.10'. We will extract this value.",
+      "action": "extract",
+      "ref": "e44",
+      "output": "savings_balance",
+      "expect": "Extracted balance"
+    },
+    "result": "ok: extracted savings_balance = \"$5,432.10\""
+  },
+  {
+    "step": 9,
+    "screen": "URL: http://127.0.0.1:8000/members/12345\nTitle: Member 12345 - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as ·\"\n[e5] text \"[REDACTED:SECRET]\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Member Profile\"\n[e14] text \"Member 12345 · Oyelaran, Marcus\"\n[e15] cell \"Member Number\"\n[e16] cell \"12345\"\n[e17] cell \"Name\"\n[e18] cell \"Oyelaran, Marcus\"\n[e19] cell \"Status\"\n[e20] text \"Active\"\n[e21] cell \"Member Since\"\n[e22] cell \"2006-01-30\"\n[e23] cell \"Address\"\n[e24] cell \"2201 Ironwood Ct, Hermantown, MN 55811\"\n[e25] cell \"Phone\"\n[e26] cell \"[REDACTED:PHONE]\"\n[e27] cell \"E-mail\"\n[e28] cell \"[REDACTED:EMAIL]\"\n[e29] cell \"Tax ID (last 4)\"\n[e30] cell \"***-**-2088\"\n[e31] text \"Accounts\"\n[e32] link \"Open Sub-Account\" href=/members/12345/subaccount/new\n[e33] link \"New Search\" href=/members/search\n[e34] cell \"CoreLink Servicing Platform © 1998-2026 Meridian Core Systems, Inc. · Unauthorized access is prohibited and monitored.\"\n--- frame: iframe[name=\"acctframe\"] ---\n[e35] cell \"Account No.\"\n[e36] cell \"Type\"\n[e37] cell \"Nickname\"\n[e38] cell \"Balance\"\n[e39] cell \"Status\"\n[e40] cell \"Action\"\n[e41] cell \"12345-S01\"\n[e42] cell \"Savings\"\n[e43] cell \"Primary Share\"\n[e44] cell \"$5,432.10\"\n[e45] text \"Open\"\n[e46] link \"Close Account\" href=/members/12345/accounts/12345-S01/close\n[e47] cell \"12345-D01\"\n[e48] cell \"Checking\"\n[e49] cell \"Household\"\n[e50] cell \"$1,020.00\"\n[e51] text \"Open\"\n[e52] link \"Close Account\" href=/members/12345/accounts/12345-D01/close\n[e53] cell \"12345-S02\"\n[e54] cell \"Savings\"\n[e55] cell \"Vacation Club\"\n[e56] cell \"$250.00\"\n[e57] text \"Open\"\n[e58] link \"Close Account\" href=/members/12345/accounts/12345-S02/close\n[e59] text \"3 account(s) on file. Balances as of close of business.\"",
+    "decision": {
+      "reasoning": "We have extracted the savings balance for member 12345 as '$5,432.10'. The goal is complete.",
+      "action": "done",
+      "outputs": {
+        "savings_balance": "$5,432.10"
+      },
+      "checkpoint": "Member 12345 details page showing savings balance $5,432.10"
+    },
+    "result": "done"
+  }
+]

@@ -8,8 +8,16 @@ explicit error handling, safety guardrails, and a human-in-the-loop handoff path
 > The model discovers. The artifact becomes a reusable capability. Deterministic replay is
 > how an AI agent invokes it in production.
 
-Design write-up: [`REPORT.md`](REPORT.md) (added in the final phase).
-Evidence from real runs: [`evidence/`](evidence/).
+Design write-up: [`REPORT.md`](REPORT.md). Evidence from real runs: [`evidence/`](evidence/)
+(one discovery run, ten replays covering every result state, a human handoff; see
+`evidence/summary.md`).
+
+**What is real and what is mocked.** The target application is a mock (a deliberately legacy
+credit-union console, built here). The discovery run is a real LLM run against it (NVIDIA NIM,
+free tier). Replay, the artifact, the policy engine, the handoff controller and the operator
+console are real. The "human" in the committed handoff evidence is a scripted second browser
+client attached to the live session over CDP, so the evidence can be regenerated unattended;
+the mechanism is identical for a person.
 
 ## Status
 
@@ -22,7 +30,7 @@ Evidence from real runs: [`evidence/`](evidence/).
 | 4 | LLM-driven discovery loop + recorder | done |
 | 5 | Deterministic replay engine + CLI | done |
 | 6 | Escalation and human handoff | done |
-| 7 | Evidence, REPORT.md, final run | planned |
+| 7 | Evidence, REPORT.md, final run | done |
 
 ## Setup
 
@@ -257,14 +265,59 @@ console.
 
 ## Demo path
 
+Terminal 1, the target app:
+
 ```bash
-cua discover --goal "Look up member 12345 and read their current savings balance" --input member_id=12345 --capability-id member.read_savings_balance
+cua serve-app
+```
+
+Terminal 2. Discover (needs `NVIDIA_API_KEY` or `ANTHROPIC_API_KEY` in `.env`; the browser is
+shown and the operator console starts on :8001 in case the agent gets stuck):
+
+```bash
+cua discover --goal "Look up member 12345 and read their current savings balance" --input member_id=12345 --capability-id member.read_savings_balance --name "Read member savings balance"
+```
+
+Replay the recorded artifact with no model, for the recorded member and for another one:
+
+```bash
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=12345 --handoff none
 ```
 
 ```bash
-cua replay artifacts/member.read_savings_balance.v1.json --input member_id=12345
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=10001 --handoff none
+```
+
+A business outcome (exit code 10) and a hard failure (exit code 20):
+
+```bash
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=99999 --handoff none
 ```
 
 ```bash
-cua replay artifacts/member.read_savings_balance.v1.json --input member_id=99999
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=50500 --handoff none
 ```
+
+A recoverable condition, injected first:
+
+```bash
+cua chaos --maintenance-dialog
+```
+
+```bash
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=12345 --handoff none
+```
+
+To try the handoff yourself, replay without a key with the default `--handoff console`: when a
+step escalates, the run pauses, prints the operator console URL, and the headed browser window
+is yours until you decide in the console. (The committed artifact has no irreversible step;
+`scripts/make_evidence.py` shows how one is appended for the handoff evidence.)
+
+Regenerate the whole evidence folder from real runs:
+
+```bash
+python scripts/make_evidence.py
+```
+
+Without any live model: the hand-authored reference capability in `cua/artifact/examples.py`
+is equivalent to a recorded one and drives most of the replay tests.

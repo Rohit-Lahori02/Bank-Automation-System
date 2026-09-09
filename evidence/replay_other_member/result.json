@@ -1,0 +1,121 @@
+{
+  "status": "success",
+  "capability_id": "member.read_savings_balance",
+  "capability_version": 4,
+  "run_id": "replay_other_member",
+  "inputs": {
+    "member_id": "10001"
+  },
+  "outputs": {
+    "savings_balance": "1240.50"
+  },
+  "outcome_code": null,
+  "outcome_message": null,
+  "failure": null,
+  "escalation": null,
+  "steps": [
+    {
+      "step_id": "s00_navigate",
+      "action": "navigate",
+      "status": "ok",
+      "strategy": null,
+      "attempts": 1,
+      "duration_ms": 716,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s01_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 186,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s02_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 117,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s03_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 717,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s04_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 771,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s05_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 158,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s06_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 711,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s07_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 898,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s08_extract",
+      "action": "extract",
+      "status": "ok",
+      "strategy": "table_cell#0",
+      "attempts": 1,
+      "duration_ms": 363,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    }
+  ],
+  "interventions": [],
+  "checkpoint_verified": true,
+  "evidence_dir": "evidence/replay_other_member",
+  "duration_ms": 4921
+}

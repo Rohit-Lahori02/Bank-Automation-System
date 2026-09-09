@@ -1,0 +1,142 @@
+{
+  "status": "success",
+  "capability_id": "member.read_savings_balance",
+  "capability_version": 4,
+  "run_id": "replay_handoff_resumed",
+  "inputs": {
+    "member_id": "12345"
+  },
+  "outputs": {
+    "savings_balance": "5432.10"
+  },
+  "outcome_code": null,
+  "outcome_message": null,
+  "failure": null,
+  "escalation": null,
+  "steps": [
+    {
+      "step_id": "s00_navigate",
+      "action": "navigate",
+      "status": "ok",
+      "strategy": null,
+      "attempts": 1,
+      "duration_ms": 709,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s01_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 173,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s02_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 115,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s03_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 721,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s04_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 755,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s05_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 170,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s06_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 710,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s07_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 908,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s08_extract",
+      "action": "extract",
+      "status": "ok",
+      "strategy": "table_cell#0",
+      "attempts": 1,
+      "duration_ms": 345,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "close_it",
+      "action": "click",
+      "status": "recovered",
+      "strategy": null,
+      "attempts": 1,
+      "duration_ms": 2473,
+      "conditions": [],
+      "note": "human resumed (step performed manually)",
+      "subflow_of": null
+    }
+  ],
+  "interventions": [
+    {
+      "step_id": "close_it",
+      "kind": "risky_action",
+      "reason": "step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)",
+      "decision": "resumed",
+      "intervention_id": "int-1cab2487",
+      "human_actions": 1,
+      "summary": "resumed: click link \"Close Account\""
+    }
+  ],
+  "checkpoint_verified": true,
+  "evidence_dir": "evidence/replay_handoff_resumed",
+  "duration_ms": 7261
+}

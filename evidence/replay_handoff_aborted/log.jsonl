@@ -1,0 +1,44 @@
+{"ts": 1788932837.116, "seq": 0, "kind": "replay_start", "capability": "member.read_savings_balance", "version": 4, "inputs": {"member_id": "12345"}}
+{"ts": 1788932837.118, "seq": 1, "kind": "step_start", "step": "s00_navigate", "action": "navigate", "target": null, "url": "about:blank"}
+{"ts": 1788932837.119, "seq": 2, "kind": "policy", "step": "s00_navigate", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "allowed"}}
+{"ts": 1788932837.801, "seq": 3, "kind": "step_end", "step": "s00_navigate", "status": "ok", "strategy": null, "attempts": 1, "conditions": [], "duration_ms": 682}
+{"ts": 1788932837.802, "seq": 4, "kind": "step_start", "step": "s01_type", "action": "type", "target": "textbox \"User ID\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788932837.803, "seq": 5, "kind": "policy", "step": "s01_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788932837.91, "seq": 6, "kind": "resolved", "step": "s01_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788932837.972, "seq": 7, "kind": "step_end", "step": "s01_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 171}
+{"ts": 1788932837.974, "seq": 8, "kind": "step_start", "step": "s02_type", "action": "type", "target": "textbox \"Password\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788932837.974, "seq": 9, "kind": "policy", "step": "s02_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788932838.042, "seq": 10, "kind": "resolved", "step": "s02_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788932838.094, "seq": 11, "kind": "step_end", "step": "s02_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 120}
+{"ts": 1788932838.095, "seq": 12, "kind": "step_start", "step": "s03_click", "action": "click", "target": "button \"Sign On\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788932838.097, "seq": 13, "kind": "policy", "step": "s03_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788932838.146, "seq": 14, "kind": "resolved", "step": "s03_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788932838.86, "seq": 15, "kind": "step_end", "step": "s03_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 764}
+{"ts": 1788932838.861, "seq": 16, "kind": "step_start", "step": "s04_click", "action": "click", "target": "link \"Member Inquiry\"", "url": "http://127.0.0.1:8000/console"}
+{"ts": 1788932838.862, "seq": 17, "kind": "policy", "step": "s04_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788932838.943, "seq": 18, "kind": "resolved", "step": "s04_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788932839.59, "seq": 19, "kind": "step_end", "step": "s04_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 729}
+{"ts": 1788932839.592, "seq": 20, "kind": "step_start", "step": "s05_type", "action": "type", "target": "textbox \"Member Number\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788932839.593, "seq": 21, "kind": "policy", "step": "s05_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788932839.695, "seq": 22, "kind": "resolved", "step": "s05_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788932839.754, "seq": 23, "kind": "step_end", "step": "s05_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 162}
+{"ts": 1788932839.755, "seq": 24, "kind": "step_start", "step": "s06_click", "action": "click", "target": "button \"Search\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788932839.756, "seq": 25, "kind": "policy", "step": "s06_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788932839.814, "seq": 26, "kind": "resolved", "step": "s06_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788932840.487, "seq": 27, "kind": "step_end", "step": "s06_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 732}
+{"ts": 1788932840.489, "seq": 28, "kind": "step_start", "step": "s07_click", "action": "click", "target": "link \"View\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788932840.49, "seq": 29, "kind": "policy", "step": "s07_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788932840.573, "seq": 30, "kind": "resolved", "step": "s07_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788932841.4, "seq": 31, "kind": "step_end", "step": "s07_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 911}
+{"ts": 1788932841.401, "seq": 32, "kind": "step_start", "step": "s08_extract", "action": "extract", "target": "cell \"$5,432.10\" in frame iframe[name=\"acctframe\"]", "url": "http://127.0.0.1:8000/members/12345"}
+{"ts": 1788932841.402, "seq": 33, "kind": "policy", "step": "s08_extract", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "read-only action"}}
+{"ts": 1788932841.59, "seq": 34, "kind": "resolved", "step": "s08_extract", "strategy": "table_cell#0", "frame": "iframe[name=\"acctframe\"]"}
+{"ts": 1788932841.652, "seq": 35, "kind": "extracted", "step": "s08_extract", "output": "savings_balance", "value": "$5,432.10"}
+{"ts": 1788932841.739, "seq": 36, "kind": "step_end", "step": "s08_extract", "status": "ok", "strategy": "table_cell#0", "attempts": 1, "conditions": [], "duration_ms": 337}
+{"ts": 1788932841.74, "seq": 37, "kind": "step_start", "step": "close_it", "action": "click", "target": "link \"Close Account\"", "url": "http://127.0.0.1:8000/members/12345"}
+{"ts": 1788932841.741, "seq": 38, "kind": "policy", "step": "close_it", "verdict": {"allowed": true, "risk": "risky", "requires": "escalate", "reason": "risky action requires escalate (target 'Close Account' matches a risky pattern)"}}
+{"ts": 1788932842.008, "seq": 39, "kind": "escalation", "step": "close_it", "escalation_kind": "risky_action", "reason": "step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)"}
+{"ts": 1788932842.012, "seq": 40, "kind": "handoff_start", "intervention": "int-5ba6b498", "step": "close_it", "detail_kind": "risky_action", "reason": "step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)", "control": {"holder": "paused", "since": 1788932842.008875, "transitions": [{"at": 1788932842.008875, "from": "automation", "to": "paused", "reason": "escalation: step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)"}]}}
+{"ts": 1788932843.954, "seq": 41, "kind": "handoff_end", "intervention": "int-5ba6b498", "decision": "aborted", "human_actions": [], "control": {"holder": "automation", "since": 1788932843.9484708, "transitions": [{"at": 1788932842.008875, "from": "automation", "to": "paused", "reason": "escalation: step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)"}, {"at": 1788932843.9484708, "from": "paused", "to": "automation", "reason": "handoff ended: aborted"}]}}
+{"ts": 1788932843.955, "seq": 42, "kind": "escalation_decision", "step": "close_it", "step_id": "close_it", "detail_kind": "risky_action", "reason": "step 'close_it' (link \"Close Account\") is irreversible: risky action requires escalate (target 'Close Account' matches a risky pattern)", "decision": "denied", "intervention_id": "int-5ba6b498", "human_actions": 0, "summary": "aborted: no actions captured"}
+{"ts": 1788932843.959, "seq": 43, "kind": "replay_end", "status": "escalated", "outcome_code": null, "failure_code": null}

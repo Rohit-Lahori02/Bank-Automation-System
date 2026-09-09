@@ -1,0 +1,35 @@
+Read member savings balance  [member.read_savings_balance v4, draft]
+  Look up a member by member number and return the balance of their primary savings share.
+  target: corelink-member-servicing (base) @ http://127.0.0.1:8000/login
+  inputs:
+    - member_id: string (required)  Value of member_id supplied by the caller
+  outputs:
+    - savings_balance: money from step s08_extract  We are on the member details page for member 12345.
+  secrets (supplied at replay, never stored): app.password, app.username
+  steps:
+    s00_navigate: navigate http://127.0.0.1:8000/login
+        expect: entry screen shows "Harbor Federal Credit Union"
+    s01_type: type -> textbox "User ID" = {{secrets.app.username}}
+    s02_type: type -> textbox "Password" = {{secrets.app.password}}
+    s03_click: click -> button "Sign On"
+        expect: navigated
+    s04_click: click -> link "Member Inquiry"
+        expect: navigated
+    s05_type: type -> textbox "Member Number" = {{inputs.member_id}}
+    s06_click: click -> button "Search"
+        expect: "Search Results" appears
+    s07_click: click -> link "View"
+        expect: navigated
+    s08_extract: extract -> cell "$5,432.10" in frame iframe[name="acctframe"]
+  conditions:
+    - session_expired [recoverable] -> handler:subflow  The app bounced us to sign-on with an expiry notice; sign on again and retry the step.
+    - maintenance_dialog [recoverable] -> handler:click  A modal maintenance notice is covering the page; dismiss it and continue.
+    - slow_or_failed_load [recoverable] -> handler:retry  The page did not reach the expected state in time; wait and retry a bounded number of times.
+    - invalid_credentials [hard_failure] -> AUTH_FAILED  The operator credentials were rejected.
+    - member_not_found [business_outcome] -> MEMBER_NOT_FOUND  No member exists with the supplied number. A legitimate answer, not an error.
+    - permission_denied [business_outcome] -> PERMISSION_DENIED  The operator role may not view this member.
+    - invalid_member_number [business_outcome] -> INVALID_INPUT  The app rejected the member number format.
+    - validation_error [business_outcome] -> VALIDATION_ERROR  The app rejected the submitted form values (VAL-2xxx).
+    - application_error [hard_failure] -> APP_ERROR  The application returned an error page.
+  checkpoint: goal state: "Member 12345 details page showing savings balance $5,432.10"
+  provenance: openai_compat/nvidia/nemotron-3-super-120b-a12b, run 20260908T235049-e46b9e

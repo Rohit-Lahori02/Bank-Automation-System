@@ -1,0 +1,99 @@
+{
+  "status": "business_outcome",
+  "capability_id": "member.read_savings_balance",
+  "capability_version": 4,
+  "run_id": "replay_not_found",
+  "inputs": {
+    "member_id": "99999"
+  },
+  "outputs": {},
+  "outcome_code": "MEMBER_NOT_FOUND",
+  "outcome_message": "No member exists with the supplied number. A legitimate answer, not an error.",
+  "failure": null,
+  "escalation": null,
+  "steps": [
+    {
+      "step_id": "s00_navigate",
+      "action": "navigate",
+      "status": "ok",
+      "strategy": null,
+      "attempts": 1,
+      "duration_ms": 693,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s01_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 170,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s02_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 118,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s03_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 712,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s04_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 720,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s05_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 165,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s06_click",
+      "action": "click",
+      "status": "outcome",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 0,
+      "conditions": [
+        "member_not_found"
+      ],
+      "note": "No member exists with the supplied number. A legitimate answer, not an error.",
+      "subflow_of": null
+    }
+  ],
+  "interventions": [],
+  "checkpoint_verified": false,
+  "evidence_dir": "evidence/replay_not_found",
+  "duration_ms": 3401
+}

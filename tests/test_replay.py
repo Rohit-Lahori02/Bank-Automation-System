@@ -169,6 +169,24 @@ def test_session_expiry_mid_flow_triggers_relogin_and_retry(surface, policy, tmp
     assert result.outputs["savings_balance"] == Decimal("5432.10")
 
 
+def test_session_expiry_during_sign_on_does_not_replay_the_sign_on(surface, policy, tmp_path, capability, mock_server):
+    """Expiry armed before sign-on fires on the first authenticated request; the re-login subflow
+    reaches the console, and the sign-on step must not be re-clicked on a page without the button."""
+    armed = []
+
+    def arm(step_id: str) -> None:
+        if step_id == "login_submit" and not armed:   # once: the re-login subflow runs a step with the same id
+            armed.append(True)
+            mock_server.chaos.update(expire_session=True)
+
+    result = make_engine(surface, policy, tmp_path, before_step=arm).replay(capability, {"member_id": "12345"}, SECRETS)
+    assert result.status is ReplayStatus.SUCCESS, result.one_line()
+    login = next(r for r in result.steps if r.step_id == "login_submit" and not r.subflow_of)
+    assert "session_expired" in login.conditions and login.status == "recovered"
+    inner = [r for r in result.steps if r.subflow_of == "session_expired"]
+    assert [r.step_id for r in inner] == ["login_user", "login_pass", "login_submit"]   # the re-login, as evidence
+
+
 def test_slow_backend_is_tolerated(surface, policy, tmp_path, capability, mock_server):
     mock_server.chaos.update(slow_ms=1200)
     try:

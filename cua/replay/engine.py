@@ -142,7 +142,8 @@ class ReplayEngine:
     # ------------------------------------------------------------- steps
     def _run_step(self, step: Step, *, depth: int) -> None:
         outer = self._current
-        report = StepReport(step_id=step.id, action=step.action.value)
+        report = StepReport(step_id=step.id, action=step.action.value,
+                            subflow_of=next(iter(self._suppressed), "subflow") if depth > 0 else None)
         self._current = report
         started = time.perf_counter()
         try:
@@ -395,6 +396,8 @@ class ReplayEngine:
                                              observed=observed(snap)))
                 cond = _most_severe(fired)
                 self._classify_or_recover(cond, step, report, depth, snap, phase="await")
+                if _step_in_subflow(step, cond) and self._expectation_holds(step):
+                    return True   # the recovery replayed this very step (e.g. expiry during sign-on)
                 if _re_act_after(cond):
                     if step.risk is not RiskClass.SAFE:
                         raise _Stop(self._failed(step.id, "RECOVERY_NEEDS_REPLAY",
@@ -489,6 +492,10 @@ def _re_act_after(cond: Condition) -> bool:
     A re-login sub-flow with then=retry_step moved us elsewhere: the step must be redone.
     """
     return isinstance(cond.handler, SubflowHandler) and cond.handler.then == "retry_step"
+
+
+def _step_in_subflow(step: Step, cond: Condition) -> bool:
+    return isinstance(cond.handler, SubflowHandler) and any(s.id == step.id for s in cond.handler.steps)
 
 
 def _target_name(target: Target | None) -> str | None:

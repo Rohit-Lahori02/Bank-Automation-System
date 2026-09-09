@@ -1,0 +1,874 @@
+{
+  "schema_version": "1.0",
+  "id": "member.read_savings_balance",
+  "name": "Read member savings balance",
+  "version": 4,
+  "status": "draft",
+  "description": "Look up a member by member number and return the balance of their primary savings share.",
+  "target": {
+    "app": "corelink-member-servicing",
+    "entry_url": "http://127.0.0.1:8000/login",
+    "variant": "base"
+  },
+  "inputs": {
+    "member_id": {
+      "type": "string",
+      "description": "Value of member_id supplied by the caller",
+      "required": true,
+      "example": "12345",
+      "sensitive": false
+    }
+  },
+  "outputs": {
+    "savings_balance": {
+      "type": "money",
+      "description": "We are on the member details page for member 12345.",
+      "from_step": "s08_extract"
+    }
+  },
+  "secrets": [
+    "app.password",
+    "app.username"
+  ],
+  "steps": [
+    {
+      "id": "s00_navigate",
+      "action": "navigate",
+      "description": "Open the application entry point",
+      "url": "http://127.0.0.1:8000/login",
+      "risk": "safe",
+      "irreversible": false,
+      "expect": {
+        "description": "entry screen shows \"Harbor Federal Credit Union\"",
+        "detect": {
+          "kind": "text_visible",
+          "text": "Harbor Federal Credit Union"
+        },
+        "timeout_ms": 8000
+      },
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s01_type",
+      "action": "type",
+      "description": "We are at the login screen.",
+      "target": {
+        "description": "textbox \"User ID\"",
+        "role": "textbox",
+        "strategies": [
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "textbox whose inferred label is 'User ID' (source: adjacent_cell); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+            "kind": "label_text",
+            "role": "textbox",
+            "text": "User ID"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "spatial: nearest textbox to the right of the text 'User ID'; survives table restructuring as long as the visual layout holds",
+            "kind": "anchor_relative",
+            "role": "textbox",
+            "anchor_text": "User ID",
+            "direction": "right"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "form field name attribute; stable in server-rendered apps, invisible to the operator",
+            "kind": "css",
+            "selector": "input[name=\"userid\"]"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "tbody > tr > td > div > form > table > tbody > tr:nth-of-type(1) > td:nth-of-type(2) > input[name=\"userid\"]"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "textbox",
+            "x": 120.671875,
+            "y": 194.0,
+            "w": 220.0,
+            "h": 39.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "value": "{{secrets.app.username}}",
+      "risk": "safe",
+      "irreversible": false,
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s02_type",
+      "action": "type",
+      "description": "Username entered successfully.",
+      "target": {
+        "description": "textbox \"Password\"",
+        "role": "textbox",
+        "strategies": [
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "textbox whose inferred label is 'Password' (source: adjacent_cell); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+            "kind": "label_text",
+            "role": "textbox",
+            "text": "Password"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "spatial: nearest textbox to the right of the text 'Password'; survives table restructuring as long as the visual layout holds",
+            "kind": "anchor_relative",
+            "role": "textbox",
+            "anchor_text": "Password",
+            "direction": "right"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "form field name attribute; stable in server-rendered apps, invisible to the operator",
+            "kind": "css",
+            "selector": "input[name=\"passwd\"]"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "tbody > tr > td > div > form > table > tbody > tr:nth-of-type(2) > td:nth-of-type(2) > input[name=\"passwd\"]"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "textbox",
+            "x": 120.671875,
+            "y": 243.0,
+            "w": 220.0,
+            "h": 39.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "value": "{{secrets.app.password}}",
+      "risk": "safe",
+      "irreversible": false,
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s03_click",
+      "action": "click",
+      "description": "Credentials entered.",
+      "target": {
+        "description": "button \"Sign On\"",
+        "role": "button",
+        "strategies": [
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "accessible button named 'Sign On' (source: content); independent of styling and DOM structure",
+            "kind": "role_name",
+            "role": "button",
+            "name": "Sign On",
+            "exact": true
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "button whose inferred label is 'Sign On' (source: content); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+            "kind": "label_text",
+            "role": "button",
+            "text": "Sign On"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "tbody > tr > td > div > form > table > tbody > tr:nth-of-type(3) > td:nth-of-type(2) > input:nth-of-type(1)"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "button",
+            "x": 120.671875,
+            "y": 292.0,
+            "w": 95.703125,
+            "h": 39.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "risk": "safe",
+      "irreversible": false,
+      "expect": {
+        "description": "navigated",
+        "detect": {
+          "kind": "url_matches",
+          "pattern": "/console$"
+        },
+        "timeout_ms": 8000
+      },
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s04_click",
+      "action": "click",
+      "description": "We are at the main menu.",
+      "target": {
+        "description": "link \"Member Inquiry\"",
+        "role": "link",
+        "strategies": [
+          {
+            "frame": "main",
+            "nth": 1,
+            "rationale": "accessible link named 'Member Inquiry' (source: content); independent of styling and DOM structure",
+            "kind": "role_name",
+            "role": "link",
+            "name": "Member Inquiry",
+            "exact": true
+          },
+          {
+            "frame": "main",
+            "nth": 1,
+            "rationale": "link whose inferred label is 'Member Inquiry' (source: content); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+            "kind": "label_text",
+            "role": "link",
+            "text": "Member Inquiry"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "link target; stable while routes are stable (parameterized on replay)",
+            "kind": "css",
+            "selector": "a[href=\"/members/search\"]"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "table:nth-of-type(2) > tbody > tr > td:nth-of-type(2) > div > table > tbody > tr:nth-of-type(2) > td:nth-of-type(1) > a"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "link",
+            "x": 275.0,
+            "y": 229.0,
+            "w": 91.984375,
+            "h": 17.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "risk": "safe",
+      "irreversible": false,
+      "expect": {
+        "description": "navigated",
+        "detect": {
+          "kind": "url_matches",
+          "pattern": "/members/search$"
+        },
+        "timeout_ms": 8000
+      },
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s05_type",
+      "action": "type",
+      "description": "We are at the member search page.",
+      "target": {
+        "description": "textbox \"Member Number\"",
+        "role": "textbox",
+        "strategies": [
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "textbox whose inferred label is 'Member Number' (source: adjacent_cell); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+            "kind": "label_text",
+            "role": "textbox",
+            "text": "Member Number"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "spatial: nearest textbox to the right of the text 'Member Number'; survives table restructuring as long as the visual layout holds",
+            "kind": "anchor_relative",
+            "role": "textbox",
+            "anchor_text": "Member Number",
+            "direction": "right"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "form field name attribute; stable in server-rendered apps, invisible to the operator",
+            "kind": "css",
+            "selector": "input[name=\"q\"]"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "tbody > tr > td:nth-of-type(2) > div > form > table > tbody > tr > td:nth-of-type(2) > input[name=\"q\"]"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "textbox",
+            "x": 376.4375,
+            "y": 194.0,
+            "w": 203.0,
+            "h": 39.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "value": "{{inputs.member_id}}",
+      "risk": "safe",
+      "irreversible": false,
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s06_click",
+      "action": "click",
+      "description": "Member number entered.",
+      "target": {
+        "description": "button \"Search\"",
+        "role": "button",
+        "strategies": [
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "accessible button named 'Search' (source: content); independent of styling and DOM structure",
+            "kind": "role_name",
+            "role": "button",
+            "name": "Search",
+            "exact": true
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "button whose inferred label is 'Search' (source: content); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+            "kind": "label_text",
+            "role": "button",
+            "text": "Search"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "tbody > tr > td:nth-of-type(2) > div > form > table > tbody > tr > td:nth-of-type(3) > input"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "button",
+            "x": 587.4375,
+            "y": 194.0,
+            "w": 86.1875,
+            "h": 39.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "risk": "safe",
+      "irreversible": false,
+      "expect": {
+        "description": "\"Search Results\" appears",
+        "detect": {
+          "kind": "text_visible",
+          "text": "Search Results"
+        },
+        "timeout_ms": 8000
+      },
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s07_click",
+      "action": "click",
+      "description": "Search results show member 12345.",
+      "target": {
+        "description": "link \"View\"",
+        "role": "link",
+        "strategies": [
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "accessible link named 'View' (source: content); independent of styling and DOM structure",
+            "kind": "role_name",
+            "role": "link",
+            "name": "View",
+            "exact": true
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "link whose inferred label is 'View' (source: content); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+            "kind": "label_text",
+            "role": "link",
+            "text": "View"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "link target; stable while routes are stable (parameterized on replay)",
+            "kind": "css",
+            "selector": "a[href=\"/members/{{inputs.member_id}}\"]"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "table:nth-of-type(2) > tbody > tr > td:nth-of-type(2) > div > table > tbody > tr:nth-of-type(2) > td:nth-of-type(4) > a"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "link",
+            "x": 957.09375,
+            "y": 332.0,
+            "w": 27.421875,
+            "h": 17.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "risk": "safe",
+      "irreversible": false,
+      "expect": {
+        "description": "navigated",
+        "detect": {
+          "kind": "url_matches",
+          "pattern": "/members/[^/]+$"
+        },
+        "timeout_ms": 8000
+      },
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s08_extract",
+      "action": "extract",
+      "description": "We are on the member details page for member 12345.",
+      "target": {
+        "description": "cell \"$5,432.10\" in frame iframe[name=\"acctframe\"]",
+        "role": "cell",
+        "strategies": [
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "grid cell in the row labelled '12345-S01' under the column 'Balance'; independent of the cell's current value, so it survives different inputs on replay",
+            "kind": "table_cell",
+            "row_text": "{{inputs.member_id}}-S01",
+            "column_header": "Balance"
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "accessible cell named '$5,432.10' (source: content); independent of styling and DOM structure",
+            "kind": "role_name",
+            "role": "cell",
+            "name": "$5,432.10",
+            "exact": true
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "visible text content; what the operator reads on screen",
+            "kind": "text",
+            "text": "$5,432.10",
+            "exact": true
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "table > tbody > tr:nth-of-type(2) > td:nth-of-type(4)"
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "cell",
+            "x": 707.53125,
+            "y": 534.5,
+            "w": 119.203125,
+            "h": 40.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "output": "savings_balance",
+      "risk": "safe",
+      "irreversible": false,
+      "on_conditions": [],
+      "wait_before_ms": 0
+    }
+  ],
+  "conditions": {
+    "session_expired": {
+      "id": "session_expired",
+      "description": "The app bounced us to sign-on with an expiry notice; sign on again and retry the step.",
+      "detect": {
+        "kind": "url_matches",
+        "pattern": "/login\\?reason=expired"
+      },
+      "classification": "recoverable",
+      "handler": {
+        "kind": "subflow",
+        "steps": [
+          {
+            "id": "s01_type",
+            "action": "type",
+            "description": "We are at the login screen.",
+            "target": {
+              "description": "textbox \"User ID\"",
+              "role": "textbox",
+              "strategies": [
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "textbox whose inferred label is 'User ID' (source: adjacent_cell); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+                  "kind": "label_text",
+                  "role": "textbox",
+                  "text": "User ID"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "spatial: nearest textbox to the right of the text 'User ID'; survives table restructuring as long as the visual layout holds",
+                  "kind": "anchor_relative",
+                  "role": "textbox",
+                  "anchor_text": "User ID",
+                  "direction": "right"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "form field name attribute; stable in server-rendered apps, invisible to the operator",
+                  "kind": "css",
+                  "selector": "input[name=\"userid\"]"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+                  "kind": "css",
+                  "selector": "tbody > tr > td > div > form > table > tbody > tr:nth-of-type(1) > td:nth-of-type(2) > input[name=\"userid\"]"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+                  "kind": "bbox",
+                  "role": "textbox",
+                  "x": 120.671875,
+                  "y": 194.0,
+                  "w": 220.0,
+                  "h": 39.0,
+                  "viewport_w": 1280,
+                  "viewport_h": 820
+                }
+              ]
+            },
+            "value": "{{secrets.app.username}}",
+            "risk": "safe",
+            "irreversible": false,
+            "on_conditions": [],
+            "wait_before_ms": 0
+          },
+          {
+            "id": "s02_type",
+            "action": "type",
+            "description": "Username entered successfully.",
+            "target": {
+              "description": "textbox \"Password\"",
+              "role": "textbox",
+              "strategies": [
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "textbox whose inferred label is 'Password' (source: adjacent_cell); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+                  "kind": "label_text",
+                  "role": "textbox",
+                  "text": "Password"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "spatial: nearest textbox to the right of the text 'Password'; survives table restructuring as long as the visual layout holds",
+                  "kind": "anchor_relative",
+                  "role": "textbox",
+                  "anchor_text": "Password",
+                  "direction": "right"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "form field name attribute; stable in server-rendered apps, invisible to the operator",
+                  "kind": "css",
+                  "selector": "input[name=\"passwd\"]"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+                  "kind": "css",
+                  "selector": "tbody > tr > td > div > form > table > tbody > tr:nth-of-type(2) > td:nth-of-type(2) > input[name=\"passwd\"]"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+                  "kind": "bbox",
+                  "role": "textbox",
+                  "x": 120.671875,
+                  "y": 243.0,
+                  "w": 220.0,
+                  "h": 39.0,
+                  "viewport_w": 1280,
+                  "viewport_h": 820
+                }
+              ]
+            },
+            "value": "{{secrets.app.password}}",
+            "risk": "safe",
+            "irreversible": false,
+            "on_conditions": [],
+            "wait_before_ms": 0
+          },
+          {
+            "id": "s03_click",
+            "action": "click",
+            "description": "Credentials entered.",
+            "target": {
+              "description": "button \"Sign On\"",
+              "role": "button",
+              "strategies": [
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "accessible button named 'Sign On' (source: content); independent of styling and DOM structure",
+                  "kind": "role_name",
+                  "role": "button",
+                  "name": "Sign On",
+                  "exact": true
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "button whose inferred label is 'Sign On' (source: content); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+                  "kind": "label_text",
+                  "role": "button",
+                  "text": "Sign On"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+                  "kind": "css",
+                  "selector": "tbody > tr > td > div > form > table > tbody > tr:nth-of-type(3) > td:nth-of-type(2) > input:nth-of-type(1)"
+                },
+                {
+                  "frame": "main",
+                  "nth": 0,
+                  "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+                  "kind": "bbox",
+                  "role": "button",
+                  "x": 120.671875,
+                  "y": 292.0,
+                  "w": 95.703125,
+                  "h": 39.0,
+                  "viewport_w": 1280,
+                  "viewport_h": 820
+                }
+              ]
+            },
+            "risk": "safe",
+            "irreversible": false,
+            "expect": {
+              "description": "navigated",
+              "detect": {
+                "kind": "url_matches",
+                "pattern": "/console$"
+              },
+              "timeout_ms": 8000
+            },
+            "on_conditions": [],
+            "wait_before_ms": 0
+          }
+        ],
+        "then": "retry_step"
+      }
+    },
+    "maintenance_dialog": {
+      "id": "maintenance_dialog",
+      "description": "A modal maintenance notice is covering the page; dismiss it and continue.",
+      "detect": {
+        "kind": "dialog_present",
+        "name_contains": "Maintenance"
+      },
+      "classification": "recoverable",
+      "handler": {
+        "kind": "click",
+        "target": {
+          "description": "button \"OK\" in the dialog",
+          "role": "button",
+          "strategies": [
+            {
+              "frame": "main",
+              "nth": 0,
+              "rationale": "the dialog's only button",
+              "kind": "role_name",
+              "role": "button",
+              "name": "OK",
+              "exact": true
+            }
+          ]
+        },
+        "description": "Press OK on the notice"
+      }
+    },
+    "slow_or_failed_load": {
+      "id": "slow_or_failed_load",
+      "description": "The page did not reach the expected state in time; wait and retry a bounded number of times.",
+      "detect": {
+        "kind": "all_of",
+        "detectors": []
+      },
+      "classification": "recoverable",
+      "handler": {
+        "kind": "retry",
+        "max_attempts": 3,
+        "backoff_ms": 1500
+      }
+    },
+    "invalid_credentials": {
+      "id": "invalid_credentials",
+      "description": "The operator credentials were rejected.",
+      "detect": {
+        "kind": "text_visible",
+        "text": "Invalid user ID or password"
+      },
+      "classification": "hard_failure",
+      "code": "AUTH_FAILED"
+    },
+    "member_not_found": {
+      "id": "member_not_found",
+      "description": "No member exists with the supplied number. A legitimate answer, not an error.",
+      "detect": {
+        "kind": "text_visible",
+        "text": "No member found"
+      },
+      "classification": "business_outcome",
+      "code": "MEMBER_NOT_FOUND"
+    },
+    "permission_denied": {
+      "id": "permission_denied",
+      "description": "The operator role may not view this member.",
+      "detect": {
+        "kind": "text_visible",
+        "text": "Access Denied"
+      },
+      "classification": "business_outcome",
+      "code": "PERMISSION_DENIED"
+    },
+    "invalid_member_number": {
+      "id": "invalid_member_number",
+      "description": "The app rejected the member number format.",
+      "detect": {
+        "kind": "text_visible",
+        "text": "VAL-1001"
+      },
+      "classification": "business_outcome",
+      "code": "INVALID_INPUT"
+    },
+    "validation_error": {
+      "id": "validation_error",
+      "description": "The app rejected the submitted form values (VAL-2xxx).",
+      "detect": {
+        "kind": "text_visible",
+        "text": "Please correct the following"
+      },
+      "classification": "business_outcome",
+      "code": "VALIDATION_ERROR"
+    },
+    "application_error": {
+      "id": "application_error",
+      "description": "The application returned an error page.",
+      "detect": {
+        "kind": "text_visible",
+        "text": "Application Error"
+      },
+      "classification": "hard_failure",
+      "code": "APP_ERROR"
+    }
+  },
+  "checkpoint": {
+    "description": "goal state: \"Member 12345 details page showing savings balance $5,432.10\"",
+    "detect": {
+      "kind": "all_of",
+      "detectors": [
+        {
+          "kind": "url_matches",
+          "pattern": "/members/[^/]+$"
+        },
+        {
+          "kind": "text_visible",
+          "text": "Member Servicing Console"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "discovery_run_id": "20260908T235049-e46b9e",
+    "recorded_at": 1788929515.6830864,
+    "provider": "openai_compat",
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "surface": "browser-playwright",
+    "goal": "Look up member 12345 and read their current savings balance",
+    "discovery_steps": 9,
+    "redaction_applied": true,
+    "notes": "8 executed actions; 0 condition(s) learned from the run; 10 model calls, 24434 tokens; model's checkpoint text reduced to the visible fragment \"Member Servicing Console\""
+  }
+}
