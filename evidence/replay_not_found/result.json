@@ -1,7 +1,7 @@
 {
   "status": "business_outcome",
   "capability_id": "member.read_savings_balance",
-  "capability_version": 4,
+  "capability_version": 6,
   "run_id": "replay_not_found",
   "inputs": {
     "member_id": "99999"
@@ -29,7 +29,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 170,
+      "duration_ms": 202,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -40,7 +40,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 118,
+      "duration_ms": 122,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -51,7 +51,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 712,
+      "duration_ms": 727,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -62,7 +62,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 720,
+      "duration_ms": 726,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -73,7 +73,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 165,
+      "duration_ms": 151,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -95,5 +95,5 @@
   "interventions": [],
   "checkpoint_verified": false,
   "evidence_dir": "evidence/replay_not_found",
-  "duration_ms": 3401
+  "duration_ms": 3445
 }

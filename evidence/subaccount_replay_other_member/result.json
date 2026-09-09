@@ -1,0 +1,200 @@
+{
+  "status": "success",
+  "capability_id": "member.open_subaccount",
+  "capability_version": 3,
+  "run_id": "subaccount_replay_other_member",
+  "inputs": {
+    "member_id": "10001",
+    "product": "Savings - Holiday Club",
+    "nickname": "Holiday Fund",
+    "deposit": "125.50"
+  },
+  "outputs": {
+    "confirmation_number": "CNF-9D2671"
+  },
+  "outcome_code": null,
+  "outcome_message": null,
+  "failure": null,
+  "escalation": null,
+  "steps": [
+    {
+      "step_id": "s00_navigate",
+      "action": "navigate",
+      "status": "ok",
+      "strategy": null,
+      "attempts": 1,
+      "duration_ms": 772,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s01_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 168,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s02_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 114,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s03_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 759,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s04_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 816,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s05_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 229,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s06_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 745,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s07_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 932,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s08_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 848,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s09_select",
+      "action": "select",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 180,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s10_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 144,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s11_type",
+      "action": "type",
+      "status": "ok",
+      "strategy": "label_text#0",
+      "attempts": 1,
+      "duration_ms": 134,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s12_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 742,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s13_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 2900,
+      "conditions": [],
+      "note": "human approved",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s14_extract",
+      "action": "extract",
+      "status": "ok",
+      "strategy": "anchor_relative#0",
+      "attempts": 1,
+      "duration_ms": 211,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    }
+  ],
+  "interventions": [
+    {
+      "step_id": "s13_click",
+      "kind": "risky_action",
+      "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
+      "decision": "approved",
+      "intervention_id": "int-dc844381",
+      "human_actions": 0,
+      "summary": "approved: no actions captured"
+    }
+  ],
+  "checkpoint_verified": true,
+  "evidence_dir": "evidence/subaccount_replay_other_member",
+  "duration_ms": 9855
+}

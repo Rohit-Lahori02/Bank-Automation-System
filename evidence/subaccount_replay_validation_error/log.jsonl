@@ -1,0 +1,54 @@
+{"ts": 1788937457.97, "seq": 0, "kind": "replay_start", "capability": "member.open_subaccount", "version": 3, "inputs": {"member_id": "12345", "product": "Savings - Holiday Club", "nickname": "Holiday Fund", "deposit": "10"}}
+{"ts": 1788937457.971, "seq": 1, "kind": "step_start", "step": "s00_navigate", "action": "navigate", "target": null, "url": "about:blank"}
+{"ts": 1788937457.973, "seq": 2, "kind": "policy", "step": "s00_navigate", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "allowed"}}
+{"ts": 1788937458.721, "seq": 3, "kind": "step_end", "step": "s00_navigate", "status": "ok", "strategy": null, "attempts": 1, "conditions": [], "duration_ms": 749}
+{"ts": 1788937458.722, "seq": 4, "kind": "step_start", "step": "s01_type", "action": "type", "target": "textbox \"User ID\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788937458.724, "seq": 5, "kind": "policy", "step": "s01_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937458.832, "seq": 6, "kind": "resolved", "step": "s01_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937458.897, "seq": 7, "kind": "step_end", "step": "s01_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 175}
+{"ts": 1788937458.898, "seq": 8, "kind": "step_start", "step": "s02_type", "action": "type", "target": "textbox \"Password\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788937458.9, "seq": 9, "kind": "policy", "step": "s02_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937458.965, "seq": 10, "kind": "resolved", "step": "s02_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937459.019, "seq": 11, "kind": "step_end", "step": "s02_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 120}
+{"ts": 1788937459.02, "seq": 12, "kind": "step_start", "step": "s03_click", "action": "click", "target": "button \"Sign On\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788937459.021, "seq": 13, "kind": "policy", "step": "s03_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937459.071, "seq": 14, "kind": "resolved", "step": "s03_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937459.74, "seq": 15, "kind": "step_end", "step": "s03_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 721}
+{"ts": 1788937459.741, "seq": 16, "kind": "step_start", "step": "s04_click", "action": "click", "target": "link \"Member Inquiry\"", "url": "http://127.0.0.1:8000/console"}
+{"ts": 1788937459.742, "seq": 17, "kind": "policy", "step": "s04_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937459.836, "seq": 18, "kind": "resolved", "step": "s04_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937460.474, "seq": 19, "kind": "step_end", "step": "s04_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 731}
+{"ts": 1788937460.475, "seq": 20, "kind": "step_start", "step": "s05_type", "action": "type", "target": "textbox \"Member Number\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788937460.476, "seq": 21, "kind": "policy", "step": "s05_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937460.572, "seq": 22, "kind": "resolved", "step": "s05_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937460.636, "seq": 23, "kind": "step_end", "step": "s05_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 161}
+{"ts": 1788937460.637, "seq": 24, "kind": "step_start", "step": "s06_click", "action": "click", "target": "button \"Search\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788937460.638, "seq": 25, "kind": "policy", "step": "s06_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937460.687, "seq": 26, "kind": "resolved", "step": "s06_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937461.339, "seq": 27, "kind": "step_end", "step": "s06_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 702}
+{"ts": 1788937461.34, "seq": 28, "kind": "step_start", "step": "s07_click", "action": "click", "target": "link \"View\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788937461.341, "seq": 29, "kind": "policy", "step": "s07_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937461.43, "seq": 30, "kind": "resolved", "step": "s07_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937462.29, "seq": 31, "kind": "step_end", "step": "s07_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 949}
+{"ts": 1788937462.291, "seq": 32, "kind": "step_start", "step": "s08_click", "action": "click", "target": "link \"Open Sub-Account\"", "url": "http://127.0.0.1:8000/members/12345"}
+{"ts": 1788937462.292, "seq": 33, "kind": "policy", "step": "s08_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937462.483, "seq": 34, "kind": "resolved", "step": "s08_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937463.141, "seq": 35, "kind": "step_end", "step": "s08_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 851}
+{"ts": 1788937463.142, "seq": 36, "kind": "step_start", "step": "s09_select", "action": "select", "target": "combobox \"Product Type\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
+{"ts": 1788937463.143, "seq": 37, "kind": "policy", "step": "s09_select", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937463.255, "seq": 38, "kind": "resolved", "step": "s09_select", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937463.32, "seq": 39, "kind": "step_end", "step": "s09_select", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 177}
+{"ts": 1788937463.321, "seq": 40, "kind": "step_start", "step": "s10_type", "action": "type", "target": "textbox \"Nickname\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
+{"ts": 1788937463.322, "seq": 41, "kind": "policy", "step": "s10_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937463.4, "seq": 42, "kind": "resolved", "step": "s10_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937463.458, "seq": 43, "kind": "step_end", "step": "s10_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 137}
+{"ts": 1788937463.46, "seq": 44, "kind": "step_start", "step": "s11_type", "action": "type", "target": "textbox \"Initial Deposit ($)\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
+{"ts": 1788937463.461, "seq": 45, "kind": "policy", "step": "s11_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937463.539, "seq": 46, "kind": "resolved", "step": "s11_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937463.604, "seq": 47, "kind": "step_end", "step": "s11_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 144}
+{"ts": 1788937463.605, "seq": 48, "kind": "step_start", "step": "s12_click", "action": "click", "target": "button \"Continue\"", "url": "http://127.0.0.1:8000/members/12345/subaccount/new"}
+{"ts": 1788937463.605, "seq": 49, "kind": "policy", "step": "s12_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937463.659, "seq": 50, "kind": "resolved", "step": "s12_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937464.281, "seq": 51, "kind": "condition", "step": "s12_click", "phase": "await", "condition": "validation_error", "classification": "business_outcome"}
+{"ts": 1788937464.434, "seq": 52, "kind": "outcome", "step": "s12_click", "code": "VALIDATION_ERROR", "condition": "validation_error"}
+{"ts": 1788937464.439, "seq": 53, "kind": "replay_end", "status": "business_outcome", "outcome_code": "VALIDATION_ERROR", "failure_code": null}

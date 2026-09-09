@@ -1,10 +1,10 @@
-Read member savings balance  [member.read_savings_balance v4, draft]
-  Look up a member by member number and return the balance of their primary savings share.
+Read member savings balance  [member.read_savings_balance v6, draft]
+  Look up member 12345 and read their current savings balance
   target: corelink-member-servicing (base) @ http://127.0.0.1:8000/login
   inputs:
     - member_id: string (required)  Value of member_id supplied by the caller
   outputs:
-    - savings_balance: money from step s08_extract  We are on the member details page for member 12345.
+    - savings_balance: money from step s08_extract  At member detail page with iframe showing accounts.
   secrets (supplied at replay, never stored): app.password, app.username
   steps:
     s00_navigate: navigate http://127.0.0.1:8000/login
@@ -31,5 +31,5 @@ Read member savings balance  [member.read_savings_balance v4, draft]
     - invalid_member_number [business_outcome] -> INVALID_INPUT  The app rejected the member number format.
     - validation_error [business_outcome] -> VALIDATION_ERROR  The app rejected the submitted form values (VAL-2xxx).
     - application_error [hard_failure] -> APP_ERROR  The application returned an error page.
-  checkpoint: goal state: "Member 12345 details page showing savings balance $5,432.10"
-  provenance: openai_compat/nvidia/nemotron-3-super-120b-a12b, run 20260908T235049-e46b9e
+  checkpoint: goal state: "Member 12345 detail page showing savings balance $5,432.10"
+  provenance: openai_compat/nvidia/nemotron-3-super-120b-a12b, run 20260909T011756-c8594e

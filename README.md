@@ -9,8 +9,8 @@ explicit error handling, safety guardrails, and a human-in-the-loop handoff path
 > how an AI agent invokes it in production.
 
 Design write-up: [`REPORT.md`](REPORT.md). Evidence from real runs: [`evidence/`](evidence/)
-(one discovery run, ten replays covering every result state, a human handoff; see
-`evidence/summary.md`).
+(two discovery runs - read a balance, open a sub-account with an irreversible Confirm - and
+fourteen replays covering every result state and the human handoff; see `evidence/summary.md`).
 
 **What is real and what is mocked.** The target application is a mock (a deliberately legacy
 credit-union console, built here). The discovery run is a real LLM run against it (NVIDIA NIM,
@@ -308,15 +308,33 @@ cua chaos --maintenance-dialog
 cua replay artifacts/member.read_savings_balance.v1.json --input member_id=12345 --handoff none
 ```
 
-To try the handoff yourself, replay without a key with the default `--handoff console`: when a
-step escalates, the run pauses, prints the operator console URL, and the headed browser window
-is yours until you decide in the console. (The committed artifact has no irreversible step;
-`scripts/make_evidence.py` shows how one is appended for the handoff evidence.)
+**The second capability: open a sub-account.** A form with a `select`, a review screen and an
+irreversible Confirm. Discover it (the policy will hold the Confirm click and pause; approve it
+in the operator console, or from another terminal with `cua resume <run dir> --decision approved`):
+
+```bash
+cua discover --goal "Open a new 'Savings - Holiday Club' sub-account for member 12345 with the nickname 'Holiday Fund' and an initial deposit of 125.50, confirm it, and read back the confirmation number." --input member_id=12345 --input "product=Savings - Holiday Club" --input "nickname=Holiday Fund" --input deposit=125.50 --capability-id member.open_subaccount --name "Open a sub-account"
+```
+
+Replay it. Because Confirm was recorded as a risky step, the replay pauses there every time and
+hands the browser to you; approve in the console (or `cua resume ... --decision approved`), and
+it finishes with a new confirmation number. Below-minimum deposits come back as a validation
+business outcome before Confirm is ever reached:
+
+```bash
+cua replay artifacts/member.open_subaccount.v1.json --input member_id=10001 --input "product=Savings - Holiday Club" --input "nickname=Holiday Fund" --input deposit=125.50 --slow-mo 500
+```
+
+```bash
+cua replay artifacts/member.open_subaccount.v1.json --input member_id=12345 --input "product=Savings - Holiday Club" --input "nickname=Holiday Fund" --input deposit=10 --handoff none
+```
+
+(Sub-accounts opened this way live in the mock app's memory and vanish when it restarts.)
 
 Regenerate the whole evidence folder from real runs:
 
 ```bash
-python scripts/make_evidence.py
+python scripts/make_evidence.py --artifact artifacts/member.read_savings_balance.v1.json --subaccount-artifact artifacts/member.open_subaccount.v1.json
 ```
 
 Without any live model: the hand-authored reference capability in `cua/artifact/examples.py`

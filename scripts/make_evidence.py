@@ -38,7 +38,7 @@ from cua.surface import BrowserSurface, RoleNameStrategy, SessionControl, Target
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "evidence"
-KEEP_TRACES = {"discovery", "replay_success", "replay_handoff_resumed"}
+KEEP_TRACES = {"discovery", "replay_success", "replay_handoff_resumed", "subaccount_discovery", "subaccount_replay_success"}
 
 
 def free_port() -> int:
@@ -97,6 +97,8 @@ def main() -> int:
     load_dotenv(ROOT / ".env")
     parser = argparse.ArgumentParser()
     parser.add_argument("--artifact", default="artifacts/member.read_savings_balance.v4.json")
+    parser.add_argument("--subaccount-artifact", default=None,
+                        help="the recorded open-sub-account capability (has a naturally recorded risky Confirm step)")
     parser.add_argument("--base", default=f"http://{os.getenv('MOCK_APP_HOST', '127.0.0.1')}:{os.getenv('MOCK_APP_PORT', '8000')}")
     args = parser.parse_args()
 
@@ -167,6 +169,38 @@ def main() -> int:
             thread.join(30)
         summary[name] = json.loads(result.to_json())
         print(f"{name:28s} {result.one_line()}")
+
+    # ---- second capability: open a sub-account (naturally recorded risky Confirm step) --------------
+    if args.subaccount_artifact:
+        sub = Capability.model_validate_json((ROOT / args.subaccount_artifact).read_text(encoding="utf-8"))
+        (EVIDENCE / "artifact" / "member.open_subaccount.json").write_text(
+            sub.model_dump_json(indent=2, exclude_none=True), encoding="utf-8")
+        (EVIDENCE / "artifact" / "member.open_subaccount.describe.txt").write_text(sub.describe(), encoding="utf-8")
+        sub_run = ROOT / "runs" / sub.provenance.discovery_run_id
+        if sub_run.exists():
+            shutil.copytree(sub_run, EVIDENCE / "subaccount_discovery")
+            summary["subaccount_discovery"] = json.loads((sub_run / "summary.json").read_text(encoding="utf-8"))
+        base_inputs = {name: spec.example for name, spec in sub.inputs.items()}
+        sub_scenarios = [
+            ("subaccount_replay_success", dict(base_inputs), "approved"),
+            ("subaccount_replay_other_member", {**base_inputs, "member_id": "10001"}, "approved"),
+            ("subaccount_replay_validation_error", {**base_inputs, "deposit": "10"}, "approved"),
+            ("subaccount_replay_escalation_aborted", dict(base_inputs), "aborted"),
+        ]
+        for name, inputs, decision in sub_scenarios:
+            chaos(args.base)
+            control = SessionControl()
+            with BrowserSurface(headless=True, trace_dir=EVIDENCE / name, control=control, cdp_port=free_port()) as surface:
+                controller = HandoffController(surface=surface, control=control, redactor=redactor, timeout_s=120, poll_s=0.2)
+                thread = operator(controller, lambda page: None, decision)
+                engine = ReplayEngine(surface=surface, policy=policy, redactor=redactor, evidence_root=EVIDENCE,
+                                      escalation_handler=ReplayHandoff(controller))
+                result = engine.replay(sub, inputs, secrets, run_id=name)
+                if controller.pending():           # the run ended before reaching the risky step
+                    controller.decide(controller.pending()[0].id, "aborted")
+                thread.join(5)
+            summary[name] = json.loads(result.to_json())
+            print(f"{name:40s} {result.one_line()}")
 
     # ---- operator console screenshots -----------------------------------------------------------
     console_dir = EVIDENCE / "operator_console"

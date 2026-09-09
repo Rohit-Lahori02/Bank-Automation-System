@@ -119,7 +119,28 @@ def grid_context(el: Element, elements: list[Element]) -> tuple[Element | None, 
            and e.bbox.y < el.bbox.y and e.name]
     row_anchor = min(row, key=lambda e: e.bbox.x) if row else None
     header = min(col, key=lambda e: e.bbox.y) if col else None
+    # A two-column grid is a key/value layout: its first row is data, not headers. Likewise a
+    # "header" without a single letter (e.g. "12345") is a value.
+    columns = {round((e.bbox.x + e.bbox.w / 2) / 20) for e in [*peers, el]}
+    if header is not None and (len(columns) <= 2 or not any(ch.isalpha() for ch in header.name)):
+        header = None
     return row_anchor, header
+
+
+def left_label(el: Element, elements: list[Element], max_gap: float = 320.0) -> Element | None:
+    """The nearest textual element to the left of `el` on the same line: its label in a key/value layout."""
+    best, best_gap = None, None
+    for e in elements:
+        if e is el or e.frame != el.frame or e.role not in TEXTUAL_ROLES or not e.name:
+            continue
+        if e.bbox.right > el.bbox.x + 6:
+            continue
+        if _overlap(e.bbox.y, e.bbox.bottom, el.bbox.y, el.bbox.bottom) < min(e.bbox.h, el.bbox.h) * 0.5:
+            continue
+        gap = el.bbox.x - e.bbox.right
+        if gap <= max_gap and (best_gap is None or gap < best_gap):
+            best, best_gap = e, gap
+    return best
 
 
 class Target(BaseModel):
@@ -155,6 +176,16 @@ def build_target(el: Element, snapshot: Snapshot) -> Target:
             rationale=f"accessible {el.role} named '{el.name}' (source: {el.name_source}); "
                       "independent of styling and DOM structure",
         ))
+
+    if el.role in TEXTUAL_ROLES:
+        label = left_label(el, snapshot.elements)
+        covered_by_table_cell = label is row_anchor and header is not None
+        if label is not None and not covered_by_table_cell:
+            strategies.append(AnchorRelativeStrategy(
+                frame=frame, role=el.role, anchor_text=label.name, direction="right",
+                rationale=f"the {el.role} to the right of the label '{label.name}'; independent of this "
+                          "value's content, so an extracted value can be re-read for other inputs",
+            ))
 
     if el.name and el.role in TEXTUAL_ROLES:
         strategies.append(TextStrategy(

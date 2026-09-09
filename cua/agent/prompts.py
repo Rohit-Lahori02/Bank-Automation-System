@@ -24,7 +24,9 @@ You act ONE step at a time. Each turn, reply with exactly one JSON object and no
   "key": "Enter",               // press: a key name
   "url": "http://...",          // navigate: only URLs inside the allowed application
   "output": "snake_case_name",  // extract: the name of the value you are reading from ref
-  "expect": "short text",       // optional but recommended: text that should be visible after this action succeeds
+  "expect": "short text",       // optional but recommended: text that will LITERALLY be on the screen after this action
+                                // succeeds - a heading, a label, a message (e.g. "Search Results"), never a description
+                                // of what happened (not "field filled"). Omit it for typing into a field.
   "outputs": {"name": "value"}, // done: every value you extracted, by name
   "checkpoint": "short text",   // done: text visible on the final screen that proves the goal was reached
   "reason": "why"               // stuck: why you cannot safely continue

@@ -193,6 +193,22 @@ def test_value_cell_target_is_value_independent(surface, mock_server):
     assert surface.resolve(generic).handle.inner_text().strip() == "$5,432.10"
 
 
+def test_value_next_to_a_label_is_anchored_on_the_label(surface, mock_server):
+    """A value in a key/value layout (profile name, a confirmation number) must not depend on its own text."""
+    sign_on(surface, mock_server.base_url)
+    surface.navigate(f"{mock_server.base_url}/members/12345")
+    snap = surface.snapshot()
+    name_cell = snap.by_role("cell", "Oyelaran, Marcus", exact=True)[0]
+    target = build_target(name_cell, snap)
+    anchored = next(s for s in target.strategies if s.kind == "anchor_relative")
+    assert anchored.anchor_text == "Name" and anchored.direction == "right"
+    assert target.strategies.index(anchored) < [s.kind for s in target.strategies].index("text")
+    # the same target, with the value-specific text strategy removed, reads another member's name
+    generic = Target(description="name", role="cell", strategies=[anchored])
+    surface.navigate(f"{mock_server.base_url}/members/10001")
+    assert surface.resolve(generic).handle.inner_text().strip() == "Brandt, Alicia"
+
+
 def test_targets_round_trip_through_json(surface, mock_server):
     surface.navigate(f"{mock_server.base_url}/login")
     snap = surface.snapshot()

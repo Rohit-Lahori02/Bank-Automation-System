@@ -32,7 +32,12 @@ Key decisions and trade-offs:
 - **The loop enforces, the model proposes.** Every proposed action passes the policy engine
   before it touches the surface; blocked, held, malformed and unknown-ref actions are returned to
   the model as step results. Only the two most recent screens stay verbatim in context, so cost is
-  flat in run length (the recorded run: 9 steps, 10 calls, 24k tokens, on a free tier).
+  flat in run length (the two recorded runs: 9 and 15 steps, 24k and 42k tokens, on a free tier).
+- **Two capabilities recorded, both replayed.** *Read savings balance* (search → detail → extract)
+  and *open a sub-account* (form with a `select`, review, irreversible Confirm, extract the
+  confirmation number). The second one is where the safety and handoff model shows up in a
+  natural recording: the policy held the Confirm click during discovery, an operator approved it,
+  and the recorded step carries `risk: risky`, so every replay escalates there by itself.
 - **Single process, no queues.** Discovery is rare and human-paced; replay is a sub-minute
   sequential job. The abstractions (capability store, run evidence, handoff queue) are the units
   a service would later own; nothing in the code assumes they are in-process.
@@ -53,9 +58,10 @@ cross-reference validated at load):
   optional `expect` postcondition (a detector with a timeout). A `Target` carries a *ranked chain
   of locator strategies, each with a rationale*: `role_name` (accessible role + name), `text`,
   `label_text` (our inference for unlabeled legacy inputs: adjacent table cell, nearest text
-  left/above), `anchor_relative` (nearest control in a direction from an anchor text),
-  `table_cell` (row anchor + column header, resolved geometrically), `css`, `bbox`. Replay records
-  which one resolved.
+  left/above), `anchor_relative` (nearest element in a direction from an anchor text — also how
+  a value next to its label, such as a confirmation number, is re-read without depending on the
+  value itself), `table_cell` (row anchor + column header, resolved geometrically), `css`, `bbox`.
+  Replay records which one resolved.
 - **`conditions`** — the app's failure vocabulary, each classified as `business_outcome` (with a
   code), `recoverable` (with a handler: dismiss-click, bounded retry, re-login sub-flow,
   escalate) or `hard_failure` (with a code).
@@ -133,7 +139,10 @@ provenance are in place so they are additive.
 (`Confirm`, `Close Account`, …) or is marked irreversible; a state failure the artifact has no
 answer for (`TARGET_NOT_FOUND`, `EXPECTATION_TIMEOUT`, `CHECKPOINT_FAILED`, recovery loops); and
 the discovery model calling `stuck`. Each raises an intervention request with the goal or
-capability, step id, reason, URL, screenshot and screen listing.
+capability, step id, reason, URL, screenshot and screen listing. The risky path is the same in
+discovery and replay: in the sub-account recording the model's Confirm click was held, approved
+by the operator, executed, and recorded as a risky step, which is why replays of that capability
+pause at Confirm without anyone having to annotate the artifact.
 
 **Control transfer** (`cua/handoff/controller.py`) is a token held by exactly one party:
 `automation → paused → human → automation`. Every automated action asserts that automation holds

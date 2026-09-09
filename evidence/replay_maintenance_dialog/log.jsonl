@@ -1,41 +1,41 @@
-{"ts": 1788932811.898, "seq": 0, "kind": "replay_start", "capability": "member.read_savings_balance", "version": 4, "inputs": {"member_id": "12345"}}
-{"ts": 1788932811.9, "seq": 1, "kind": "step_start", "step": "s00_navigate", "action": "navigate", "target": null, "url": "about:blank"}
-{"ts": 1788932811.901, "seq": 2, "kind": "policy", "step": "s00_navigate", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "allowed"}}
-{"ts": 1788932812.593, "seq": 3, "kind": "condition", "step": "s00_navigate", "phase": "after", "condition": "maintenance_dialog", "classification": "recoverable"}
-{"ts": 1788932812.595, "seq": 4, "kind": "recover", "step": "s00_navigate", "condition": "maintenance_dialog", "handler": "click"}
-{"ts": 1788932812.758, "seq": 5, "kind": "step_end", "step": "s00_navigate", "status": "recovered", "strategy": null, "attempts": 1, "conditions": ["maintenance_dialog"], "duration_ms": 857}
-{"ts": 1788932812.759, "seq": 6, "kind": "step_start", "step": "s01_type", "action": "type", "target": "textbox \"User ID\"", "url": "http://127.0.0.1:8000/login"}
-{"ts": 1788932812.759, "seq": 7, "kind": "policy", "step": "s01_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932812.826, "seq": 8, "kind": "resolved", "step": "s01_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788932812.878, "seq": 9, "kind": "step_end", "step": "s01_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 118}
-{"ts": 1788932812.879, "seq": 10, "kind": "step_start", "step": "s02_type", "action": "type", "target": "textbox \"Password\"", "url": "http://127.0.0.1:8000/login"}
-{"ts": 1788932812.88, "seq": 11, "kind": "policy", "step": "s02_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932812.945, "seq": 12, "kind": "resolved", "step": "s02_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788932812.996, "seq": 13, "kind": "step_end", "step": "s02_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 117}
-{"ts": 1788932812.998, "seq": 14, "kind": "step_start", "step": "s03_click", "action": "click", "target": "button \"Sign On\"", "url": "http://127.0.0.1:8000/login"}
-{"ts": 1788932812.999, "seq": 15, "kind": "policy", "step": "s03_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932813.044, "seq": 16, "kind": "resolved", "step": "s03_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788932813.705, "seq": 17, "kind": "step_end", "step": "s03_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 707}
-{"ts": 1788932813.706, "seq": 18, "kind": "step_start", "step": "s04_click", "action": "click", "target": "link \"Member Inquiry\"", "url": "http://127.0.0.1:8000/console"}
-{"ts": 1788932813.707, "seq": 19, "kind": "policy", "step": "s04_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932813.787, "seq": 20, "kind": "resolved", "step": "s04_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788932814.426, "seq": 21, "kind": "step_end", "step": "s04_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 719}
-{"ts": 1788932814.427, "seq": 22, "kind": "step_start", "step": "s05_type", "action": "type", "target": "textbox \"Member Number\"", "url": "http://127.0.0.1:8000/members/search"}
-{"ts": 1788932814.428, "seq": 23, "kind": "policy", "step": "s05_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932814.528, "seq": 24, "kind": "resolved", "step": "s05_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788932814.647, "seq": 25, "kind": "step_end", "step": "s05_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 219}
-{"ts": 1788932814.648, "seq": 26, "kind": "step_start", "step": "s06_click", "action": "click", "target": "button \"Search\"", "url": "http://127.0.0.1:8000/members/search"}
-{"ts": 1788932814.649, "seq": 27, "kind": "policy", "step": "s06_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932814.7, "seq": 28, "kind": "resolved", "step": "s06_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788932815.35, "seq": 29, "kind": "step_end", "step": "s06_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 702}
-{"ts": 1788932815.351, "seq": 30, "kind": "step_start", "step": "s07_click", "action": "click", "target": "link \"View\"", "url": "http://127.0.0.1:8000/members/search"}
-{"ts": 1788932815.352, "seq": 31, "kind": "policy", "step": "s07_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932815.436, "seq": 32, "kind": "resolved", "step": "s07_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788932816.229, "seq": 33, "kind": "step_end", "step": "s07_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 877}
-{"ts": 1788932816.23, "seq": 34, "kind": "step_start", "step": "s08_extract", "action": "extract", "target": "cell \"$5,432.10\" in frame iframe[name=\"acctframe\"]", "url": "http://127.0.0.1:8000/members/12345"}
-{"ts": 1788932816.231, "seq": 35, "kind": "policy", "step": "s08_extract", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "read-only action"}}
-{"ts": 1788932816.406, "seq": 36, "kind": "resolved", "step": "s08_extract", "strategy": "table_cell#0", "frame": "iframe[name=\"acctframe\"]"}
-{"ts": 1788932816.467, "seq": 37, "kind": "extracted", "step": "s08_extract", "output": "savings_balance", "value": "$5,432.10"}
-{"ts": 1788932816.56, "seq": 38, "kind": "step_end", "step": "s08_extract", "status": "ok", "strategy": "table_cell#0", "attempts": 1, "conditions": [], "duration_ms": 329}
-{"ts": 1788932816.648, "seq": 39, "kind": "checkpoint", "verified": true}
-{"ts": 1788932816.825, "seq": 40, "kind": "replay_end", "status": "success", "outcome_code": null, "failure_code": null}
+{"ts": 1788937397.885, "seq": 0, "kind": "replay_start", "capability": "member.read_savings_balance", "version": 6, "inputs": {"member_id": "12345"}}
+{"ts": 1788937397.887, "seq": 1, "kind": "step_start", "step": "s00_navigate", "action": "navigate", "target": null, "url": "about:blank"}
+{"ts": 1788937397.889, "seq": 2, "kind": "policy", "step": "s00_navigate", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "allowed"}}
+{"ts": 1788937398.583, "seq": 3, "kind": "condition", "step": "s00_navigate", "phase": "after", "condition": "maintenance_dialog", "classification": "recoverable"}
+{"ts": 1788937398.584, "seq": 4, "kind": "recover", "step": "s00_navigate", "condition": "maintenance_dialog", "handler": "click"}
+{"ts": 1788937398.739, "seq": 5, "kind": "step_end", "step": "s00_navigate", "status": "recovered", "strategy": null, "attempts": 1, "conditions": ["maintenance_dialog"], "duration_ms": 851}
+{"ts": 1788937398.74, "seq": 6, "kind": "step_start", "step": "s01_type", "action": "type", "target": "textbox \"User ID\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788937398.74, "seq": 7, "kind": "policy", "step": "s01_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937398.816, "seq": 8, "kind": "resolved", "step": "s01_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937398.872, "seq": 9, "kind": "step_end", "step": "s01_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 132}
+{"ts": 1788937398.873, "seq": 10, "kind": "step_start", "step": "s02_type", "action": "type", "target": "textbox \"Password\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788937398.875, "seq": 11, "kind": "policy", "step": "s02_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937398.981, "seq": 12, "kind": "resolved", "step": "s02_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937399.036, "seq": 13, "kind": "step_end", "step": "s02_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 162}
+{"ts": 1788937399.037, "seq": 14, "kind": "step_start", "step": "s03_click", "action": "click", "target": "button \"Sign On\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788937399.038, "seq": 15, "kind": "policy", "step": "s03_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937399.086, "seq": 16, "kind": "resolved", "step": "s03_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937399.756, "seq": 17, "kind": "step_end", "step": "s03_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 718}
+{"ts": 1788937399.757, "seq": 18, "kind": "step_start", "step": "s04_click", "action": "click", "target": "link \"Member Inquiry\"", "url": "http://127.0.0.1:8000/console"}
+{"ts": 1788937399.758, "seq": 19, "kind": "policy", "step": "s04_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937399.84, "seq": 20, "kind": "resolved", "step": "s04_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937400.479, "seq": 21, "kind": "step_end", "step": "s04_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 721}
+{"ts": 1788937400.48, "seq": 22, "kind": "step_start", "step": "s05_type", "action": "type", "target": "textbox \"Member Number\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788937400.481, "seq": 23, "kind": "policy", "step": "s05_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937400.582, "seq": 24, "kind": "resolved", "step": "s05_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937400.656, "seq": 25, "kind": "step_end", "step": "s05_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 175}
+{"ts": 1788937400.657, "seq": 26, "kind": "step_start", "step": "s06_click", "action": "click", "target": "button \"Search\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788937400.659, "seq": 27, "kind": "policy", "step": "s06_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937400.715, "seq": 28, "kind": "resolved", "step": "s06_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937401.373, "seq": 29, "kind": "step_end", "step": "s06_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 716}
+{"ts": 1788937401.374, "seq": 30, "kind": "step_start", "step": "s07_click", "action": "click", "target": "link \"View\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788937401.375, "seq": 31, "kind": "policy", "step": "s07_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937401.463, "seq": 32, "kind": "resolved", "step": "s07_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937402.312, "seq": 33, "kind": "step_end", "step": "s07_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 937}
+{"ts": 1788937402.313, "seq": 34, "kind": "step_start", "step": "s08_extract", "action": "extract", "target": "cell \"$5,432.10\" in frame iframe[name=\"acctframe\"]", "url": "http://127.0.0.1:8000/members/12345"}
+{"ts": 1788937402.314, "seq": 35, "kind": "policy", "step": "s08_extract", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "read-only action"}}
+{"ts": 1788937402.524, "seq": 36, "kind": "resolved", "step": "s08_extract", "strategy": "table_cell#0", "frame": "iframe[name=\"acctframe\"]"}
+{"ts": 1788937402.589, "seq": 37, "kind": "extracted", "step": "s08_extract", "output": "savings_balance", "value": "$5,432.10"}
+{"ts": 1788937402.695, "seq": 38, "kind": "step_end", "step": "s08_extract", "status": "ok", "strategy": "table_cell#0", "attempts": 1, "conditions": [], "duration_ms": 381}
+{"ts": 1788937402.795, "seq": 39, "kind": "checkpoint", "verified": true}
+{"ts": 1788937402.973, "seq": 40, "kind": "replay_end", "status": "success", "outcome_code": null, "failure_code": null}

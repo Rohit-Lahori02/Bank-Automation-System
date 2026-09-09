@@ -272,7 +272,7 @@ def _url_pattern(url: str, inputs: dict[str, str]) -> str:
     for value in sorted((str(v) for v in inputs.values()), key=len, reverse=True):
         if len(value) >= 2:
             pattern = pattern.replace(re.escape(value), r"[^/]+")
-    return pattern + "$"
+    return pattern + r"(?:[?#]|$)"   # the path must end here; a query string or fragment may follow
 
 
 def _infer_type(sample: str | None) -> ParamType:

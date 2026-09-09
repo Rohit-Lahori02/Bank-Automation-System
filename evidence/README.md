@@ -46,3 +46,24 @@ artifact above with no model involved.
 The operator in the handoff runs was a second Playwright client attached to the live browser
 over CDP — the same mechanism a person or a remote console uses — scripted so the evidence can
 be regenerated unattended. `operator_console/` shows the console a person would use.
+
+## Second capability: open a sub-account (`subaccount_*`)
+
+A second genuine discovery run for the goal *"Open a new 'Savings - Holiday Club' sub-account
+for member 12345 with the nickname 'Holiday Fund' and an initial deposit of 125.50, confirm it,
+and read back the confirmation number"* — the multi-field form with a confirmation step from
+the brief. Four typed inputs (member, product, nickname, deposit), a `select` step, and an
+**irreversible Confirm**. During discovery the policy held the Confirm click and routed it to
+an operator, who approved it with `cua resume --decision approved` (see
+`subaccount_discovery/intervention.json` and the `handoff_*` events in its log). The recorder
+therefore marked that step `risky`, so every replay escalates there on its own — no appended
+step.
+
+| directory | what it shows |
+|---|---|
+| `subaccount_discovery` | the run: 15 steps, the held Confirm, the approval, the extracted confirmation number |
+| `artifact/member.open_subaccount.json` | the capability; note `{{inputs.product}}` on the select step and `[RISKY]` on Confirm |
+| `subaccount_replay_success` | escalates at Confirm, operator approves, `success` with a fresh confirmation number |
+| `subaccount_replay_other_member` | same for member 10001 |
+| `subaccount_replay_validation_error` | deposit 10 (below the $25 minimum): `business_outcome VALIDATION_ERROR` at Continue, Confirm never reached |
+| `subaccount_replay_escalation_aborted` | operator declines at Confirm: `escalated`, nothing was opened |

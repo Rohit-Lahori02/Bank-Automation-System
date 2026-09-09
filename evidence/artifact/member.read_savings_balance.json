@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "id": "member.read_savings_balance",
   "name": "Read member savings balance",
-  "version": 4,
+  "version": 6,
   "status": "draft",
-  "description": "Look up a member by member number and return the balance of their primary savings share.",
+  "description": "Look up member 12345 and read their current savings balance",
   "target": {
     "app": "corelink-member-servicing",
     "entry_url": "http://127.0.0.1:8000/login",
@@ -22,7 +22,7 @@
   "outputs": {
     "savings_balance": {
       "type": "money",
-      "description": "We are on the member details page for member 12345.",
+      "description": "At member detail page with iframe showing accounts.",
       "from_step": "s08_extract"
     }
   },
@@ -94,10 +94,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "textbox",
-            "x": 120.671875,
-            "y": 194.0,
+            "x": 120.4749984741211,
+            "y": 192.40000915527344,
             "w": 220.0,
-            "h": 39.0,
+            "h": 39.20000076293945,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -112,7 +112,7 @@
     {
       "id": "s02_type",
       "action": "type",
-      "description": "Username entered successfully.",
+      "description": "Username entered.",
       "target": {
         "description": "textbox \"Password\"",
         "role": "textbox",
@@ -154,10 +154,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "textbox",
-            "x": 120.671875,
-            "y": 243.0,
+            "x": 120.4749984741211,
+            "y": 241.1999969482422,
             "w": 220.0,
-            "h": 39.0,
+            "h": 39.20000076293945,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -207,10 +207,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "button",
-            "x": 120.671875,
-            "y": 292.0,
-            "w": 95.703125,
-            "h": 39.0,
+            "x": 120.4749984741211,
+            "y": 290.0,
+            "w": 95.30000305175781,
+            "h": 39.20000076293945,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -232,14 +232,14 @@
     {
       "id": "s04_click",
       "action": "click",
-      "description": "We are at the main menu.",
+      "description": "At main menu.",
       "target": {
         "description": "link \"Member Inquiry\"",
         "role": "link",
         "strategies": [
           {
             "frame": "main",
-            "nth": 1,
+            "nth": 0,
             "rationale": "accessible link named 'Member Inquiry' (source: content); independent of styling and DOM structure",
             "kind": "role_name",
             "role": "link",
@@ -248,7 +248,7 @@
           },
           {
             "frame": "main",
-            "nth": 1,
+            "nth": 0,
             "rationale": "link whose inferred label is 'Member Inquiry' (source: content); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
             "kind": "label_text",
             "role": "link",
@@ -266,7 +266,7 @@
             "nth": 0,
             "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
             "kind": "css",
-            "selector": "table:nth-of-type(2) > tbody > tr > td:nth-of-type(2) > div > table > tbody > tr:nth-of-type(2) > td:nth-of-type(1) > a"
+            "selector": "table:nth-of-type(2) > tbody > tr > td:nth-of-type(1) > div > a:nth-of-type(2)"
           },
           {
             "frame": "main",
@@ -274,10 +274,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "link",
-            "x": 275.0,
-            "y": 229.0,
-            "w": 91.984375,
-            "h": 17.0,
+            "x": 24.80000114440918,
+            "y": 168.8000030517578,
+            "w": 184.40000915527344,
+            "h": 37.60000228881836,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -299,7 +299,7 @@
     {
       "id": "s05_type",
       "action": "type",
-      "description": "We are at the member search page.",
+      "description": "At member search screen.",
       "target": {
         "description": "textbox \"Member Number\"",
         "role": "textbox",
@@ -341,10 +341,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "textbox",
-            "x": 376.4375,
-            "y": 194.0,
-            "w": 203.0,
-            "h": 39.0,
+            "x": 376.2375183105469,
+            "y": 192.40000915527344,
+            "w": 202.40000915527344,
+            "h": 39.20000076293945,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -394,10 +394,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "button",
-            "x": 587.4375,
-            "y": 194.0,
-            "w": 86.1875,
-            "h": 39.0,
+            "x": 586.6375122070312,
+            "y": 192.40000915527344,
+            "w": 85.7874984741211,
+            "h": 39.20000076293945,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -419,7 +419,7 @@
     {
       "id": "s07_click",
       "action": "click",
-      "description": "Search results show member 12345.",
+      "description": "Search results show member 12345 with a View link.",
       "target": {
         "description": "link \"View\"",
         "role": "link",
@@ -461,10 +461,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "link",
-            "x": 957.09375,
-            "y": 332.0,
-            "w": 27.421875,
-            "h": 17.0,
+            "x": 957.2250366210938,
+            "y": 330.8000183105469,
+            "w": 27.42500114440918,
+            "h": 17.600000381469727,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -486,7 +486,7 @@
     {
       "id": "s08_extract",
       "action": "extract",
-      "description": "We are on the member details page for member 12345.",
+      "description": "At member detail page with iframe showing accounts.",
       "target": {
         "description": "cell \"$5,432.10\" in frame iframe[name=\"acctframe\"]",
         "role": "cell",
@@ -529,10 +529,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "cell",
-            "x": 707.53125,
-            "y": 534.5,
-            "w": 119.203125,
-            "h": 40.0,
+            "x": 707.7625122070312,
+            "y": 530.4000015258789,
+            "w": 119.32500457763672,
+            "h": 40.79999923706055,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -602,10 +602,10 @@
                   "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
                   "kind": "bbox",
                   "role": "textbox",
-                  "x": 120.671875,
-                  "y": 194.0,
+                  "x": 120.4749984741211,
+                  "y": 192.40000915527344,
                   "w": 220.0,
-                  "h": 39.0,
+                  "h": 39.20000076293945,
                   "viewport_w": 1280,
                   "viewport_h": 820
                 }
@@ -620,7 +620,7 @@
           {
             "id": "s02_type",
             "action": "type",
-            "description": "Username entered successfully.",
+            "description": "Username entered.",
             "target": {
               "description": "textbox \"Password\"",
               "role": "textbox",
@@ -662,10 +662,10 @@
                   "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
                   "kind": "bbox",
                   "role": "textbox",
-                  "x": 120.671875,
-                  "y": 243.0,
+                  "x": 120.4749984741211,
+                  "y": 241.1999969482422,
                   "w": 220.0,
-                  "h": 39.0,
+                  "h": 39.20000076293945,
                   "viewport_w": 1280,
                   "viewport_h": 820
                 }
@@ -715,10 +715,10 @@
                   "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
                   "kind": "bbox",
                   "role": "button",
-                  "x": 120.671875,
-                  "y": 292.0,
-                  "w": 95.703125,
-                  "h": 39.0,
+                  "x": 120.4749984741211,
+                  "y": 290.0,
+                  "w": 95.30000305175781,
+                  "h": 39.20000076293945,
                   "viewport_w": 1280,
                   "viewport_h": 820
                 }
@@ -845,7 +845,7 @@
     }
   },
   "checkpoint": {
-    "description": "goal state: \"Member 12345 details page showing savings balance $5,432.10\"",
+    "description": "goal state: \"Member 12345 detail page showing savings balance $5,432.10\"",
     "detect": {
       "kind": "all_of",
       "detectors": [
@@ -861,14 +861,14 @@
     }
   },
   "provenance": {
-    "discovery_run_id": "20260908T235049-e46b9e",
-    "recorded_at": 1788929515.6830864,
+    "discovery_run_id": "20260909T011756-c8594e",
+    "recorded_at": 1788934784.3995357,
     "provider": "openai_compat",
     "model": "nvidia/nemotron-3-super-120b-a12b",
     "surface": "browser-playwright",
     "goal": "Look up member 12345 and read their current savings balance",
     "discovery_steps": 9,
     "redaction_applied": true,
-    "notes": "8 executed actions; 0 condition(s) learned from the run; 10 model calls, 24434 tokens; model's checkpoint text reduced to the visible fragment \"Member Servicing Console\""
+    "notes": "8 executed actions; 0 condition(s) learned from the run; 9 model calls, 22338 tokens; model's checkpoint text reduced to the visible fragment \"Member Servicing Console\""
   }
 }

@@ -251,7 +251,7 @@ def test_recorder_produces_a_valid_parameterized_capability(surface, policy, tmp
     assert cap.conditions["member_not_found"].classification is ConditionClass.BUSINESS_OUTCOME
     # checkpoint: final url pattern + the model's checkpoint text
     assert cap.checkpoint.detect.kind == "all_of"
-    assert cap.checkpoint.detect.detectors[0].pattern == r"/members/[^/]+$"
+    assert cap.checkpoint.detect.detectors[0].pattern == r"/members/[^/]+(?:[?#]|$)"
     assert cap.checkpoint.detect.detectors[1].text == "Member Profile"
     assert cap.provenance.provider == "scripted" and cap.provenance.discovery_steps == 10
     assert all(s.risk.value == "safe" for s in cap.steps)
@@ -295,7 +295,7 @@ def test_recorder_validates_checkpoint_and_infers_expectations(surface, policy, 
     by_id = {s.id: s for s in cap.steps}
     assert by_id["s06_click"].expect.detect.text == "Search Results"     # inferred from text that appeared
     detectors = cap.checkpoint.detect.detectors
-    assert detectors[0].pattern == r"/members/[^/]+$"
+    assert detectors[0].pattern == r"/members/[^/]+(?:[?#]|$)"
     assert detectors[1].text == "Member Profile"    # static label wins over the member's name (a value cell)
     assert "reduced to the visible fragment" in cap.provenance.notes
 
@@ -312,5 +312,9 @@ def test_recorder_parameterizes_urls():
     from cua.artifact.recorder import _parameterize, _url_pattern
     inputs = {"member_id": "12345", "product": "S-VAC"}
     assert _parameterize("http://x/members/12345/subaccount", inputs) == "http://x/members/{{inputs.member_id}}/subaccount"
-    assert _url_pattern("http://x/members/12345", inputs) == r"/members/[^/]+$"
+    assert _url_pattern("http://x/members/12345", inputs) == r"/members/[^/]+(?:[?#]|$)"
     assert re.search(_url_pattern("http://x/members/12345", inputs), "http://y/members/10001")
+    assert not re.search(_url_pattern("http://x/members/12345", inputs), "http://y/members/10001/subaccount/new")
+    # a confirmation page carries a query string; the pattern must still match it for other refs
+    confirmed = _url_pattern("http://x/members/12345/subaccount/confirmed?ref=CNF-1", inputs)
+    assert re.search(confirmed, "http://x/members/10001/subaccount/confirmed?ref=CNF-9")

@@ -1,34 +1,34 @@
-{"ts": 1788932804.966, "seq": 0, "kind": "replay_start", "capability": "member.read_savings_balance", "version": 4, "inputs": {"member_id": "50500"}}
-{"ts": 1788932804.967, "seq": 1, "kind": "step_start", "step": "s00_navigate", "action": "navigate", "target": null, "url": "about:blank"}
-{"ts": 1788932804.969, "seq": 2, "kind": "policy", "step": "s00_navigate", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "allowed"}}
-{"ts": 1788932805.639, "seq": 3, "kind": "step_end", "step": "s00_navigate", "status": "ok", "strategy": null, "attempts": 1, "conditions": [], "duration_ms": 671}
-{"ts": 1788932805.64, "seq": 4, "kind": "step_start", "step": "s01_type", "action": "type", "target": "textbox \"User ID\"", "url": "http://127.0.0.1:8000/login"}
-{"ts": 1788932805.643, "seq": 5, "kind": "policy", "step": "s01_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932805.753, "seq": 6, "kind": "resolved", "step": "s01_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788932805.816, "seq": 7, "kind": "step_end", "step": "s01_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 175}
-{"ts": 1788932805.817, "seq": 8, "kind": "step_start", "step": "s02_type", "action": "type", "target": "textbox \"Password\"", "url": "http://127.0.0.1:8000/login"}
-{"ts": 1788932805.818, "seq": 9, "kind": "policy", "step": "s02_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932805.883, "seq": 10, "kind": "resolved", "step": "s02_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788932805.936, "seq": 11, "kind": "step_end", "step": "s02_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 117}
-{"ts": 1788932805.937, "seq": 12, "kind": "step_start", "step": "s03_click", "action": "click", "target": "button \"Sign On\"", "url": "http://127.0.0.1:8000/login"}
-{"ts": 1788932805.938, "seq": 13, "kind": "policy", "step": "s03_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932805.984, "seq": 14, "kind": "resolved", "step": "s03_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788932806.652, "seq": 15, "kind": "step_end", "step": "s03_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 715}
-{"ts": 1788932806.653, "seq": 16, "kind": "step_start", "step": "s04_click", "action": "click", "target": "link \"Member Inquiry\"", "url": "http://127.0.0.1:8000/console"}
-{"ts": 1788932806.654, "seq": 17, "kind": "policy", "step": "s04_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932806.74, "seq": 18, "kind": "resolved", "step": "s04_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788932807.386, "seq": 19, "kind": "step_end", "step": "s04_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 732}
-{"ts": 1788932807.387, "seq": 20, "kind": "step_start", "step": "s05_type", "action": "type", "target": "textbox \"Member Number\"", "url": "http://127.0.0.1:8000/members/search"}
-{"ts": 1788932807.387, "seq": 21, "kind": "policy", "step": "s05_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932807.486, "seq": 22, "kind": "resolved", "step": "s05_type", "strategy": "label_text#0", "frame": "main"}
-{"ts": 1788932807.541, "seq": 23, "kind": "step_end", "step": "s05_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 154}
-{"ts": 1788932807.542, "seq": 24, "kind": "step_start", "step": "s06_click", "action": "click", "target": "button \"Search\"", "url": "http://127.0.0.1:8000/members/search"}
-{"ts": 1788932807.543, "seq": 25, "kind": "policy", "step": "s06_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932807.592, "seq": 26, "kind": "resolved", "step": "s06_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788932808.227, "seq": 27, "kind": "step_end", "step": "s06_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 685}
-{"ts": 1788932808.228, "seq": 28, "kind": "step_start", "step": "s07_click", "action": "click", "target": "link \"View\"", "url": "http://127.0.0.1:8000/members/search"}
-{"ts": 1788932808.229, "seq": 29, "kind": "policy", "step": "s07_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
-{"ts": 1788932808.315, "seq": 30, "kind": "resolved", "step": "s07_click", "strategy": "role_name#0", "frame": "main"}
-{"ts": 1788932808.947, "seq": 31, "kind": "condition", "step": "s07_click", "phase": "after", "condition": "application_error", "classification": "hard_failure"}
-{"ts": 1788932809.079, "seq": 32, "kind": "failure", "step_id": "s07_click", "code": "APP_ERROR", "message": "The application returned an error page.", "expected": "url matches //members/[^/]+$/", "observed": "url=http://127.0.0.1:8000/members/50500; title=\"Application Error - HFCU Member Servicing\"; texts=\"Harbor Federal Credit Union\" | \"Member Servicing Console\" | \"CoreLink v4.2.1\" | \"Signed on as ·\" | \"[REDACTED:SECRET]\" | \"Menu\" | \"Application Error\" | \"The request could not be completed.\"", "screenshot": "evidence/replay_app_error/failure_s07_click.png", "attempts": []}
-{"ts": 1788932809.083, "seq": 33, "kind": "replay_end", "status": "failed", "outcome_code": null, "failure_code": "APP_ERROR"}
+{"ts": 1788937390.67, "seq": 0, "kind": "replay_start", "capability": "member.read_savings_balance", "version": 6, "inputs": {"member_id": "50500"}}
+{"ts": 1788937390.671, "seq": 1, "kind": "step_start", "step": "s00_navigate", "action": "navigate", "target": null, "url": "about:blank"}
+{"ts": 1788937390.673, "seq": 2, "kind": "policy", "step": "s00_navigate", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "allowed"}}
+{"ts": 1788937391.4, "seq": 3, "kind": "step_end", "step": "s00_navigate", "status": "ok", "strategy": null, "attempts": 1, "conditions": [], "duration_ms": 728}
+{"ts": 1788937391.401, "seq": 4, "kind": "step_start", "step": "s01_type", "action": "type", "target": "textbox \"User ID\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788937391.403, "seq": 5, "kind": "policy", "step": "s01_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937391.53, "seq": 6, "kind": "resolved", "step": "s01_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937391.604, "seq": 7, "kind": "step_end", "step": "s01_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 202}
+{"ts": 1788937391.605, "seq": 8, "kind": "step_start", "step": "s02_type", "action": "type", "target": "textbox \"Password\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788937391.607, "seq": 9, "kind": "policy", "step": "s02_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937391.678, "seq": 10, "kind": "resolved", "step": "s02_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937391.734, "seq": 11, "kind": "step_end", "step": "s02_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 129}
+{"ts": 1788937391.735, "seq": 12, "kind": "step_start", "step": "s03_click", "action": "click", "target": "button \"Sign On\"", "url": "http://127.0.0.1:8000/login"}
+{"ts": 1788937391.736, "seq": 13, "kind": "policy", "step": "s03_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937391.784, "seq": 14, "kind": "resolved", "step": "s03_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937392.454, "seq": 15, "kind": "step_end", "step": "s03_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 717}
+{"ts": 1788937392.455, "seq": 16, "kind": "step_start", "step": "s04_click", "action": "click", "target": "link \"Member Inquiry\"", "url": "http://127.0.0.1:8000/console"}
+{"ts": 1788937392.456, "seq": 17, "kind": "policy", "step": "s04_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937392.54, "seq": 18, "kind": "resolved", "step": "s04_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937393.182, "seq": 19, "kind": "step_end", "step": "s04_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 727}
+{"ts": 1788937393.183, "seq": 20, "kind": "step_start", "step": "s05_type", "action": "type", "target": "textbox \"Member Number\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788937393.184, "seq": 21, "kind": "policy", "step": "s05_type", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937393.299, "seq": 22, "kind": "resolved", "step": "s05_type", "strategy": "label_text#0", "frame": "main"}
+{"ts": 1788937393.369, "seq": 23, "kind": "step_end", "step": "s05_type", "status": "ok", "strategy": "label_text#0", "attempts": 1, "conditions": [], "duration_ms": 185}
+{"ts": 1788937393.37, "seq": 24, "kind": "step_start", "step": "s06_click", "action": "click", "target": "button \"Search\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788937393.371, "seq": 25, "kind": "policy", "step": "s06_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937393.419, "seq": 26, "kind": "resolved", "step": "s06_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937394.069, "seq": 27, "kind": "step_end", "step": "s06_click", "status": "ok", "strategy": "role_name#0", "attempts": 1, "conditions": [], "duration_ms": 698}
+{"ts": 1788937394.07, "seq": 28, "kind": "step_start", "step": "s07_click", "action": "click", "target": "link \"View\"", "url": "http://127.0.0.1:8000/members/search"}
+{"ts": 1788937394.071, "seq": 29, "kind": "policy", "step": "s07_click", "verdict": {"allowed": true, "risk": "safe", "requires": "none", "reason": "safe action"}}
+{"ts": 1788937394.153, "seq": 30, "kind": "resolved", "step": "s07_click", "strategy": "role_name#0", "frame": "main"}
+{"ts": 1788937394.789, "seq": 31, "kind": "condition", "step": "s07_click", "phase": "after", "condition": "application_error", "classification": "hard_failure"}
+{"ts": 1788937394.92, "seq": 32, "kind": "failure", "step_id": "s07_click", "code": "APP_ERROR", "message": "The application returned an error page.", "expected": "url matches //members/[^/]+$/", "observed": "url=http://127.0.0.1:8000/members/50500; title=\"Application Error - HFCU Member Servicing\"; texts=\"Harbor Federal Credit Union\" | \"Member Servicing Console\" | \"CoreLink v4.2.1\" | \"Signed on as ·\" | \"[REDACTED:SECRET]\" | \"Menu\" | \"Application Error\" | \"The request could not be completed.\"", "screenshot": "evidence/replay_app_error/failure_s07_click.png", "attempts": []}
+{"ts": 1788937394.924, "seq": 33, "kind": "replay_end", "status": "failed", "outcome_code": null, "failure_code": "APP_ERROR"}
