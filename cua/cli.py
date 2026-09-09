@@ -32,15 +32,19 @@ def _handoff_setup(mode: str, surface, control, redactor, timeout_s: float):
     def announce(request) -> None:
         typer.echo("")
         typer.echo(f"*** INTERVENTION REQUIRED [{request.kind}] at {request.step_id}: {request.reason}")
-        typer.echo("    The live browser window is now the operator's. Do the manual steps there, then decide:")
+        typer.echo("    The live browser window is now the operator's. Do the manual steps there, then DECIDE")
+        typer.echo("    (automation stays paused until you do; your actions in the window are recorded below):")
         if console:
             typer.echo(f"    operator console: {console.url}/interventions/{request.id}")
         typer.echo(f"    or from a shell:  cua resume \"{request.evidence_dir}\" --decision resumed|approved|aborted")
         if request.session_url:
             typer.echo(f"    remote operator client can attach via CDP: {request.session_url}")
 
+    def captured(request, action) -> None:
+        typer.echo(f"    captured human action: {action.render()}")
+
     controller = HandoffController(surface=surface, control=control, redactor=redactor, timeout_s=timeout_s,
-                                   on_escalate=announce)
+                                   on_escalate=announce, on_human_action=captured)
     if mode == "console":
         console = ConsoleServer(controller, port=CONSOLE_PORT).start()
         typer.echo(f"operator console listening at {console.url}")

@@ -46,6 +46,7 @@ class HandoffController:
         timeout_s: float = 600.0,
         poll_s: float = 0.5,
         on_escalate: Callable[[InterventionRequest], None] | None = None,
+        on_human_action: Callable[[InterventionRequest, HumanAction], None] | None = None,
     ) -> None:
         self.surface = surface
         self.control = control
@@ -53,6 +54,7 @@ class HandoffController:
         self.timeout_s = timeout_s
         self.poll_s = poll_s
         self.on_escalate = on_escalate
+        self.on_human_action = on_human_action
         self.interventions: dict[str, InterventionRequest] = {}
         self._events: dict[str, threading.Event] = {}
         self._lock = threading.Lock()
@@ -159,6 +161,11 @@ class HandoffController:
         request.human_actions.append(action)
         if self._log:
             self._log.event("human_action", intervention=request.id, **action.model_dump())
+        if self.on_human_action:
+            try:
+                self.on_human_action(request, action)
+            except Exception:
+                pass
 
     def _write(self, request: InterventionRequest) -> None:
         if not request.evidence_dir:
