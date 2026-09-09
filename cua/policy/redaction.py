@@ -26,7 +26,24 @@ DEFAULT_PATTERNS: list[tuple[str, str]] = [
     ("PHONE", r"(?<![\w-])(?:\+1[ .-]?)?\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}(?![\w-])"),
 ]
 
-DEFAULT_SENSITIVE_FIELDS = [r"(?i)password", r"(?i)passwd", r"(?i)\bssn\b", r"(?i)tax[_ ]?id", r"(?i)token", r"(?i)secret"]
+DEFAULT_SENSITIVE_FIELDS = [
+    r"(?i)password", r"(?i)passwd", r"(?i)\bssn\b", r"(?i)tax[_ ]?id",
+    r"(?i)token(?!s)",      # api_token / access_token, but not input_tokens
+    r"(?i)secret(?!_names)",
+]
+
+
+def luhn_valid(digits: str) -> bool:
+    """Luhn checksum, so timestamps and reference numbers are not mistaken for card numbers."""
+    total, parity = 0, len(digits) % 2
+    for i, ch in enumerate(digits):
+        d = int(ch)
+        if i % 2 == parity:
+            d *= 2
+            if d > 9:
+                d -= 9
+        total += d
+    return total % 10 == 0
 
 
 class RedactionError(ValueError):
@@ -58,7 +75,10 @@ class Redactor:
         for secret in self._secrets:
             text = text.replace(secret, "[REDACTED:SECRET]")
         for label, pattern in self._patterns:
-            text = pattern.sub(f"[REDACTED:{label}]", text)
+            if label == "CARD":
+                text = pattern.sub(lambda m: "[REDACTED:CARD]" if luhn_valid(re.sub(r"\D", "", m.group(0))) else m.group(0), text)
+            else:
+                text = pattern.sub(f"[REDACTED:{label}]", text)
         return text
 
     def is_sensitive_field(self, name: str | None) -> bool:

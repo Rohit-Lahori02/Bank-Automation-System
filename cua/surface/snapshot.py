@@ -134,7 +134,9 @@ class Snapshot(BaseModel):
         h = hashlib.sha256()
         h.update(re.sub(r"[?#].*$", "", self.url).encode())
         for e in self.elements:
-            val = "" if e.sensitive else (e.value or "")
+            # sensitive values never enter the hash, but whether the field is filled does,
+            # so typing a password still counts as progress
+            val = ("filled" if e.value else "") if e.sensitive else (e.value or "")
             h.update(f"|{e.frame}|{e.role}|{e.name}|{val}|{e.checked}".encode())
         return h.hexdigest()[:16]
 

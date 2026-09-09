@@ -13,6 +13,9 @@
   // Snapshots tag with data-cua-ref; resolution probes use a separate attribute so
   // they never invalidate refs the agent is still holding from the last snapshot.
   const attrName = args.attrName || "data-cua-ref";
+  // Clear stale tags first: an element hidden since the last snapshot (e.g. a dismissed
+  // dialog) would otherwise keep an old ref and collide with a newly assigned one.
+  document.querySelectorAll("[" + attrName + "]").forEach((e) => e.removeAttribute(attrName));
 
   const norm = (s) => (s || "").replace(/\s+/g, " ").trim();
   const clip = (s, n) => (s.length > n ? s.slice(0, n - 1) + "…" : s);

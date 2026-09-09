@@ -19,7 +19,7 @@ Evidence from real runs: [`evidence/`](evidence/).
 | 1 | Mock legacy credit-union console (the automation target) with fault injection | done |
 | 2 | Surface layer: Playwright driver, accessibility-style snapshot, locator strategies | done |
 | 3 | Artifact schema, policy engine, redaction | done |
-| 4 | LLM-driven discovery loop + recorder | planned |
+| 4 | LLM-driven discovery loop + recorder | done |
 | 5 | Deterministic replay engine + CLI | planned |
 | 6 | Escalation and human handoff | planned |
 | 7 | Evidence, REPORT.md, final run | planned |
@@ -126,14 +126,53 @@ evidence/        committed sample artifact, logs, screenshots, traces
 policy.yaml      the safety policy the agent and replay engine enforce
 ```
 
+## Discovery (phase 4)
+
+Discovery runs an LLM in an observe → decide → act loop against the live mock console,
+enforces the policy before every action, logs evidence, and records the successful run as a
+capability artifact.
+
+**Model configuration** lives in `.env`:
+
+| Variable | Purpose |
+|---|---|
+| `LLM_PROVIDER` | `openai_compat` (NVIDIA NIM or any OpenAI-compatible endpoint) or `anthropic` |
+| `LLM_MODEL` | model id, e.g. `meta/llama-3.3-70b-instruct` or `claude-opus-5` |
+| `LLM_BASE_URL` | for `openai_compat`; defaults to NVIDIA NIM |
+| `NVIDIA_API_KEY` / `ANTHROPIC_API_KEY` | credentials for the chosen provider |
+| `LLM_EFFORT` | Anthropic only: `low` / `medium` / `high` (default `medium`) |
+
+**Secrets** the agent may use are referenced by name (`app.username`, `app.password`) and
+resolved from `CUA_SECRET_APP_USERNAME` / `CUA_SECRET_APP_PASSWORD`. For the bundled mock
+console, `MOCK_APP_USERNAME` / `MOCK_APP_PASSWORD` are accepted as fallbacks. The model only
+ever sees the placeholder `{{secrets.app.password}}`; the value is substituted at the surface
+and scrubbed from all evidence.
+
+With the mock app running in another terminal:
+
+```bash
+cua discover --goal "Look up member 12345 and read their current savings balance" --input member_id=12345 --capability-id member.read_savings_balance --name "Read member savings balance"
+```
+
+Outputs:
+
+- `artifacts/member.read_savings_balance.v1.json` — the capability (see `cua describe <file>`)
+- `runs/<run_id>/log.jsonl` — every decision, policy verdict, and action, redacted
+- `runs/<run_id>/transcript.json` — what the model saw and replied at each step, redacted
+- `runs/<run_id>/summary.json`, `final.png`, `trace.zip` — final state, screenshot, Playwright trace
+
+The agent speaks a plain JSON action protocol (see `cua/agent/prompts.py`) rather than
+provider-native tool calling, so the same loop runs on free models during development and on
+Claude for the final evidence run.
+
 ## Demo path
 
-Filled in as phases land. Target shape:
-
 ```bash
-cua discover --goal "Look up member 12345 and read their current savings balance" --input member_id=12345
+cua discover --goal "Look up member 12345 and read their current savings balance" --input member_id=12345 --capability-id member.read_savings_balance
 ```
 
 ```bash
-cua replay evidence/artifact.json --input member_id=12345
+cua replay artifacts/member.read_savings_balance.v1.json --input member_id=12345
 ```
+
+(`replay` lands in phase 5.)

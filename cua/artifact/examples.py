@@ -1,10 +1,9 @@
 """A hand-authored reference capability for the mock console.
 
-This is what the recorder (Phase 4) is expected to produce for the goal
-"look up a member and read their current savings balance". It exists so the
-replay engine, the CLI, and the docs have a concrete, reviewable artifact
-before a discovery run has been recorded, and as a readability check on the
-schema itself.
+This is what the recorder is expected to produce for the goal "look up a
+member and read their current savings balance". It exists so the replay
+engine, the CLI, and the docs have a concrete, reviewable artifact before a
+discovery run has been recorded, and as a readability check on the schema.
 """
 
 from __future__ import annotations
@@ -14,10 +13,10 @@ from cua.surface.locators import (
     Target, TextStrategy,
 )
 
+from .profiles import corelink_conditions
 from .schema import (
-    AllOf, AnyOf, Capability, Checkpoint, ClickHandler, Condition, ConditionClass, DialogPresent, ElementPresent,
-    Expectation, InputParam, OutputParam, ParamType, Provenance, RetryHandler, Step, SubflowHandler, TargetApp,
-    TextVisible, UrlMatches,
+    AllOf, AnyOf, Capability, Checkpoint, ElementPresent, Expectation, InputParam, OutputParam, ParamType, Provenance,
+    Step, TargetApp, TextVisible, UrlMatches,
 )
 
 ACCT_FRAME = 'iframe[name="acctframe"]'
@@ -78,8 +77,7 @@ def read_savings_balance(entry_url: str = "http://127.0.0.1:8000/login") -> Capa
         },
         secrets=["app.username", "app.password"],
         steps=[
-            Step(id="open", action="navigate", url=entry_url,
-                 description="Open the console sign-on page",
+            Step(id="open", action="navigate", url=entry_url, description="Open the console sign-on page",
                  expect=Expectation(description="sign-on form visible", detect=TextVisible(text="Operator Sign On"))),
             *LOGIN_STEPS,
             Step(id="go_inquiry", action="click", description="Open Member Inquiry", target=_link("Member Inquiry"),
@@ -115,54 +113,7 @@ def read_savings_balance(entry_url: str = "http://127.0.0.1:8000/login") -> Capa
                                                 rationale="coordinates from the recording viewport; last resort"),
                                ])),
         ],
-        conditions={
-            "session_expired": Condition(
-                id="session_expired", classification=ConditionClass.RECOVERABLE,
-                description="The app bounced us to sign-on with an expiry notice; sign on again and retry the step.",
-                detect=UrlMatches(pattern=r"/login\?reason=expired"),
-                handler=SubflowHandler(steps=LOGIN_STEPS, then="retry_step"),
-            ),
-            "maintenance_dialog": Condition(
-                id="maintenance_dialog", classification=ConditionClass.RECOVERABLE,
-                description="A modal maintenance notice is covering the page; dismiss it and continue.",
-                detect=DialogPresent(name_contains="Maintenance"),
-                handler=ClickHandler(description="Press OK on the notice", target=Target(
-                    description='button "OK" in the dialog', role="button", strategies=[
-                        RoleNameStrategy(role="button", name="OK", rationale="the dialog's only button"),
-                    ])),
-            ),
-            "slow_or_failed_load": Condition(
-                id="slow_or_failed_load", classification=ConditionClass.RECOVERABLE,
-                description="The page did not reach the expected state in time; wait and retry a bounded number of times.",
-                detect=AllOf(detectors=[]),   # applied by the engine when an expectation times out
-                handler=RetryHandler(max_attempts=3, backoff_ms=1500),
-            ),
-            "invalid_credentials": Condition(
-                id="invalid_credentials", classification=ConditionClass.HARD_FAILURE, code="AUTH_FAILED",
-                description="The operator credentials were rejected.",
-                detect=TextVisible(text="Invalid user ID or password"),
-            ),
-            "member_not_found": Condition(
-                id="member_not_found", classification=ConditionClass.BUSINESS_OUTCOME, code="MEMBER_NOT_FOUND",
-                description="No member exists with the supplied number. A legitimate answer, not an error.",
-                detect=TextVisible(text="No member found"),
-            ),
-            "permission_denied": Condition(
-                id="permission_denied", classification=ConditionClass.BUSINESS_OUTCOME, code="PERMISSION_DENIED",
-                description="The operator role may not view this member.",
-                detect=TextVisible(text="Access Denied"),
-            ),
-            "invalid_member_number": Condition(
-                id="invalid_member_number", classification=ConditionClass.BUSINESS_OUTCOME, code="INVALID_INPUT",
-                description="The app rejected the member number format.",
-                detect=TextVisible(text="VAL-1001"),
-            ),
-            "application_error": Condition(
-                id="application_error", classification=ConditionClass.HARD_FAILURE, code="APP_ERROR",
-                description="The application returned an error page while loading the profile.",
-                detect=TextVisible(text="Application Error"),
-            ),
-        },
+        conditions=corelink_conditions(LOGIN_STEPS),
         checkpoint=Checkpoint(description="On the member profile with the accounts grid loaded", detect=AllOf(detectors=[
             UrlMatches(pattern=r"/members/\d{5}$"),
             TextVisible(text="Member Profile"),

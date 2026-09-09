@@ -121,6 +121,14 @@ def test_pattern_scrubbing():
     assert r.redact_text("key sk-abcdefghijklmnopqrstuvwxyz") == "key [REDACTED:API_KEY]"
 
 
+def test_card_redaction_requires_luhn_checksum():
+    r = Redactor()
+    assert r.redact_text("4111 1111 1111 1112") == "4111 1111 1111 1112"     # not a valid card number
+    assert r.redact_text("run 20260908T141522-5b1995") == "run 20260908T141522-5b1995"
+    assert r.redact({"input_tokens": 100, "api_token": "abc", "secret_names": ["a"]}) == \
+        {"input_tokens": 100, "api_token": "[REDACTED]", "secret_names": ["a"]}
+
+
 def test_business_identifiers_survive_redaction():
     r = Redactor()
     assert r.redact_text("member 12345 balance $5,432.10 account 12345-S01") == \

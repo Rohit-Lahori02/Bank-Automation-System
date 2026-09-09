@@ -376,6 +376,17 @@ class BrowserSurface(Surface):
         self.page.keyboard.press(key)
         self.settle()
 
+    def read_text(self, target: str | Target | Resolved) -> str:
+        """Read the operator-visible text of an element (value for inputs, selected label for selects)."""
+        resolved = self._locator(target)
+        handle = resolved.handle
+        tag = (handle.evaluate("e => e.tagName") or "").lower()
+        if tag in {"input", "textarea"}:
+            return handle.input_value()
+        if tag == "select":
+            return handle.evaluate("e => e.options[e.selectedIndex] ? e.options[e.selectedIndex].text : ''").strip()
+        return handle.inner_text().strip()
+
 
 def _overlap(a0: float, a1: float, b0: float, b1: float) -> float:
     return min(a1, b1) - max(a0, b0)

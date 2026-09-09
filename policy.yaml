@@ -52,5 +52,5 @@ sensitive_field_patterns:
   - "(?i)passwd"
   - "(?i)ssn"
   - "(?i)tax[_ ]?id"
-  - "(?i)token"
-  - "(?i)secret"
+  - "(?i)token(?!s)"        # api_token, access_token - but not usage counters like input_tokens
+  - "(?i)secret(?!_names)"
