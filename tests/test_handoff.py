@@ -313,6 +313,50 @@ def test_replay_escalation_aborted_by_human(surface, policy, controller, mock_se
     assert result.interventions[0]["decision"] == "denied"
 
 
+def test_login_by_human_hands_the_sign_on_block_to_the_operator(surface, policy, controller, mock_server, tmp_path):
+    """No credentials configured: the operator signs on in the live window; automation takes over
+    as soon as the signed-on screen appears, and does the rest of the flow itself."""
+    errors: list[BaseException] = []
+
+    def run() -> None:
+        try:
+            while not controller.pending():
+                time.sleep(0.05)
+            request = controller.pending()[0]
+            assert request.kind == "credentials" and "sign on" in request.reason
+            with sync_playwright() as p:
+                browser = p.chromium.connect_over_cdp(request.session_url)
+                sign_on_as_human(browser.contexts[0].pages[0])
+                time.sleep(0.5)
+        except BaseException as exc:
+            errors.append(exc)
+
+    threading.Thread(target=run, daemon=True).start()
+    engine = ReplayEngine(surface=surface, policy=policy, redactor=Redactor([PASSWORD]), evidence_root=tmp_path,
+                          escalation_handler=ReplayHandoff(controller))
+    cap = read_savings_balance(entry_url=f"{mock_server.base_url}/login")
+    result = engine.replay(cap, {"member_id": "12345"}, {})          # no secrets at all
+    assert not errors, errors
+    assert result.status is ReplayStatus.SUCCESS, result.one_line()
+    assert result.outputs["savings_balance"].compare(0) > 0
+    by_id = {r.step_id: r for r in result.steps}
+    assert all(by_id[s].status == "recovered" and "operator" in by_id[s].note
+               for s in ("login_user", "login_pass", "login_submit"))
+    assert by_id["go_inquiry"].status == "ok"                          # automation carried on from here
+    iv = result.interventions[0]
+    assert iv["kind"] == "credentials" and iv["decision"] == "resumed" and iv["auto_resumed"] is True
+    log = (Path(result.evidence_dir) / "log.jsonl").read_text(encoding="utf-8")
+    assert PASSWORD not in log and '"credentials_by_human"' in log
+    assert 'input textbox "Password" = "••••••"' in "".join(a.render() for a in
+                                                            controller.interventions[iv["intervention_id"]].human_actions)
+
+
+def test_missing_secret_without_a_handoff_channel_still_fails(surface, policy, mock_server, tmp_path):
+    engine = ReplayEngine(surface=surface, policy=policy, redactor=Redactor(), evidence_root=tmp_path)
+    result = engine.replay(read_savings_balance(entry_url=f"{mock_server.base_url}/login"), {"member_id": "12345"}, {})
+    assert result.status is ReplayStatus.FAILED and result.failure.code == "MISSING_SECRET"
+
+
 # ------------------------------------------------------------ discovery integration
 def test_discovery_stuck_then_human_unblocks(surface, policy, controller, mock_server, tmp_path):
     script = [

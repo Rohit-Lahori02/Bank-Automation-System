@@ -174,7 +174,10 @@ def _step(a: ActionRecord, run: DiscoveryRun, policy: PolicyEngine, redactor: Re
 
 
 def _expectation(a: ActionRecord, run: DiscoveryRun, next_snapshot: Snapshot | None) -> Expectation | None:
-    if a.decision.expect and a.expect_held and not _contains_input(a.decision.expect, run.inputs):
+    if a.action == "extract":
+        return None   # reading changes nothing; a hint here is usually the value read, which never recurs
+    if a.decision.expect and a.expect_held and not _contains_input(a.decision.expect, run.inputs) \
+            and a.decision.expect not in (a.extracted or "", *run.outputs.values()):
         return Expectation(description=f'"{a.decision.expect}" visible', detect=TextVisible(text=a.decision.expect))
     if a.url_after and a.url_after != a.url_before:
         return Expectation(description="navigated", detect=UrlMatches(pattern=_url_pattern(a.url_after, run.inputs)))

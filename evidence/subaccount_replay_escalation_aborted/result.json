@@ -1,7 +1,7 @@
 {
   "status": "escalated",
   "capability_id": "member.open_subaccount",
-  "capability_version": 3,
+  "capability_version": 5,
   "run_id": "subaccount_replay_escalation_aborted",
   "inputs": {
     "member_id": "12345",
@@ -28,7 +28,7 @@
       "status": "ok",
       "strategy": null,
       "attempts": 1,
-      "duration_ms": 698,
+      "duration_ms": 695,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -50,7 +50,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 166,
+      "duration_ms": 116,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -61,7 +61,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 713,
+      "duration_ms": 730,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -72,7 +72,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 726,
+      "duration_ms": 727,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -83,7 +83,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 163,
+      "duration_ms": 181,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -94,7 +94,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 703,
+      "duration_ms": 727,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -105,7 +105,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 919,
+      "duration_ms": 996,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -116,7 +116,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 792,
+      "duration_ms": 815,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -127,7 +127,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 177,
+      "duration_ms": 199,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -138,7 +138,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 137,
+      "duration_ms": 163,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -149,7 +149,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 131,
+      "duration_ms": 151,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -160,7 +160,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 705,
+      "duration_ms": 712,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -172,14 +172,15 @@
       "kind": "risky_action",
       "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
       "decision": "denied",
-      "intervention_id": "int-e476c5c7",
+      "intervention_id": "int-f63806ba",
       "human_actions": 0,
-      "summary": "aborted: no actions captured"
+      "summary": "aborted: no actions captured",
+      "auto_resumed": false
     }
   ],
   "drift": [],
   "variant": "base",
   "checkpoint_verified": false,
   "evidence_dir": "evidence/subaccount_replay_escalation_aborted",
-  "duration_ms": 8330
+  "duration_ms": 8546
 }

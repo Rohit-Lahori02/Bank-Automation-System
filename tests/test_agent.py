@@ -283,7 +283,9 @@ def test_recorder_validates_checkpoint_and_infers_expectations(surface, policy, 
     script = [
         *HAPPY_PATH[:5],
         act("button", "Search", action="click"),                   # no expect; URL does not change
-        *HAPPY_PATH[6:9],
+        HAPPY_PATH[6],
+        act("cell", "$5,432.10", action="extract", output="savings_balance", expect="$5,432.10"),  # value as hint
+        HAPPY_PATH[8],
         {"reasoning": "done", "action": "done",
          # a sentence, not screen text - and it names the member, which must NOT become the checkpoint
          "checkpoint": "Member 12345 · Oyelaran, Marcus profile shows savings balance $5,432.10",
@@ -294,6 +296,7 @@ def test_recorder_validates_checkpoint_and_infers_expectations(surface, policy, 
                             policy=policy)
     by_id = {s.id: s for s in cap.steps}
     assert by_id["s06_click"].expect.detect.text == "Search Results"     # inferred from text that appeared
+    assert by_id["s08_extract"].expect is None                           # reads never carry an expectation
     detectors = cap.checkpoint.detect.detectors
     assert detectors[0].pattern == r"/members/[^/]+(?:[?#]|$)"
     assert detectors[1].text == "Member Profile"    # static label wins over the member's name (a value cell)

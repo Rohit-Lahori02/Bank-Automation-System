@@ -1,5 +1,5 @@
-Open a sub-account  [member.open_subaccount v3, draft]
-  Open a new sub-account for a member (product, nickname, initial deposit), confirm it, and return the confirmation number.
+Open a sub-account  [member.open_subaccount v5, draft]
+  Open a new sub-account for a member (product, nickname, initial deposit), confirm it, return the confirmation number, then return to the profile and read the primary savings balance.
   target: corelink-member-servicing (base) @ http://127.0.0.1:8000/login
   inputs:
     - member_id: string (required)  Value of member_id supplied by the caller
@@ -7,11 +7,12 @@ Open a sub-account  [member.open_subaccount v3, draft]
     - nickname: string (required)  Value of nickname supplied by the caller
     - deposit: string (required)  Value of deposit supplied by the caller
   outputs:
-    - confirmation_number: string from step s14_extract  Confirmation screen shows the confirmation number.
+    - confirmation_number: string from step s14_extract  Extract the confirmation number from the screen.
+    - primary_share_balance: money from step s16_extract  We are on the member profile screen.
   secrets (supplied at replay, never stored): app.password, app.username
   steps:
     s00_navigate: navigate http://127.0.0.1:8000/login
-        expect: entry screen shows "Harbor Federal Credit Union"
+        expect: entry screen shows "Operator Sign On"
     s01_type: type -> textbox "User ID" = {{secrets.app.username}}
     s02_type: type -> textbox "Password" = {{secrets.app.password}}
     s03_click: click -> button "Sign On"
@@ -32,7 +33,10 @@ Open a sub-account  [member.open_subaccount v3, draft]
         expect: navigated
     s13_click: click -> button "Confirm"  [RISKY]
         expect: navigated
-    s14_extract: extract -> text "CNF-E0548F"
+    s14_extract: extract -> text "CNF-4C4F13"
+    s15_click: click -> link "Return to Member Profile"
+        expect: navigated
+    s16_extract: extract -> cell "$5,432.10" in frame iframe[name="acctframe"]
   conditions:
     - session_expired [recoverable] -> handler:subflow  The app bounced us to sign-on with an expiry notice; sign on again and retry the step.
     - maintenance_dialog [recoverable] -> handler:click  A modal maintenance notice is covering the page; dismiss it and continue.
@@ -43,5 +47,5 @@ Open a sub-account  [member.open_subaccount v3, draft]
     - invalid_member_number [business_outcome] -> INVALID_INPUT  The app rejected the member number format.
     - validation_error [business_outcome] -> VALIDATION_ERROR  The app rejected the submitted form values (VAL-2xxx).
     - application_error [hard_failure] -> APP_ERROR  The application returned an error page.
-  checkpoint: goal state: "Sub-Account Opened screen showing confirmation number CNF-E0548F"
-  provenance: openai_compat/nvidia/nemotron-3-super-120b-a12b, run 20260909T020004-cd9f7c
+  checkpoint: goal state: "Member Profile"
+  provenance: openai_compat/nvidia/nemotron-3-super-120b-a12b, run 20260909T191722-5c6a25

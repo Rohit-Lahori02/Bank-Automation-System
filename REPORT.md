@@ -188,9 +188,22 @@ Data handling: credentials are never shown to the model (it types placeholders);
 transcript, artifact and intervention file passes the redactor (known secret values longest-first,
 SSN, Luhn-valid card numbers, API keys and bearer tokens, e-mail, phone; sensitive keys masked);
 the artifact store refuses to write a file containing a secret value; browser storage state is
-never saved. Limits: the redactor is pattern-based, so novel identifier formats need adding per
-app; the model still sees business identifiers on screen (member numbers, names), which is
-inherent to the task; the allowlist is per deployment, not per capability.
+never saved.
+
+Whether automation should hold credentials at all is an institution's policy decision, so the
+system supports two postures and designs for a third. *Secret references* (default): the value
+lives in the environment or a vault, is substituted by the surface layer at replay, and never
+reaches the model, the artifact or the evidence. *Login by human* (`--login-by-human`): the run
+holds no credentials; the sign-on block is a credentials handoff, the operator signs on in the
+live window with their own identity, and automation takes over when the signed-on state appears -
+so an unattended bot password need not exist, at the cost of one human touch per session.
+*Pre-authenticated session* (design): the surface starts from a session the identity provider
+already established (SSO), so no password is typed by anyone; that is a surface-layer change and
+the artifact does not care.
+
+Limits: the redactor is pattern-based, so novel identifier formats need adding per app; the
+model still sees business identifiers on screen (member numbers, names), which is inherent to
+the task; the allowlist is per deployment, not per capability.
 
 ## 7. Cuts
 

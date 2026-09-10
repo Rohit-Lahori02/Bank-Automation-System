@@ -85,6 +85,8 @@ class ReplayEngine:
         self._reports: list[StepReport] = []
         self._current: StepReport | None = None
         self._interventions: list[dict] = []
+        self._missing_secrets: list[str] = []
+        self._resume_check = None
         self._suppressed: set[str] = set()      # conditions currently being recovered (not re-detected)
         self._raw_outputs: dict[str, str] = {}
         self._started = 0.0
@@ -108,9 +110,12 @@ class ReplayEngine:
         except InputError as exc:
             return self._finish(self._failed(None, "INVALID_INPUT", str(exc), expected="inputs matching the contract",
                                              observed=str(inputs)))
-        missing = [s for s in capability.secrets if s not in secrets]
-        if missing:
-            return self._finish(self._failed(None, "MISSING_SECRET", f"secrets not supplied: {missing}"))
+        self._missing_secrets = [s for s in capability.secrets if s not in secrets]
+        if self._missing_secrets and not self.escalation_handler:
+            return self._finish(self._failed(None, "MISSING_SECRET", f"secrets not supplied: {self._missing_secrets}"))
+        if self._missing_secrets:
+            self._log.event("credentials_by_human", secrets=self._missing_secrets,
+                            note="not configured; the steps that need them will be handed to the operator")
 
         try:
             if capability.steps[0].action is not ActionKind.NAVIGATE:
@@ -120,8 +125,7 @@ class ReplayEngine:
                     raise _Stop(self._failed(None, "POLICY_DENIED", verdict.reason))
                 self.surface.navigate(capability.target.entry_url)
                 self._log.event("entry", url=capability.target.entry_url, note="implicit navigate to entry_url")
-            for step in capability.steps:
-                self._run_step(step, depth=0)
+            self._run_steps(capability.steps, depth=0)
             self._verify_checkpoint()
         except _Stop as stop:
             return self._finish(stop.result)
@@ -141,6 +145,44 @@ class ReplayEngine:
                                          inputs=self._inputs, outputs=outputs, checkpoint_verified=True))
 
     # ------------------------------------------------------------- steps
+    def _run_steps(self, steps: list[Step], *, depth: int) -> None:
+        """Run a step list; a block of steps that needs credentials we do not hold goes to a human."""
+        i = 0
+        while i < len(steps):
+            if self._needs_missing_secret(steps[i]):
+                end = i
+                while end < len(steps) - 1 and steps[end].expect is None:
+                    end += 1          # the block ends at the first step that can prove the sign-on worked
+                self._credentials_handoff(steps[i:end + 1])
+                i = end + 1
+                continue
+            self._run_step(steps[i], depth=depth)
+            i += 1
+
+    def _needs_missing_secret(self, step: Step) -> bool:
+        return any(scope == "secrets" and name in self._missing_secrets for scope, name in step.placeholders())
+
+    def _credentials_handoff(self, block: list[Step]) -> None:
+        """Credentials are not configured for this run: the operator signs on in the live window.
+
+        The block is the sign-on steps up to the first one with an expectation (the click whose
+        postcondition proves the session exists). Auto-resume fires when that state appears.
+        """
+        last = block[-1]
+        ids = ", ".join(s.id for s in block)
+        self._log.event("step_start", step=block[0].id, action="credentials_handoff", steps=[s.id for s in block])
+        decision = self._escalate(block[0], None, kind="credentials", resume_step=last,
+                                  reason=f"operator credentials are not configured for this run; please sign on in "
+                                         f"the live window (steps {ids})")
+        if last.expect is not None and not self._expectation_holds(last):
+            raise _Stop(self._failed(last.id, "HANDOFF_STATE_MISMATCH",
+                                     "the operator resumed but the signed-on state is not on screen",
+                                     expected=describe(last.expect.detect), observed=self._observed()))
+        for s in block:
+            self._reports.append(StepReport(step_id=s.id, action=s.action.value, status="recovered",
+                                            note=f"performed by the operator (credentials handoff, {decision})"))
+            self._log.event("step_end", step=s.id, status="recovered", note="performed by the operator")
+
     def _run_step(self, step: Step, *, depth: int) -> None:
         outer = self._current
         report = StepReport(step_id=step.id, action=step.action.value,
@@ -289,15 +331,17 @@ class ReplayEngine:
             report.note = "risky action flagged"
         return False
 
-    def _escalate(self, step: Step | None, report: StepReport | None, *, kind: str, reason: str) -> str:
+    def _escalate(self, step: Step | None, report: StepReport | None, *, kind: str, reason: str,
+                  resume_step: Step | None = None) -> str:
         """Hand the live session to a human. Returns 'approved' or 'resumed'; anything else ends the run."""
         shot = self._log.screenshot(self.surface, f"escalation_{step.id if step else 'run'}")
         snap = self.surface.snapshot()
         esc = Escalation(step_id=step.id if step else None, reason=reason, kind=kind, url=self.surface.url,
                          screenshot=str(shot) if shot else None, screen=snap.render(max_elements=80))
         self._log.event("escalation", step=esc.step_id, escalation_kind=kind, reason=reason)
-        # what "the human did the step" looks like on screen, for the handoff's auto-resume check
-        self._resume_check = (lambda: self._expectation_holds(step)) if step is not None and step.expect else None
+        # what "the human did it" looks like on screen, for the handoff's auto-resume check
+        check = resume_step or step
+        self._resume_check = (lambda: self._expectation_holds(check)) if check is not None and check.expect else None
         raw = self.escalation_handler(esc, self) if self.escalation_handler else None
         details = raw if isinstance(raw, dict) else {"decision": raw}
         decision = details.get("decision") or "denied"
@@ -368,8 +412,7 @@ class ReplayEngine:
                                          observed=self._observed()))
             self._suppressed.add(cond.id)
             try:
-                for sub in handler.steps:
-                    self._run_step(sub, depth=depth + 1)
+                self._run_steps(handler.steps, depth=depth + 1)
             finally:
                 self._suppressed.discard(cond.id)
         elif isinstance(handler, EscalateHandler):

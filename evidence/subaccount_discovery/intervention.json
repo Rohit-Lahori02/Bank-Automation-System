@@ -1,9 +1,9 @@
 {
-  "id": "int-5e7cc72c",
-  "run_id": "20260909T020004-cd9f7c",
+  "id": "int-7f809e82",
+  "run_id": "20260909T191722-5c6a25",
   "run_kind": "discovery",
   "capability_id": "",
-  "goal": "Open a new 'Savings - Holiday Club' sub-account for member 12345 with the nickname 'Holiday Fund' and an initial deposit of 125.50, confirm it, and read back the confirmation number.",
+  "goal": "Open a new 'Savings - Holiday Club' sub-account for member 12345 with the nickname 'Holiday Fund' and an initial deposit of 125.50, confirm it, read back the confirmation number, then return to the member profile and read the current balance of the Primary Share savings account.",
   "step_id": "step 13",
   "kind": "risky_action",
   "reason": "agent wants to click 'Confirm': risky action requires escalate (target 'Confirm' matches a risky pattern)",
@@ -11,10 +11,11 @@
   "screenshot": null,
   "screen": "URL: http://127.0.0.1:8000/members/12345/subaccount/review\nTitle: Review Sub-Account - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Signed on as \u00b7\"\n[e5] text \"[REDACTED:SECRET]\"\n[e6] link \"Sign Off\" href=/logout\n[e7] text \"Menu\"\n[e8] link \"Main Menu\" href=/console\n[e9] link \"Member Inquiry\" href=/members/search\n[e10] link \"Transactions\" href=/console\n[e11] link \"Reports\" href=/console\n[e12] link \"Help Desk\" href=/console\n[e13] text \"Review New Sub-Account\"\n[e14] text \"Please review the details below. Press to open the account.\"\n[e15] text \"Confirm\"\n[e16] text \"The account will be opened and funded immediately on confirmation.\"\n[e17] text \"This action cannot be reversed from this screen.\"\n[e18] cell \"Member Number\"\n[e19] cell \"12345\"\n[e20] cell \"Member Name\"\n[e21] cell \"Oyelaran, Marcus\"\n[e22] cell \"Product Type\"\n[e23] cell \"Savings - Holiday Club\"\n[e24] cell \"Nickname\"\n[e25] cell \"Holiday Fund\"\n[e26] cell \"Initial Deposit\"\n[e27] cell \"$125.50\"\n[e28] button \"Confirm\"\n[e29] link \"Edit\" href=/members/12345/subaccount/new\n[e30] link \"Cancel\" href=/members/12345\n[e31] cell \"CoreLink Servicing Platform \u00a9 1998-2026 Meridian Core Systems, Inc. \u00b7 Unauthorized access is prohibited and monitored.\"",
   "session_url": "http://127.0.0.1:9222",
-  "evidence_dir": "runs\\20260909T020004-cd9f7c",
-  "created_at": 1788937317.382034,
-  "control_token": "3700110f81763b96",
+  "evidence_dir": "runs\\20260909T191722-5c6a25",
+  "created_at": 1788999557.4147348,
+  "control_token": "ef5f546f68fb88df",
   "status": "approved",
-  "decided_at": 1788937321.5792775,
+  "decided_at": 1788999562.131413,
+  "auto_resumed": false,
   "human_actions": []
 }

@@ -217,6 +217,9 @@ def replay(
     entry_url_override: str = typer.Option(None, "--entry-url", help="Point the recording at another instance without an overlay"),
     auto_resume: bool = typer.Option(True, "--auto-resume/--no-auto-resume",
                                      help="Resume by itself once a human acted and the step's expected state holds"),
+    login_by_human: bool = typer.Option(False, "--login-by-human",
+                                        help="Hold no credentials: the operator signs on in the live window, "
+                                             "automation does the rest"),
 ) -> None:
     """Replay a capability deterministically (no model) and report the structured result.
 
@@ -242,7 +245,13 @@ def replay(
                 step.url = entry_url_override
     policy = PolicyEngine(Policy.load(policy_path))
     redactor = Redactor(sensitive_field_patterns=policy.policy.sensitive_field_patterns or DEFAULT_SENSITIVE_FIELDS)
-    secrets = load_secrets(capability.secrets)
+    if login_by_human:
+        if handoff == "none":
+            raise typer.BadParameter("--login-by-human needs a handoff channel (console or file)")
+        secrets = {}
+        typer.echo("no credentials held: the operator will sign on in the live window")
+    else:
+        secrets = load_secrets(capability.secrets)
     if headed is None:
         headed = handoff != "none"
     run_id = __import__("time").strftime("%Y%m%dT%H%M%S") + "-replay"

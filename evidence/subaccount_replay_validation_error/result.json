@@ -1,7 +1,7 @@
 {
   "status": "business_outcome",
   "capability_id": "member.open_subaccount",
-  "capability_version": 3,
+  "capability_version": 5,
   "run_id": "subaccount_replay_validation_error",
   "inputs": {
     "member_id": "12345",
@@ -21,7 +21,7 @@
       "status": "ok",
       "strategy": null,
       "attempts": 1,
-      "duration_ms": 690,
+      "duration_ms": 686,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -32,7 +32,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 241,
+      "duration_ms": 181,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -43,7 +43,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 135,
+      "duration_ms": 123,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -54,7 +54,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 713,
+      "duration_ms": 718,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -65,7 +65,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 707,
+      "duration_ms": 733,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -76,7 +76,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 153,
+      "duration_ms": 161,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -87,7 +87,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 696,
+      "duration_ms": 700,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -98,7 +98,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 911,
+      "duration_ms": 951,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -109,7 +109,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 818,
+      "duration_ms": 822,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -120,7 +120,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 165,
+      "duration_ms": 177,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -142,7 +142,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 136,
+      "duration_ms": 194,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -166,5 +166,5 @@
   "variant": "base",
   "checkpoint_verified": false,
   "evidence_dir": "evidence/subaccount_replay_validation_error",
-  "duration_ms": 6327
+  "duration_ms": 6435
 }

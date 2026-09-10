@@ -20,7 +20,7 @@
       "status": "ok",
       "strategy": null,
       "attempts": 1,
-      "duration_ms": 702,
+      "duration_ms": 677,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -31,7 +31,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 176,
+      "duration_ms": 188,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -42,7 +42,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 135,
+      "duration_ms": 174,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -53,7 +53,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 716,
+      "duration_ms": 722,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -64,7 +64,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 751,
+      "duration_ms": 724,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -75,7 +75,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 155,
+      "duration_ms": 154,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -86,7 +86,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 706,
+      "duration_ms": 707,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -97,7 +97,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 895,
+      "duration_ms": 923,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -108,7 +108,7 @@
       "status": "ok",
       "strategy": "table_cell#0",
       "attempts": 1,
-      "duration_ms": 319,
+      "duration_ms": 390,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -119,5 +119,5 @@
   "variant": "base",
   "checkpoint_verified": true,
   "evidence_dir": "evidence/replay_other_member",
-  "duration_ms": 4827
+  "duration_ms": 4969
 }

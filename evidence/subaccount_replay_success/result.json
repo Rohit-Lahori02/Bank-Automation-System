@@ -1,7 +1,7 @@
 {
   "status": "success",
   "capability_id": "member.open_subaccount",
-  "capability_version": 3,
+  "capability_version": 5,
   "run_id": "subaccount_replay_success",
   "inputs": {
     "member_id": "12345",
@@ -10,7 +10,8 @@
     "deposit": "125.50"
   },
   "outputs": {
-    "confirmation_number": "CNF-016DE2"
+    "confirmation_number": "CNF-A672D6",
+    "primary_share_balance": "5432.10"
   },
   "outcome_code": null,
   "outcome_message": null,
@@ -23,7 +24,7 @@
       "status": "ok",
       "strategy": null,
       "attempts": 1,
-      "duration_ms": 698,
+      "duration_ms": 697,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -34,7 +35,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 176,
+      "duration_ms": 168,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -45,7 +46,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 139,
+      "duration_ms": 117,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -56,7 +57,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 723,
+      "duration_ms": 710,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -67,7 +68,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 731,
+      "duration_ms": 728,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -78,7 +79,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 156,
+      "duration_ms": 171,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -89,7 +90,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 686,
+      "duration_ms": 710,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -100,7 +101,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 910,
+      "duration_ms": 963,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -111,7 +112,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 815,
+      "duration_ms": 806,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -122,7 +123,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 175,
+      "duration_ms": 178,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -133,7 +134,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 141,
+      "duration_ms": 134,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -144,7 +145,7 @@
       "status": "ok",
       "strategy": "label_text#0",
       "attempts": 1,
-      "duration_ms": 138,
+      "duration_ms": 130,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -155,7 +156,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 767,
+      "duration_ms": 718,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -166,7 +167,7 @@
       "status": "ok",
       "strategy": "role_name#0",
       "attempts": 1,
-      "duration_ms": 2796,
+      "duration_ms": 2773,
       "conditions": [],
       "note": "human approved",
       "subflow_of": null
@@ -177,7 +178,29 @@
       "status": "ok",
       "strategy": "anchor_relative#0",
       "attempts": 1,
-      "duration_ms": 202,
+      "duration_ms": 205,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s15_click",
+      "action": "click",
+      "status": "ok",
+      "strategy": "role_name#0",
+      "attempts": 1,
+      "duration_ms": 881,
+      "conditions": [],
+      "note": "",
+      "subflow_of": null
+    },
+    {
+      "step_id": "s16_extract",
+      "action": "extract",
+      "status": "ok",
+      "strategy": "table_cell#0",
+      "attempts": 1,
+      "duration_ms": 419,
       "conditions": [],
       "note": "",
       "subflow_of": null
@@ -189,14 +212,15 @@
       "kind": "risky_action",
       "reason": "step 's13_click' (button \"Confirm\") is irreversible: risky action requires escalate (irreversible step)",
       "decision": "approved",
-      "intervention_id": "int-0945e3fe",
+      "intervention_id": "int-3af499a1",
       "human_actions": 0,
-      "summary": "approved: no actions captured"
+      "summary": "approved: no actions captured",
+      "auto_resumed": false
     }
   ],
   "drift": [],
   "variant": "base",
   "checkpoint_verified": true,
   "evidence_dir": "evidence/subaccount_replay_success",
-  "duration_ms": 9403
+  "duration_ms": 10816
 }

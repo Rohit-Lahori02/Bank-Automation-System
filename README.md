@@ -246,6 +246,16 @@ The human decides one of:
 - **approved** — automation may perform the held step itself
 - **aborted** — the run ends as `escalated`
 
+**Credentials: three postures.** (1) *Secret references* (default): the artifact stores
+`{{secrets.app.password}}`, the value comes from the environment or a vault at replay time, the
+model never sees it, captures mask it, and the store refuses to persist it. (2) *Login by human*
+(`--login-by-human`): the run holds no credentials at all; the sign-on block is handed to the
+operator, who signs on in the live window with their own credentials, and automation takes over
+the moment the signed-on screen appears. (3) *Pre-authenticated session* (design only): the
+surface starts from a session the institution's identity provider already established, so no
+password is ever typed by anyone. Which posture applies is a policy decision per institution;
+the code supports the first two and the third is a surface-layer change.
+
 **Auto-resume.** If the human performs the held step in the live window and the step's own
 expected state then appears on screen, the handoff resolves itself as `resumed` (logged as
 `handoff_auto_resume`) and automation takes control back without a second round-trip. Anything
@@ -323,9 +333,10 @@ cua discover --goal "Open a new 'Savings - Holiday Club' sub-account for member 
 ```
 
 Replay it. Because Confirm was recorded as a risky step, the replay pauses there every time and
-hands the browser to you; approve in the console (or `cua resume ... --decision approved`), and
-it finishes with a new confirmation number. Below-minimum deposits come back as a validation
-business outcome before Confirm is ever reached:
+hands the browser to you. Either approve in the console (automation clicks Confirm) or click
+Confirm yourself: the moment the confirmation screen appears, automation takes control back,
+reads the confirmation number, returns to the member profile and reads the savings balance.
+Below-minimum deposits come back as a validation business outcome before Confirm is ever reached:
 
 ```bash
 cua replay artifacts/member.open_subaccount.v1.json --input member_id=10001 --input "product=Savings - Holiday Club" --input "nickname=Holiday Fund" --input deposit=125.50 --slow-mo 500

@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "id": "member.open_subaccount",
   "name": "Open a sub-account",
-  "version": 3,
+  "version": 5,
   "status": "draft",
-  "description": "Open a new sub-account for a member (product, nickname, initial deposit), confirm it, and return the confirmation number.",
+  "description": "Open a new sub-account for a member (product, nickname, initial deposit), confirm it, return the confirmation number, then return to the profile and read the primary savings balance.",
   "target": {
     "app": "corelink-member-servicing",
     "entry_url": "http://127.0.0.1:8000/login",
@@ -43,8 +43,13 @@
   "outputs": {
     "confirmation_number": {
       "type": "string",
-      "description": "Confirmation screen shows the confirmation number.",
+      "description": "Extract the confirmation number from the screen.",
       "from_step": "s14_extract"
+    },
+    "primary_share_balance": {
+      "type": "money",
+      "description": "We are on the member profile screen.",
+      "from_step": "s16_extract"
     }
   },
   "secrets": [
@@ -60,10 +65,10 @@
       "risk": "safe",
       "irreversible": false,
       "expect": {
-        "description": "entry screen shows \"Harbor Federal Credit Union\"",
+        "description": "entry screen shows \"Operator Sign On\"",
         "detect": {
           "kind": "text_visible",
-          "text": "Harbor Federal Credit Union"
+          "text": "Operator Sign On"
         },
         "timeout_ms": 8000
       },
@@ -133,7 +138,7 @@
     {
       "id": "s02_type",
       "action": "type",
-      "description": "Username entered.",
+      "description": "Username entered successfully.",
       "target": {
         "description": "textbox \"Password\"",
         "role": "textbox",
@@ -260,7 +265,7 @@
         "strategies": [
           {
             "frame": "main",
-            "nth": 1,
+            "nth": 0,
             "rationale": "accessible link named 'Member Inquiry' (source: content); independent of styling and DOM structure",
             "kind": "role_name",
             "role": "link",
@@ -269,7 +274,7 @@
           },
           {
             "frame": "main",
-            "nth": 1,
+            "nth": 0,
             "rationale": "link whose inferred label is 'Member Inquiry' (source: content); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
             "kind": "label_text",
             "role": "link",
@@ -287,7 +292,7 @@
             "nth": 0,
             "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
             "kind": "css",
-            "selector": "table:nth-of-type(2) > tbody > tr > td:nth-of-type(2) > div > table > tbody > tr:nth-of-type(2) > td:nth-of-type(1) > a"
+            "selector": "table:nth-of-type(2) > tbody > tr > td:nth-of-type(1) > div > a:nth-of-type(2)"
           },
           {
             "frame": "main",
@@ -295,10 +300,10 @@
             "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
             "kind": "bbox",
             "role": "link",
-            "x": 275.0,
-            "y": 229.0,
-            "w": 91.984375,
-            "h": 17.0,
+            "x": 25.0,
+            "y": 170.0,
+            "w": 184.0,
+            "h": 37.0,
             "viewport_w": 1280,
             "viewport_h": 820
           }
@@ -320,7 +325,7 @@
     {
       "id": "s05_type",
       "action": "type",
-      "description": "Enter member number 12345 into the Member Number textbox and click Search.",
+      "description": "Enter member number 12345 into the Member Number textbox.",
       "target": {
         "description": "textbox \"Member Number\"",
         "role": "textbox",
@@ -380,7 +385,7 @@
     {
       "id": "s06_click",
       "action": "click",
-      "description": "Member number entered.",
+      "description": "Click the Search button to retrieve member 12345's profile.",
       "target": {
         "description": "button \"Search\"",
         "role": "button",
@@ -440,7 +445,7 @@
     {
       "id": "s07_click",
       "action": "click",
-      "description": "Click the View link for member 12345 to open member details.",
+      "description": "Click the View link to open the member profile.",
       "target": {
         "description": "link \"View\"",
         "role": "link",
@@ -507,7 +512,7 @@
     {
       "id": "s08_click",
       "action": "click",
-      "description": "Click the 'Open Sub-Account' link to start the process of opening a new sub-account for member 12345.",
+      "description": "Click the 'Open Sub-Account' link to begin opening a new sub-account for member 12345.",
       "target": {
         "description": "link \"Open Sub-Account\"",
         "role": "link",
@@ -574,7 +579,7 @@
     {
       "id": "s09_select",
       "action": "select",
-      "description": "Select the Product Type combobox and choose 'Savings - Holiday Club' option.",
+      "description": "Select the Product Type combobox and choose 'Savings - Holiday Club'.",
       "target": {
         "description": "combobox \"Product Type\"",
         "role": "combobox",
@@ -634,7 +639,7 @@
     {
       "id": "s10_type",
       "action": "type",
-      "description": "Enter nickname 'Holiday Fund' into the Nickname textbox.",
+      "description": "Enter the nickname 'Holiday Fund' into the Nickname textbox.",
       "target": {
         "description": "textbox \"Nickname\"",
         "role": "textbox",
@@ -694,7 +699,7 @@
     {
       "id": "s11_type",
       "action": "type",
-      "description": "Enter initial deposit amount 125.50 into the Initial Deposit ($) textbox.",
+      "description": "Enter the initial deposit amount 125.50 into the Initial Deposit ($) textbox.",
       "target": {
         "description": "textbox \"Initial Deposit ($)\"",
         "role": "textbox",
@@ -754,7 +759,7 @@
     {
       "id": "s12_click",
       "action": "click",
-      "description": "Click Continue button to proceed to the confirmation step.",
+      "description": "Click the Continue button to proceed to the confirmation screen.",
       "target": {
         "description": "button \"Continue\"",
         "role": "button",
@@ -814,7 +819,7 @@
     {
       "id": "s13_click",
       "action": "click",
-      "description": "Click Confirm button to open the sub-account.",
+      "description": "Click the Confirm button to open the sub-account.",
       "target": {
         "description": "button \"Confirm\"",
         "role": "button",
@@ -874,9 +879,9 @@
     {
       "id": "s14_extract",
       "action": "extract",
-      "description": "Confirmation screen shows the confirmation number.",
+      "description": "Extract the confirmation number from the screen.",
       "target": {
-        "description": "text \"CNF-E0548F\"",
+        "description": "text \"CNF-4C4F13\"",
         "role": "text",
         "strategies": [
           {
@@ -893,7 +898,7 @@
             "nth": 1,
             "rationale": "visible text content; what the operator reads on screen",
             "kind": "text",
-            "text": "CNF-E0548F",
+            "text": "CNF-4C4F13",
             "exact": true
           },
           {
@@ -911,7 +916,7 @@
             "role": "text",
             "x": 433.0,
             "y": 246.0,
-            "w": 76.84375,
+            "w": 78.078125,
             "h": 18.0,
             "viewport_w": 1280,
             "viewport_h": 820
@@ -919,6 +924,143 @@
         ]
       },
       "output": "confirmation_number",
+      "risk": "safe",
+      "irreversible": false,
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s15_click",
+      "action": "click",
+      "description": "Click the Return to Member Profile link to go back to the member's profile page.",
+      "target": {
+        "description": "link \"Return to Member Profile\"",
+        "role": "link",
+        "strategies": [
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "accessible link named 'Return to Member Profile' (source: content); independent of styling and DOM structure",
+            "kind": "role_name",
+            "role": "link",
+            "name": "Return to Member Profile",
+            "exact": true
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "link whose inferred label is 'Return to Member Profile' (source: content); uses adjacent-cell/nearest-text inference for legacy forms without <label for>",
+            "kind": "label_text",
+            "role": "link",
+            "text": "Return to Member Profile"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "link target; stable while routes are stable (parameterized on replay)",
+            "kind": "css",
+            "selector": "a[href=\"/members/{{inputs.member_id}}\"]"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "table:nth-of-type(2) > tbody > tr > td:nth-of-type(2) > div > div:nth-of-type(4) > a:nth-of-type(1)"
+          },
+          {
+            "frame": "main",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "link",
+            "x": 263.0,
+            "y": 424.0,
+            "w": 145.75,
+            "h": 17.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "risk": "safe",
+      "irreversible": false,
+      "expect": {
+        "description": "navigated",
+        "detect": {
+          "kind": "url_matches",
+          "pattern": "/members/[^/]+(?:[?#]|$)"
+        },
+        "timeout_ms": 8000
+      },
+      "on_conditions": [],
+      "wait_before_ms": 0
+    },
+    {
+      "id": "s16_extract",
+      "action": "extract",
+      "description": "We are on the member profile screen.",
+      "target": {
+        "description": "cell \"$5,432.10\" in frame iframe[name=\"acctframe\"]",
+        "role": "cell",
+        "strategies": [
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "grid cell in the row labelled '12345-S01' under the column 'Balance'; independent of the cell's current value, so it survives different inputs on replay",
+            "kind": "table_cell",
+            "row_text": "{{inputs.member_id}}-S01",
+            "column_header": "Balance"
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "accessible cell named '$5,432.10' (source: content); independent of styling and DOM structure",
+            "kind": "role_name",
+            "role": "cell",
+            "name": "$5,432.10",
+            "exact": true
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "the cell to the right of the label 'Primary Share'; independent of this value's content, so an extracted value can be re-read for other inputs",
+            "kind": "anchor_relative",
+            "role": "cell",
+            "anchor_text": "Primary Share",
+            "direction": "right"
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "visible text content; what the operator reads on screen",
+            "kind": "text",
+            "text": "$5,432.10",
+            "exact": true
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "structural DOM path; brittle under layout drift, kept as a late fallback",
+            "kind": "css",
+            "selector": "table > tbody > tr:nth-of-type(2) > td:nth-of-type(4)"
+          },
+          {
+            "frame": "iframe[name=\"acctframe\"]",
+            "nth": 0,
+            "rationale": "coordinates relative to the recorded viewport; surface-agnostic last resort (screenshot/desktop automation)",
+            "kind": "bbox",
+            "role": "cell",
+            "x": 707.53125,
+            "y": 534.5,
+            "w": 119.203125,
+            "h": 40.0,
+            "viewport_w": 1280,
+            "viewport_h": 820
+          }
+        ]
+      },
+      "output": "primary_share_balance",
       "risk": "safe",
       "irreversible": false,
       "on_conditions": [],
@@ -1000,7 +1142,7 @@
           {
             "id": "s02_type",
             "action": "type",
-            "description": "Username entered.",
+            "description": "Username entered successfully.",
             "target": {
               "description": "textbox \"Password\"",
               "role": "textbox",
@@ -1225,30 +1367,30 @@
     }
   },
   "checkpoint": {
-    "description": "goal state: \"Sub-Account Opened screen showing confirmation number CNF-E0548F\"",
+    "description": "goal state: \"Member Profile\"",
     "detect": {
       "kind": "all_of",
       "detectors": [
         {
           "kind": "url_matches",
-          "pattern": "/members/[^/]+/subaccount/confirmed(?:[?#]|$)"
+          "pattern": "/members/[^/]+(?:[?#]|$)"
         },
         {
           "kind": "text_visible",
-          "text": "Sub-Account Opened"
+          "text": "Member Profile"
         }
       ]
     }
   },
   "provenance": {
-    "discovery_run_id": "20260909T020004-cd9f7c",
-    "recorded_at": 1788937339.2388318,
+    "discovery_run_id": "20260909T191722-5c6a25",
+    "recorded_at": 1788999602.5500448,
     "provider": "openai_compat",
     "model": "nvidia/nemotron-3-super-120b-a12b",
     "surface": "browser-playwright",
-    "goal": "Open a new 'Savings - Holiday Club' sub-account for member 12345 with the nickname 'Holiday Fund' and an initial deposit of 125.50, confirm it, and read back the confirmation number.",
-    "discovery_steps": 15,
+    "goal": "Open a new 'Savings - Holiday Club' sub-account for member 12345 with the nickname 'Holiday Fund' and an initial deposit of 125.50, confirm it, read back the confirmation number, then return to the member profile and read the current balance of the Primary Share savings account.",
+    "discovery_steps": 17,
     "redaction_applied": true,
-    "notes": "14 executed actions; 0 condition(s) learned from the run; 15 model calls, 47378 tokens; model's checkpoint text reduced to the visible fragment \"Sub-Account Opened\""
+    "notes": "16 executed actions; 0 condition(s) learned from the run; 17 model calls, 61089 tokens"
   }
 }

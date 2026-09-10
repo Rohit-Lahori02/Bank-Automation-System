@@ -1,0 +1,62 @@
+{
+  "id": "int-c25507bf",
+  "run_id": "replay_login_by_human",
+  "run_kind": "replay",
+  "capability_id": "member.read_savings_balance v7",
+  "goal": "Look up a member by member number and return the balance of their primary savings share.",
+  "step_id": "s01_type",
+  "kind": "credentials",
+  "reason": "operator credentials are not configured for this run; please sign on in the live window (steps s01_type, s02_type, s03_click)",
+  "url": "http://127.0.0.1:8000/login",
+  "screenshot": "evidence/replay_login_by_human/escalation_s01_type.png",
+  "screen": "URL: http://127.0.0.1:8000/login\nTitle: Sign On - HFCU Member Servicing\n--- frame: main ---\n[e1] text \"Harbor Federal Credit Union\"\n[e2] text \"Member Servicing Console\"\n[e3] text \"CoreLink v4.2.1\"\n[e4] cell \"Not signed on\"\n[e5] text \"Operator Sign On\"\n[e6] text \"Enter your operator credentials to access the servicing console.\"\n[e7] cell \"User ID\"\n[e8] textbox \"User ID\" value=\"\"\n[e9] cell \"Password\"\n[e10] textbox \"Password\" value=\"\"\n[e11] button \"Sign On\"\n[e12] button \"Clear\"\n[e13] text \"Use of this system is restricted to authorized personnel. Sessions are logged.\"\n[e14] cell \"CoreLink Servicing Platform \u00a9 1998-2026 Meridian Core Systems, Inc. \u00b7 Unauthorized access is prohibited and monitored.\"",
+  "session_url": "http://127.0.0.1:57814",
+  "evidence_dir": "evidence/replay_login_by_human",
+  "created_at": 1788999692.5688486,
+  "control_token": "f330a20a239fde81",
+  "status": "resumed",
+  "decided_at": 1788999693.7641668,
+  "auto_resumed": true,
+  "human_actions": [
+    {
+      "at": 1788999693.459,
+      "type": "input",
+      "role": "textbox",
+      "name": "User ID",
+      "tag": "input",
+      "value": "[REDACTED:SECRET]",
+      "url": "http://127.0.0.1:8000/login",
+      "frame": "main"
+    },
+    {
+      "at": 1788999693.524,
+      "type": "input",
+      "role": "textbox",
+      "name": "Password",
+      "tag": "input",
+      "value": "\u2022\u2022\u2022\u2022\u2022\u2022",
+      "url": "http://127.0.0.1:8000/login",
+      "frame": "main"
+    },
+    {
+      "at": 1788999693.525,
+      "type": "click",
+      "role": "button",
+      "name": "Sign On",
+      "tag": "input",
+      "value": null,
+      "url": "http://127.0.0.1:8000/login",
+      "frame": "main"
+    },
+    {
+      "at": 1788999693.526,
+      "type": "submit",
+      "role": "form",
+      "name": "/login",
+      "tag": "form",
+      "value": null,
+      "url": "http://127.0.0.1:8000/login",
+      "frame": "main"
+    }
+  ]
+}

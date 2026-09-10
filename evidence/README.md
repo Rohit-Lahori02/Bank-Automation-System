@@ -42,6 +42,7 @@ artifact above with no model involved.
 | `replay_session_expired` | session expiry injected before the inquiry step: re-login sub-flow, step redone, run succeeds |
 | `replay_handoff_resumed` | an irreversible step escalates; the operator performs it on the live session; `intervention.json` records the captured human actions; replay verifies and completes |
 | `replay_handoff_aborted` | the operator declines: `escalated` with the full context |
+| `replay_login_by_human` | no credentials configured at all: the sign-on block is handed to the operator, who signs on in the live window (captured, password masked); automation auto-resumes when the signed-on screen appears and completes the flow |
 
 The operator in the handoff runs was a second Playwright client attached to the live browser
 over CDP — the same mechanism a person or a remote console uses — scripted so the evidence can

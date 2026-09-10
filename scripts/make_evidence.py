@@ -182,6 +182,26 @@ def main() -> int:
         summary[name] = json.loads(result.to_json())
         print(f"{name:28s} {result.one_line()}")
 
+    # ---- credentials held by nobody: the operator signs on, automation does the rest ----------------
+    def signs_on(page) -> None:
+        page.fill("input[name=userid]", secrets["app.username"])
+        page.fill("input[name=passwd]", secrets["app.password"])
+        page.click("input[value='Sign On']")
+        page.wait_for_url("**/console")
+
+    chaos(args.base)
+    control = SessionControl()
+    with BrowserSurface(headless=True, trace_dir=EVIDENCE / "replay_login_by_human", control=control,
+                        cdp_port=free_port()) as surface:
+        controller = HandoffController(surface=surface, control=control, redactor=redactor, timeout_s=120, poll_s=0.2)
+        thread = operator(controller, signs_on, "resumed")
+        engine = ReplayEngine(surface=surface, policy=policy, redactor=redactor, evidence_root=EVIDENCE,
+                              escalation_handler=ReplayHandoff(controller))
+        result = engine.replay(cap, {"member_id": "12345"}, {}, run_id="replay_login_by_human")   # no secrets
+        thread.join(10)
+    summary["replay_login_by_human"] = json.loads(result.to_json())
+    print(f"{'replay_login_by_human':40s} {result.one_line()}")
+
     # ---- second capability: open a sub-account (naturally recorded risky Confirm step) --------------
     if args.subaccount_artifact:
         sub = Capability.model_validate_json((ROOT / args.subaccount_artifact).read_text(encoding="utf-8"))
