@@ -2,7 +2,8 @@
 
 ## 1. Architecture
 
-The system is one Python process with five layers and two seams. The **surface** layer
+The system is one Python process with five layers and two seams (the surface seam in Section 4,
+the control seam in Section 5). The **surface** layer
 perceives and acts on a live UI. The **agent** layer runs an LLM through an observe → decide →
 act loop over that surface, once, to discover a flow. The **artifact** layer turns the
 successful run into a typed capability. The **replay** layer executes a capability with no model
@@ -28,16 +29,17 @@ Key decisions and trade-offs:
   only on failure and escalation, where they are evidence.
 - **A JSON action protocol instead of provider-native tool calling.** The agent loop is
   identical on the free NVIDIA NIM model used for development and on Claude. The trade-off is
-  a parse-and-retry step; it fired zero times in the recorded run.
+  a parse-and-retry step; it fired zero times in the two committed runs.
 - **The loop enforces, the model proposes.** Every proposed action passes the policy engine
   before it touches the surface; blocked, held, malformed and unknown-ref actions are returned to
   the model as step results. Only the two most recent screens stay verbatim in context, so cost is
-  flat in run length (the two recorded runs: 9 and 15 steps, 24k and 42k tokens, on a free tier).
+  flat in run length (the two committed runs: 9 and 17 steps, 23k and 61k tokens, on a free tier).
 - **Two capabilities recorded, both replayed.** *Read savings balance* (search → detail → extract)
   and *open a sub-account* (form with a `select`, review, irreversible Confirm, extract the
-  confirmation number). The second one is where the safety and handoff model shows up in a
-  natural recording: the policy held the Confirm click during discovery, an operator approved it,
-  and the recorded step carries `risk: risky`, so every replay escalates there by itself.
+  confirmation number, return to the profile, read the balance). The second one is where the
+  safety and handoff model shows up in a natural recording: the policy held the Confirm click
+  during discovery, an operator approved it, and the recorded step carries `risk: risky`, so every
+  replay escalates there by itself and continues afterwards.
 - **Single process, no queues.** Discovery is rare and human-paced; replay is a sub-minute
   sequential job. The abstractions (capability store, run evidence, handoff queue) are the units
   a service would later own; nothing in the code assumes they are in-process.
@@ -49,7 +51,7 @@ cross-reference validated at load):
 
 - **`inputs`** — typed (`string | integer | number | boolean | money`), with pattern, example and
   a `sensitive` flag; bound and coerced before the UI is touched, so a bad member number is
-  rejected as `INVALID_INPUT` without a browser.
+  rejected as `INVALID_INPUT` without a browser when the input declares a pattern.
 - **`outputs`** — typed, each bound to the `extract` step that produces it; parsed on return
   (`"$5,432.10"` → `Decimal("5432.10")`).
 - **`secrets`** — names only (`app.password`). Steps reference `{{secrets.app.password}}`; the
@@ -72,7 +74,8 @@ Why this shape: the reviewer question is "what does it need, what does it return
 wrong, and how do we know it worked" — those are the top-level keys. The recorder derives it from
 the run: literal input values become templates in values, URLs *and locator anchors*
 (`{{inputs.member_id}}-S01`); the model's own `expect` hints become postconditions only when they
-held on the live surface; dialog dismissals become conditions rather than steps; sign-on becomes
+held on the live surface and never on a read (an extract's hint is the value it just read, which
+does not recur); dialog dismissals become conditions rather than steps; sign-on becomes
 the re-login sub-flow; the model's checkpoint sentence is verified against the final screen and
 reduced to a visible fragment or dropped (noted in provenance). Conditions belong to an **app
 profile**, not the capability, which is what lets them be shared across every capability and
@@ -109,7 +112,7 @@ cannot recurse. The evidence folder contains one replay for every row of that ta
 UI drift is secondary in this environment and is handled by the strategy chain: styling and DOM
 restructuring fall through `role_name` → `label_text` → `anchor_relative` → `css` → `bbox`, and the
 recorded strategy index in each replay is the drift signal (a capability that starts resolving
-on `bbox` needs re-recording before it breaks).
+on `css` or `bbox` needs an overlay or a re-recording before it breaks; Section 4 shows both).
 
 ## 4. Heterogeneity & multi-tenant
 
@@ -141,10 +144,11 @@ are additive over the per-replay provenance that already exists.
 
 ## 5. Escalation & handoff
 
-**Detecting "stuck"** has three sources: a step whose target matches the risky policy
+**Detecting "stuck"** has four sources: a step whose target matches the risky policy
 (`Confirm`, `Close Account`, …) or is marked irreversible; a state failure the artifact has no
-answer for (`TARGET_NOT_FOUND`, `EXPECTATION_TIMEOUT`, `CHECKPOINT_FAILED`, recovery loops); and
-the discovery model calling `stuck`. Each raises an intervention request with the goal or
+answer for (`TARGET_NOT_FOUND`, `EXPECTATION_TIMEOUT`, `CHECKPOINT_FAILED`, recovery loops);
+credentials the run does not hold (Section 6); and the discovery model calling `stuck`. Each
+raises an intervention request with the goal or
 capability, step id, reason, URL, screenshot and screen listing. The risky path is the same in
 discovery and replay: in the sub-account recording the model's Confirm click was held, approved
 by the operator, executed, and recorded as a risky step, which is why replays of that capability
@@ -209,7 +213,7 @@ the task; the allowlist is per deployment, not per capability.
 
 Cut deliberately: a fleet-level drift dashboard (the per-replay drift signal exists); a desktop
 surface (seam only); the co-browsing operator console (minimal console + CDP seam); the
-agent-facing capability catalogue endpoint; a CI workflow for the 126 tests; input `pattern`s in
+agent-facing capability catalogue endpoint; a CI workflow for the 131 tests; input `pattern`s in
 recorded artifacts are not inferred (the hand-authored reference shows the intent); the discovery
 runs were made on a free NVIDIA NIM model rather than Claude — the adapter exists and the run is
 one config change.

@@ -10,7 +10,8 @@ explicit error handling, safety guardrails, and a human-in-the-loop handoff path
 
 Design write-up: [`REPORT.md`](REPORT.md). Evidence from real runs: [`evidence/`](evidence/)
 (two discovery runs - read a balance, open a sub-account with an irreversible Confirm - and
-fourteen replays covering every result state and the human handoff; see `evidence/summary.md`).
+seventeen replays covering every result state, the human handoff, login by human and a second
+tenant; see `evidence/summary.md`).
 
 **What is real and what is mocked.** The target application is a mock (a deliberately legacy
 credit-union console, built here). The discovery run is a real LLM run against it (NVIDIA NIM,
@@ -146,7 +147,7 @@ capability artifact.
 | Variable | Purpose |
 |---|---|
 | `LLM_PROVIDER` | `openai_compat` (NVIDIA NIM or any OpenAI-compatible endpoint) or `anthropic` |
-| `LLM_MODEL` | model id, e.g. `meta/llama-3.3-70b-instruct` or `claude-opus-5` |
+| `LLM_MODEL` | model id, e.g. `nvidia/nemotron-3-super-120b-a12b` (the tested NIM default) or `claude-opus-5` |
 | `LLM_BASE_URL` | for `openai_compat`; defaults to NVIDIA NIM |
 | `NVIDIA_API_KEY` / `ANTHROPIC_API_KEY` | credentials for the chosen provider |
 | `LLM_EFFORT` | Anthropic only: `low` / `medium` / `high` (default `medium`) |
