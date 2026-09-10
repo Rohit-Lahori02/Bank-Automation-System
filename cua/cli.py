@@ -251,7 +251,19 @@ def replay(
     from cua.surface.driver import BrowserSurface
     from cua.surface.session import SessionControl
 
-    capability = Capability.model_validate_json(artifact.read_text(encoding="utf-8"))
+    if artifact.exists():
+        capability = Capability.model_validate_json(artifact.read_text(encoding="utf-8"))
+    else:
+        # a capability id: use the latest recorded version in artifacts/
+        from cua.artifact.store import ArtifactStore
+
+        store = ArtifactStore(Path("artifacts"))
+        try:
+            capability = store.load(str(artifact))
+        except FileNotFoundError:
+            known = ", ".join(sorted({c.id for c in store.list()})) or "none recorded yet"
+            raise typer.BadParameter(f"'{artifact}' is neither a file nor a recorded capability id (known: {known})")
+        typer.echo(f"using latest recorded version: artifacts/{capability.filename}")
     if overlay is not None:
         capability = apply_overlay(capability, VariantOverlay.load(overlay))
     if entry_url_override:
