@@ -346,6 +346,7 @@ def chaos(
     maintenance_dialog: bool = typer.Option(None, "--maintenance-dialog/--no-maintenance-dialog", help="Show the modal notice on the next page"),
     app_error: bool = typer.Option(None, "--app-error/--no-app-error", help="Fail the next member profile load"),
     sticky: bool = typer.Option(None, "--sticky/--no-sticky", help="Keep one-shot flags armed"),
+    after_pages: int = typer.Option(None, help="Let N page loads pass before a one-shot flag fires (mid-flow faults)"),
     reset: bool = typer.Option(False, help="Clear all flags"),
 ) -> None:
     """Inject runtime faults into the mock console (for demos and error-path evidence)."""
@@ -356,7 +357,7 @@ def chaos(
     else:
         payload = {k: v for k, v in dict(slow_ms=slow_ms, expire_session=expire_session,
                                          maintenance_dialog=maintenance_dialog, app_error=app_error,
-                                         sticky=sticky).items() if v is not None}
+                                         sticky=sticky, after_pages=after_pages).items() if v is not None}
         state = httpx.post(f"{url}/__chaos", json=payload).json() if payload else httpx.get(f"{url}/__chaos").json()
     typer.echo(state)
 

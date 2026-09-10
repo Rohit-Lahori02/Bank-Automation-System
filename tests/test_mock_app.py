@@ -207,6 +207,15 @@ def test_chaos_maintenance_dialog_shows_once_on_full_pages_only(client, chaos):
     assert "System Maintenance Notice" not in again.text
 
 
+def test_chaos_after_pages_delays_a_one_shot_flag(client, chaos):
+    sign_on(client)
+    chaos.update(maintenance_dialog=True, after_pages=2)
+    assert "System Maintenance Notice" not in client.get("/console").text          # page 1 passes
+    assert "System Maintenance Notice" not in client.get("/members/search").text   # page 2 passes
+    assert "System Maintenance Notice" in client.get("/console").text              # fires on page 3
+    assert "System Maintenance Notice" not in client.get("/console").text          # one-shot, consumed
+
+
 def test_chaos_sticky_keeps_flags_armed(client, chaos):
     sign_on(client)
     chaos.update(maintenance_dialog=True, sticky=True)

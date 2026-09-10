@@ -102,6 +102,7 @@ Seeded members (all synthetic): `10001`, `10002`, `12345`, `20077`, `31415`.
 | `maintenance_dialog` | next full page render shows a modal "System Maintenance Notice" with an OK button |
 | `app_error` | next member profile load returns the CLK-0500 error page |
 | `sticky` | keep one-shot flags armed |
+| `after_pages` | let N page loads pass before a one-shot flag fires, so a fault appears mid-flow |
 
 Example:
 

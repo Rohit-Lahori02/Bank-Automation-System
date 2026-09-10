@@ -25,6 +25,7 @@ class ChaosState:
     maintenance_dialog: bool = False
     app_error: bool = False
     sticky: bool = False
+    after_pages: int = 0        # let this many full-page renders pass before a one-shot flag fires
 
 
 class ChaosController:
@@ -45,7 +46,7 @@ class ChaosController:
             raise ValueError(f"unknown chaos flags: {sorted(unknown)}")
         with self._lock:
             for key, value in changes.items():
-                if key == "slow_ms":
+                if key in ("slow_ms", "after_pages"):
                     value = max(0, int(value))
                 else:
                     value = _as_bool(value)
@@ -58,11 +59,18 @@ class ChaosController:
             return asdict(self._state)
 
     def consume(self, flag: str) -> bool:
-        """Read a one-shot flag and clear it unless sticky mode is on."""
+        """Read a one-shot flag and clear it unless sticky mode is on.
+
+        With `after_pages` > 0 the flag is armed but held back: each consume attempt lets one
+        page pass and decrements the countdown, so a fault can be made to appear mid-flow.
+        """
         if flag not in self.ONE_SHOT_FLAGS:
             raise ValueError(f"{flag} is not a one-shot flag")
         with self._lock:
             value = getattr(self._state, flag)
+            if value and self._state.after_pages > 0:
+                self._state.after_pages -= 1
+                return False
             if value and not self._state.sticky:
                 setattr(self._state, flag, False)
             return value
