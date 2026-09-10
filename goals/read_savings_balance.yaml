@@ -1,0 +1,10 @@
+# A goal spec: what an engineer hands to discovery. Everything here is reviewable before a model
+# ever runs; the recorded capability inherits the id, name and description.
+capability_id: member.read_savings_balance
+name: Read member savings balance
+description: Look up a member by member number and return the balance of their primary savings share.
+app: corelink-member-servicing
+entry_url: http://127.0.0.1:8000/login
+goal: Look up member 12345 and read their current savings balance
+inputs:
+  member_id: "12345"

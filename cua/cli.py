@@ -102,10 +102,12 @@ def serve_app(
 
 @app.command("discover")
 def discover(
-    goal: str = typer.Option(..., help="Natural-language goal for the agent"),
+    spec: Path = typer.Option(None, "--spec", "-s", help="Goal spec file (YAML/JSON: goal, inputs, capability_id, name, "
+                                                          "description, entry_url, app); flags override it"),
+    goal: str = typer.Option(None, help="Natural-language goal for the agent"),
     inputs: list[str] = typer.Option([], "--input", "-i", help="Caller-supplied input, name=value (repeatable)"),
-    entry_url: str = typer.Option(DEFAULT_ENTRY, help="Where the flow starts"),
-    capability_id: str = typer.Option(..., help="Dotted id for the recorded capability, e.g. member.read_savings_balance"),
+    entry_url: str = typer.Option(None, help="Where the flow starts"),
+    capability_id: str = typer.Option(None, help="Dotted id for the recorded capability, e.g. member.read_savings_balance"),
     name: str = typer.Option(None, help="Human name for the capability"),
     description: str = typer.Option(None, help="One-line description (defaults to the goal)"),
     app_id: str = typer.Option("corelink-member-servicing", "--app", help="Application profile id"),
@@ -132,6 +134,22 @@ def discover(
     from cua.surface.driver import BrowserSurface
     from cua.surface.session import SessionControl
 
+    spec_data: dict = {}
+    if spec is not None:
+        import yaml
+
+        spec_data = yaml.safe_load(spec.read_text(encoding="utf-8")) or {}
+    goal = goal or spec_data.get("goal")
+    capability_id = capability_id or spec_data.get("capability_id")
+    if not goal or not capability_id:
+        raise typer.BadParameter("a goal and a capability id are required (flags or --spec file)")
+    entry_url = entry_url or spec_data.get("entry_url") or DEFAULT_ENTRY
+    name = name or spec_data.get("name")
+    description = description or spec_data.get("description")
+    if spec_data.get("app"):
+        app_id = spec_data["app"]
+    input_values = {**{k: str(v) for k, v in (spec_data.get("inputs") or {}).items()}, **_parse_kv(inputs)}
+
     try:
         llm = client_from_env()
     except LLMError as exc:
@@ -141,7 +159,6 @@ def discover(
     secrets = load_secrets(secret)
     for value in secrets.values():
         redactor.add_secret(value)
-    input_values = _parse_kv(inputs)
     if headed is None:
         headed = handoff != "none"
 

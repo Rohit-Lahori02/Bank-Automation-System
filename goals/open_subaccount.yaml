@@ -1,0 +1,16 @@
+capability_id: member.open_subaccount
+name: Open a sub-account
+description: >-
+  Open a new sub-account for a member (product, nickname, initial deposit), confirm it, return the
+  confirmation number, then return to the profile and read the primary savings balance.
+app: corelink-member-servicing
+entry_url: http://127.0.0.1:8000/login
+goal: >-
+  Open a new 'Savings - Holiday Club' sub-account for member 12345 with the nickname 'Holiday Fund'
+  and an initial deposit of 125.50, confirm it, read back the confirmation number, then return to the
+  member profile and read the current balance of the Primary Share savings account.
+inputs:
+  member_id: "12345"
+  product: Savings - Holiday Club
+  nickname: Holiday Fund
+  deposit: "125.50"
