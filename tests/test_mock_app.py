@@ -253,6 +253,7 @@ def test_chaos_http_api_roundtrip(client):
     assert bad.status_code == 400
     assert client.post("/__chaos/reset").json() == {
         "slow_ms": 0, "expire_session": False, "maintenance_dialog": False, "app_error": False, "sticky": False,
+        "after_pages": 0,
     }
 
 
